@@ -1,6 +1,0 @@
-{
-  "env": {
-    "DATABASE_URL": "postgresql://user:password@localhost:5432/mathpoint?schema=public"
-  },
-  "buildCommand": "prisma generate && npm run build"
-}

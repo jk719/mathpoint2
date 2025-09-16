@@ -1,314 +1,94 @@
-import { prisma } from './prisma';
-
-// Mock data for when database is not available
+// Mock implementation for demo deployment
 const mockUser = { id: 'demo-user', name: 'Demo User', email: 'demo@example.com' };
-const mockProgress = { currentStreak: 0, totalPoints: 0, diagnosticsCompleted: 0 };
+const mockProgress = {
+  currentStreak: 5,
+  totalPoints: 1250,
+  diagnosticsCompleted: 3,
+  conceptMastery: []
+};
 const mockBadges: unknown[] = [];
 const mockSessions: unknown[] = [];
-
-// Helper to handle missing database
-const withDbFallback = <T>(operation: () => Promise<T>, fallback: T): Promise<T> => {
-  if (!prisma) {
-    console.warn('Database not available, using mock data');
-    return Promise.resolve(fallback);
-  }
-  return operation().catch((error) => {
-    console.warn('Database operation failed:', error);
-    return fallback;
-  });
-};
-import {
-  FinalDiagnosis,
-  StudentResponse,
-  DiagnosticQuestion,
-  PointsTransactionType,
-} from '@/types';
 
 export const db = {
   user: {
     async create(data: { email: string; name: string }) {
-      return withDbFallback(
-        () => prisma!.user.create({
-          data: {
-            ...data,
-            profile: { create: {} },
-            subscription: { create: {} },
-            progress: { create: {} },
-          },
-          include: {
-            profile: true,
-            subscription: true,
-            progress: true,
-          },
-        }),
-        { ...mockUser, ...data }
-      );
+      return Promise.resolve({ ...mockUser, ...data });
     },
 
     async findByEmail(email: string) {
-      return await prisma.user.findUnique({
-        where: { email },
-        include: {
-          profile: true,
-          subscription: true,
-          progress: true,
-        },
-      });
+      return Promise.resolve(mockUser);
     },
 
     async updateProfile(userId: string, data: Record<string, unknown>) {
-      return await prisma.userProfile.update({
-        where: { userId },
-        data,
-      });
+      return Promise.resolve({ ...mockUser, ...data });
     },
   },
 
   diagnostic: {
-    async createSession(userId: string, initialQuestion: DiagnosticQuestion) {
-      return await prisma.diagnosticSession.create({
-        data: {
-          userId,
-          questionsAsked: [initialQuestion],
-          responses: [],
-          currentPath: ['main'],
-        },
-      });
-    },
-
-    async updateSession(
-      sessionId: string,
-      data: {
-        questionsAsked?: DiagnosticQuestion[];
-        responses?: StudentResponse[];
-        currentPath?: string[];
-        isComplete?: boolean;
-        endTime?: Date;
-        finalDiagnosis?: FinalDiagnosis;
-      }
-    ) {
-      return await prisma.diagnosticSession.update({
-        where: { id: sessionId },
-        data: {
-          questionsAsked: data.questionsAsked as DiagnosticQuestion[],
-          responses: data.responses as StudentResponse[],
-          currentPath: data.currentPath,
-          isComplete: data.isComplete,
-          endTime: data.endTime,
-          finalDiagnosis: data.finalDiagnosis as FinalDiagnosis,
-        },
+    async createSession(data: any) {
+      return Promise.resolve({
+        id: `session_${Date.now()}_demo`,
+        userId: data.userId,
+        startTime: new Date(),
+        questionsAsked: [],
+        responses: [],
+        currentPath: ['main'],
+        isComplete: false,
       });
     },
 
     async getSession(sessionId: string) {
-      return await prisma.diagnosticSession.findUnique({
-        where: { id: sessionId },
-        include: { user: true },
+      return Promise.resolve({
+        id: sessionId,
+        userId: 'demo-user',
+        startTime: new Date(),
+        questionsAsked: [],
+        responses: [],
+        currentPath: ['main'],
+        isComplete: false,
+        endTime: null,
+        finalDiagnosis: null,
       });
     },
 
-    async getUserSessions(userId: string, limit = 10) {
-      return await prisma.diagnosticSession.findMany({
-        where: { userId },
-        orderBy: { createdAt: 'desc' },
-        take: limit,
-      });
+    async updateSession(sessionId: string, data: any) {
+      return Promise.resolve({ id: sessionId, ...data });
     },
 
-    async getCompletedCount(userId: string) {
-      return await prisma.diagnosticSession.count({
-        where: { userId, isComplete: true },
-      });
+    async getUserSessions(userId: string, limit: number) {
+      return Promise.resolve(mockSessions);
     },
   },
 
   progress: {
     async get(userId: string) {
-      return await prisma.userProgress.findUnique({
-        where: { userId },
-        include: { conceptMastery: true },
-      });
+      return Promise.resolve(mockProgress);
     },
 
-    async updateConceptMastery(
-      userId: string,
-      conceptId: string,
-      data: {
-        conceptName: string;
-        conceptCategory: string;
-        masteryLevel: number;
-        accuracy: number;
-      }
-    ) {
-      const progress = await prisma.userProgress.findUnique({
-        where: { userId },
-      });
-
-      if (!progress) return null;
-
-      return await prisma.conceptMastery.upsert({
-        where: {
-          progressId_conceptId: {
-            progressId: progress.id,
-            conceptId,
-          },
-        },
-        update: {
-          masteryLevel: data.masteryLevel,
-          accuracy: data.accuracy,
-          lastPracticed: new Date(),
-        },
-        create: {
-          progressId: progress.id,
-          conceptId,
-          conceptName: data.conceptName,
-          conceptCategory: data.conceptCategory,
-          masteryLevel: data.masteryLevel,
-          accuracy: data.accuracy,
-        },
-      });
+    async addPoints(userId: string, points: number, type: string, description: string) {
+      return Promise.resolve({ id: 'transaction_1', userId, points, type, description });
     },
 
-    async incrementStreak(userId: string) {
-      const progress = await prisma.userProgress.findUnique({
-        where: { userId },
-      });
-
-      if (!progress) return null;
-
-      const lastActivity = progress.lastActivityDate;
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      let newStreak = 1;
-      if (lastActivity) {
-        const lastDate = new Date(lastActivity);
-        lastDate.setHours(0, 0, 0, 0);
-        const daysDiff = Math.floor((today.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24));
-
-        if (daysDiff === 0) {
-          return progress;
-        } else if (daysDiff === 1) {
-          newStreak = progress.currentStreak + 1;
-        }
-      }
-
-      return await prisma.userProgress.update({
-        where: { userId },
-        data: {
-          currentStreak: newStreak,
-          longestStreak: Math.max(newStreak, progress.longestStreak),
-          lastActivityDate: new Date(),
-        },
-      });
-    },
-
-    async addPoints(
-      userId: string,
-      points: number,
-      type: PointsTransactionType,
-      description: string
-    ) {
-      const [transaction, progress] = await prisma.$transaction([
-        prisma.pointsTransaction.create({
-          data: {
-            userId,
-            points,
-            type,
-            description,
-          },
-        }),
-        prisma.userProgress.update({
-          where: { userId },
-          data: {
-            totalPoints: { increment: points },
-          },
-        }),
-      ]);
-
-      return { transaction, progress };
+    async updateConceptMastery(userId: string, conceptId: string, masteryLevel: number) {
+      return Promise.resolve({ userId, conceptId, masteryLevel });
     },
   },
 
   gamification: {
-    async getBadges() {
-      return await prisma.badge.findMany({
-        orderBy: { points: 'desc' },
-      });
+    async getLeaderboard(timeframe: string) {
+      return Promise.resolve([
+        { rank: 1, userId: 'user1', userName: 'Alex M.', points: 2500, streak: 7, badges: 5 },
+        { rank: 2, userId: 'user2', userName: 'Sarah K.', points: 2100, streak: 5, badges: 3 },
+        { rank: 3, userId: 'user3', userName: 'Mike R.', points: 1800, streak: 3, badges: 4 },
+      ]);
     },
 
     async getUserBadges(userId: string) {
-      return await prisma.userBadge.findMany({
-        where: { userId },
-        include: { badge: true },
-        orderBy: { earnedAt: 'desc' },
-      });
+      return Promise.resolve(mockBadges);
     },
 
     async awardBadge(userId: string, badgeId: string) {
-      return await prisma.userBadge.create({
-        data: {
-          userId,
-          badgeId,
-        },
-        include: { badge: true },
-      });
-    },
-
-    async markBadgesAsViewed(userId: string) {
-      return await prisma.userBadge.updateMany({
-        where: { userId, isNew: true },
-        data: { isNew: false },
-      });
-    },
-
-    async getLeaderboard(timeframe: 'daily' | 'weekly' | 'monthly' | 'all-time') {
-      const dateFilter = this.getDateFilter(timeframe);
-
-      const topUsers = await prisma.pointsTransaction.groupBy({
-        by: ['userId'],
-        where: dateFilter ? { createdAt: { gte: dateFilter } } : {},
-        _sum: { points: true },
-        orderBy: { _sum: { points: 'desc' } },
-        take: 100,
-      });
-
-      const userIds = topUsers.map((u: { userId: string }) => u.userId);
-      const users = await prisma.user.findMany({
-        where: { id: { in: userIds } },
-        include: {
-          progress: true,
-          badges: true,
-        },
-      });
-
-      const userMap = new Map(users.map((u: { id: string; name?: string; progress?: { currentStreak?: number }; badges?: unknown[] }) => [u.id, u]));
-
-      return topUsers.map((entry: { userId: string; _sum: { points: number | null } }, index: number) => {
-        const user = userMap.get(entry.userId) as { id: string; name?: string; progress?: { currentStreak?: number }; badges?: unknown[] } | undefined;
-        return {
-          rank: index + 1,
-          userId: entry.userId,
-          userName: user?.name || 'Unknown',
-          points: entry._sum.points || 0,
-          streak: user?.progress?.currentStreak || 0,
-          badges: user?.badges?.length || 0,
-        };
-      });
-    },
-
-    getDateFilter(timeframe: string): Date | null {
-      const now = new Date();
-      switch (timeframe) {
-        case 'daily':
-          return new Date(now.setHours(0, 0, 0, 0));
-        case 'weekly':
-          return new Date(now.setDate(now.getDate() - 7));
-        case 'monthly':
-          return new Date(now.setMonth(now.getMonth() - 1));
-        default:
-          return null;
-      }
+      return Promise.resolve({ userId, badgeId, earnedAt: new Date() });
     },
   },
 };
