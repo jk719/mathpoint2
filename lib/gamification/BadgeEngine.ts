@@ -10,7 +10,7 @@ export class BadgeEngine {
     if (!progress) return [];
 
     const userBadges = await db.gamification.getUserBadges(userId);
-    const earnedBadgeIds = new Set(userBadges.map(ub => ub.badgeId));
+    const earnedBadgeIds = new Set(userBadges.map((ub: { badgeId: string }) => ub.badgeId));
 
     const newBadges: Badge[] = [];
 
@@ -85,7 +85,7 @@ export class BadgeEngine {
     if (!progress) return null;
 
     const userBadges = await db.gamification.getUserBadges(userId);
-    const isEarned = userBadges.some(ub => ub.badgeId === badgeId);
+    const isEarned = userBadges.some((ub: { badgeId: string }) => ub.badgeId === badgeId);
 
     let progressValue = 0;
 
@@ -109,7 +109,7 @@ export class BadgeEngine {
 
       case 'concept-mastery':
         if (badge.requirement.conceptId) {
-          const concept = progress.conceptMastery.find(cm => cm.conceptId === badge.requirement.conceptId);
+          const concept = progress.conceptMastery.find((cm: { conceptId: string; masteryLevel: number }) => cm.conceptId === badge.requirement.conceptId);
           progressValue = concept ? Math.min(100, (concept.masteryLevel / badge.requirement.value) * 100) : 0;
         }
         break;

@@ -5,6 +5,8 @@ import {
   PartialDiagnosis,
   FinalDiagnosis,
   Branch,
+  ErrorType,
+  Concept,
 } from '@/types';
 import { ResponseAnalyzer } from './ResponseAnalyzer';
 import { DecisionTree } from './DecisionTree';
@@ -170,7 +172,7 @@ export class DiagnosticEngine {
 
   private updatePartialDiagnosis(
     session: DiagnosticSession,
-    analysis: any,
+    analysis: { errorTypes: ErrorType[]; isCorrect: boolean; confidence: number; },
     question: DiagnosticQuestion
   ): PartialDiagnosis {
     const diagnosis: PartialDiagnosis = {
@@ -253,7 +255,7 @@ export class DiagnosticEngine {
     return response.answer === question.correctAnswer;
   }
 
-  private getAllUniqueConcepts(questions: DiagnosticQuestion[]): any[] {
+  private getAllUniqueConcepts(questions: DiagnosticQuestion[]): Concept[] {
     const conceptMap = new Map();
     questions.forEach(q => {
       if (q.conceptsTested && q.conceptsTested.length > 0) {

@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ZodSchema } from 'zod';
 
-export interface HandlerContext {
+export interface RouteContext {
   params?: Record<string, string>;
 }
 
 export interface ApiError {
   error: string;
-  details?: any;
+  details?: unknown;
   statusCode: number;
 }
 
@@ -16,7 +16,7 @@ export class ApiResponse {
     return NextResponse.json({ success: true, data }, { status });
   }
 
-  static error(message: string, status = 400, details?: any) {
+  static error(message: string, status = 400, details?: unknown) {
     return NextResponse.json(
       { success: false, error: message, details },
       { status }
@@ -24,14 +24,14 @@ export class ApiResponse {
   }
 }
 
-export function createHandler<T = any>(
-  handler: (req: NextRequest, context: HandlerContext) => Promise<NextResponse>,
+export function createHandler(
+  handler: (req: NextRequest, context?: RouteContext) => Promise<NextResponse>,
   options?: {
     schema?: ZodSchema;
     requireAuth?: boolean;
   }
 ) {
-  return async (req: NextRequest, context: HandlerContext) => {
+  return async (req: NextRequest, context?: RouteContext) => {
     try {
       if (options?.schema) {
         const body = await req.json();
@@ -41,7 +41,7 @@ export function createHandler<T = any>(
           return ApiResponse.error(
             'Validation error',
             400,
-            validation.error.errors
+            validation.error.issues
           );
         }
       }
@@ -53,7 +53,7 @@ export function createHandler<T = any>(
         }
       }
 
-      const response = await handler(req, context);
+      const response = await handler(req, context || {});
       return response;
     } catch (error) {
       console.error('API Error:', error);

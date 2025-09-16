@@ -5,18 +5,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { QuestionCard } from '@/components/diagnostic/QuestionCard';
 import { DiagnosisDisplay } from '@/components/diagnostic/DiagnosisDisplay';
 import { Progress } from '@/components/ui/Progress';
-import { Card, CardContent } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
 import { DiagnosticEngine } from '@/lib/diagnostic-engine';
-import { comprehensiveQuestionBank } from '@/data/comprehensiveQuestionBank';
-import { StudentResponse } from '@/types';
+import { questionBank } from '@/data/questionBank';
+import { StudentResponse, FinalDiagnosis } from '@/types';
 
 export default function DemoPage() {
-  const [engine] = useState(() => new DiagnosticEngine({ questions: comprehensiveQuestionBank }));
+  const [engine] = useState(() => new DiagnosticEngine({ questions: questionBank }));
   const [session, setSession] = useState(() => engine.startSession('demo-user'));
   const [startTime, setStartTime] = useState(Date.now());
   const [isComplete, setIsComplete] = useState(false);
-  const [diagnosis, setDiagnosis] = useState(null);
+  const [diagnosis, setDiagnosis] = useState<FinalDiagnosis | null>(null);
 
   const currentQuestion = session.questionsAsked[session.questionsAsked.length - 1];
   const progress = engine.getSessionProgress(session);
@@ -40,7 +38,7 @@ export default function DemoPage() {
 
       setSession({ ...session });
 
-      if (result.isComplete) {
+      if (result.isComplete && result.diagnosis && 'sessionId' in result.diagnosis) {
         setIsComplete(true);
         setDiagnosis(result.diagnosis);
       }
@@ -67,7 +65,7 @@ export default function DemoPage() {
             transition={{ duration: 0.5 }}
           >
             <DiagnosisDisplay
-              diagnosis={diagnosis as any}
+              diagnosis={diagnosis}
               onRestart={handleRestart}
             />
           </motion.div>

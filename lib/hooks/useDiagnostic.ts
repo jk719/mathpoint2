@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { DiagnosticState, DiagnosticQuestion, StudentResponse } from '@/types';
+import { DiagnosticState, StudentResponse } from '@/types';
 
 export function useDiagnostic() {
   const [state, setState] = useState<DiagnosticState>({
@@ -37,7 +37,15 @@ export function useDiagnostic() {
 
       setState((prev) => ({
         ...prev,
-        session: { id: data.sessionId, userId },
+        session: {
+          id: data.sessionId,
+          userId,
+          startTime: new Date(),
+          questionsAsked: [],
+          responses: [],
+          currentPath: ['main'],
+          isComplete: false
+        },
         currentQuestion: data.currentQuestion,
         questionHistory: [data.currentQuestion],
         isLoading: false,

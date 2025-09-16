@@ -220,7 +220,7 @@ export default function Home() {
               <p className="text-gray-700">
                 The comprehensive diagnostic assessment typically requires 20-30 minutes to complete,
                 with the exact duration varying based on individual student performance and knowledge level.
-                Our adaptive algorithm customizes the question sequence to efficiently evaluate each student's
+                Our adaptive algorithm customizes the question sequence to efficiently evaluate each student&apos;s
                 mathematical proficiency across multiple concept areas.
               </p>
             </div>

@@ -120,7 +120,7 @@ export class ResponseAnalyzer {
       }
     }
 
-    if (this.detectArithmeticError(answer, question)) {
+    if (this.detectArithmeticError(answer)) {
       errors.push('arithmetic-error');
     }
 
@@ -136,7 +136,7 @@ export class ResponseAnalyzer {
     const match = answer.match(factorPairRegex);
 
     if (match) {
-      const [_, num1, num2] = match;
+      const [, num1, num2] = match;
       const n1 = parseInt(num1);
       const n2 = parseInt(num2);
 
@@ -153,7 +153,12 @@ export class ResponseAnalyzer {
 
   private detectFOILError(answer: string, question: DiagnosticQuestion): boolean {
     return question.content.toLowerCase().includes('foil') &&
-           !this.checkCorrectness({ ...question, answer } as StudentResponse, question);
+           !this.checkCorrectness({
+             questionId: question.id,
+             answer,
+             timeSpent: 0,
+             attemptNumber: 1
+           }, question);
   }
 
   private detectCoefficientError(answer: string, question: DiagnosticQuestion): boolean {
@@ -164,7 +169,7 @@ export class ResponseAnalyzer {
     const coefficientRegex = /a\s*=\s*(-?\d+)/;
     const match = answer.match(coefficientRegex);
 
-    return match && match[1] !== '1';
+    return Boolean(match && match[1] !== '1');
   }
 
   private detectDiscriminantError(answer: string, question: DiagnosticQuestion): boolean {
@@ -193,7 +198,7 @@ export class ResponseAnalyzer {
            !answer.includes('0');
   }
 
-  private detectArithmeticError(answer: string, question: DiagnosticQuestion): boolean {
+  private detectArithmeticError(answer: string): boolean {
     const arithmeticRegex = /\d+\s*[+\-*/]\s*\d+\s*=\s*(\d+)/g;
     const matches = [...answer.matchAll(arithmeticRegex)];
 

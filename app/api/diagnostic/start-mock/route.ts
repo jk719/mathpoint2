@@ -1,13 +1,21 @@
-import { NextRequest } from 'next/server';
-import { createHandler, ApiResponse } from '@/lib/api/createHandler';
+import { NextRequest, NextResponse } from 'next/server';
 import { startDiagnosticSchema } from '@/lib/validation/schemas';
 import { DiagnosticEngine } from '@/lib/diagnostic-engine';
 import { questionBank } from '@/data/questionBank';
 
-export const POST = createHandler(
-  async (req: NextRequest) => {
+export async function POST(req: NextRequest) {
+  try {
     const body = await req.json();
-    const { userId } = startDiagnosticSchema.parse(body);
+    const validation = startDiagnosticSchema.safeParse(body);
+
+    if (!validation.success) {
+      return NextResponse.json(
+        { success: false, error: 'Validation error', details: validation.error.issues },
+        { status: 400 }
+      );
+    }
+
+    const { userId } = validation.data;
 
     // Mock user - no database needed
     const mockUser = {
@@ -22,11 +30,19 @@ export const POST = createHandler(
     // Mock session ID for demo
     const sessionId = `session_${Date.now()}_demo`;
 
-    return ApiResponse.success({
-      sessionId,
-      currentQuestion: session.questionsAsked[0],
-      progress: engine.getSessionProgress(session),
+    return NextResponse.json({
+      success: true,
+      data: {
+        sessionId,
+        currentQuestion: session.questionsAsked[0],
+        progress: engine.getSessionProgress(session),
+      }
     });
-  },
-  { schema: startDiagnosticSchema }
-);
+  } catch (error) {
+    console.error('API Error:', error);
+    return NextResponse.json(
+      { success: false, error: error instanceof Error ? error.message : 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}

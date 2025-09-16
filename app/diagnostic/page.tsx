@@ -5,10 +5,9 @@ import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { QuestionCard } from '@/components/diagnostic/QuestionCard';
 import { DiagnosisDisplay } from '@/components/diagnostic/DiagnosisDisplay';
-import { Progress } from '@/components/ui/Progress';
 import { DiagnosticEngine } from '@/lib/diagnostic-engine';
-import { comprehensiveQuestionBank } from '@/data/comprehensiveQuestionBank';
-import { StudentResponse, DiagnosticQuestion } from '@/types';
+import { questionBank } from '@/data/questionBank';
+import { StudentResponse, DiagnosticQuestion, FinalDiagnosis } from '@/types';
 
 export default function DiagnosticPage() {
   const searchParams = useSearchParams();
@@ -16,7 +15,7 @@ export default function DiagnosticPage() {
 
   // Filter questions based on grade level
   const getQuestionsForGrade = (gradeLevel: number | null): DiagnosticQuestion[] => {
-    if (!gradeLevel) return comprehensiveQuestionBank;
+    if (!gradeLevel) return questionBank;
 
     // Grade-specific topic filtering
     const topicsByGrade: { [key: number]: string[] } = {
@@ -42,7 +41,7 @@ export default function DiagnosticPage() {
 
     const allowedDifficulties = difficultyByGrade[gradeLevel] || ['medium'];
 
-    return comprehensiveQuestionBank.filter(q =>
+    return questionBank.filter(q =>
       allowedTopics.includes(q.branch) &&
       allowedDifficulties.includes(q.difficulty)
     );
@@ -56,7 +55,7 @@ export default function DiagnosticPage() {
   const [session, setSession] = useState(() => engine.startSession('demo-user'));
   const [startTime, setStartTime] = useState(Date.now());
   const [isComplete, setIsComplete] = useState(false);
-  const [diagnosis, setDiagnosis] = useState<any>(null);
+  const [diagnosis, setDiagnosis] = useState<FinalDiagnosis | null>(null);
 
   const currentQuestion = session.questionsAsked[session.questionsAsked.length - 1];
   const progress = engine.getSessionProgress(session);
@@ -82,7 +81,9 @@ export default function DiagnosticPage() {
 
       if (result.isComplete) {
         setIsComplete(true);
-        setDiagnosis(result.diagnosis);
+        if (result.diagnosis && 'sessionId' in result.diagnosis) {
+          setDiagnosis(result.diagnosis);
+        }
       }
     } catch (err) {
       console.error('Failed to submit answer:', err);
@@ -108,7 +109,7 @@ export default function DiagnosticPage() {
             className="fade-in"
           >
             <DiagnosisDisplay
-              diagnosis={diagnosis as any}
+              diagnosis={diagnosis}
               onRestart={handleRestart}
             />
           </motion.div>

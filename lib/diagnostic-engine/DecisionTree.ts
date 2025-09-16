@@ -2,7 +2,6 @@ import {
   DiagnosticQuestion,
   StudentResponse,
   Branch,
-  BranchingRule,
   PartialDiagnosis,
   Concept,
   ErrorType,
@@ -129,8 +128,7 @@ export class DecisionTree {
 
     const difficultyScore = this.getDifficultyScore(
       question.difficulty,
-      previousAnalysis,
-      diagnosis
+      previousAnalysis
     );
     score += difficultyScore;
 
@@ -192,8 +190,7 @@ export class DecisionTree {
 
   private getDifficultyScore(
     difficulty: string,
-    analysis: AnalysisResult,
-    diagnosis: PartialDiagnosis
+    analysis: AnalysisResult
   ): number {
     const baseScore = { easy: 5, medium: 10, hard: 5 }[difficulty] || 0;
 

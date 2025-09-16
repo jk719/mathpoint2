@@ -24,7 +24,7 @@ export function MathTypeWriter({
   showCursor = true,
   enableMathAnimation = true,
 }: MathTypeWriterProps) {
-  const [displayedContent, setDisplayedContent] = useState('');
+  const [, setDisplayedContent] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
@@ -32,7 +32,7 @@ export function MathTypeWriter({
   // Parse content to identify math segments
   const segments = useMemo(() => {
     const parts = content.split(/(\$\$[\s\S]*?\$\$|\$[\s\S]*?\$)/);
-    return parts.map((part, index) => {
+    return parts.map((part) => {
       if (part.startsWith('$$') && part.endsWith('$$')) {
         return { type: 'block-math', content: part.slice(2, -2), raw: part };
       } else if (part.startsWith('$') && part.endsWith('$')) {

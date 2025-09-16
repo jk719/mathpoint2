@@ -8,7 +8,7 @@ import { Progress } from '@/components/ui/Progress';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { useDiagnostic } from '@/lib/hooks/useDiagnostic';
-import { StudentResponse } from '@/types';
+import { StudentResponse, FinalDiagnosis } from '@/types';
 
 interface DiagnosticFlowProps {
   userId: string;
@@ -94,7 +94,12 @@ export function DiagnosticFlow({ userId, onComplete }: DiagnosticFlowProps) {
     );
   }
 
-  if (isComplete && diagnosis) {
+  const isFinalDiagnosis = (diag: unknown): diag is FinalDiagnosis => {
+    return Boolean(diag && typeof diag === 'object' && diag !== null &&
+      'sessionId' in diag && 'overallLevel' in diag && 'recommendedPath' in diag);
+  };
+
+  if (isComplete && isFinalDiagnosis(diagnosis)) {
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -102,7 +107,7 @@ export function DiagnosticFlow({ userId, onComplete }: DiagnosticFlowProps) {
         transition={{ duration: 0.5 }}
       >
         <DiagnosisDisplay
-          diagnosis={diagnosis as any}
+          diagnosis={diagnosis}
           onRestart={handleRestart}
         />
       </motion.div>

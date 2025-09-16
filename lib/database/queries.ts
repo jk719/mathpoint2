@@ -1,31 +1,48 @@
 import { prisma } from './prisma';
+
+// Mock data for when database is not available
+const mockUser = { id: 'demo-user', name: 'Demo User', email: 'demo@example.com' };
+const mockProgress = { currentStreak: 0, totalPoints: 0, diagnosticsCompleted: 0 };
+const mockBadges: unknown[] = [];
+const mockSessions: unknown[] = [];
+
+// Helper to handle missing database
+const withDbFallback = <T>(operation: () => Promise<T>, fallback: T): Promise<T> => {
+  if (!prisma) {
+    console.warn('Database not available, using mock data');
+    return Promise.resolve(fallback);
+  }
+  return operation().catch((error) => {
+    console.warn('Database operation failed:', error);
+    return fallback;
+  });
+};
 import {
-  DiagnosticSession,
   FinalDiagnosis,
   StudentResponse,
   DiagnosticQuestion,
-  User,
-  UserProgress,
-  Badge,
   PointsTransactionType,
 } from '@/types';
 
 export const db = {
   user: {
     async create(data: { email: string; name: string }) {
-      return await prisma.user.create({
-        data: {
-          ...data,
-          profile: { create: {} },
-          subscription: { create: {} },
-          progress: { create: {} },
-        },
-        include: {
-          profile: true,
-          subscription: true,
-          progress: true,
-        },
-      });
+      return withDbFallback(
+        () => prisma!.user.create({
+          data: {
+            ...data,
+            profile: { create: {} },
+            subscription: { create: {} },
+            progress: { create: {} },
+          },
+          include: {
+            profile: true,
+            subscription: true,
+            progress: true,
+          },
+        }),
+        { ...mockUser, ...data }
+      );
     },
 
     async findByEmail(email: string) {
@@ -39,7 +56,7 @@ export const db = {
       });
     },
 
-    async updateProfile(userId: string, data: any) {
+    async updateProfile(userId: string, data: Record<string, unknown>) {
       return await prisma.userProfile.update({
         where: { userId },
         data,
@@ -73,12 +90,12 @@ export const db = {
       return await prisma.diagnosticSession.update({
         where: { id: sessionId },
         data: {
-          questionsAsked: data.questionsAsked as any,
-          responses: data.responses as any,
+          questionsAsked: data.questionsAsked as DiagnosticQuestion[],
+          responses: data.responses as StudentResponse[],
           currentPath: data.currentPath,
           isComplete: data.isComplete,
           endTime: data.endTime,
-          finalDiagnosis: data.finalDiagnosis as any,
+          finalDiagnosis: data.finalDiagnosis as FinalDiagnosis,
         },
       });
     },
@@ -256,7 +273,7 @@ export const db = {
         take: 100,
       });
 
-      const userIds = topUsers.map(u => u.userId);
+      const userIds = topUsers.map((u: { userId: string }) => u.userId);
       const users = await prisma.user.findMany({
         where: { id: { in: userIds } },
         include: {
@@ -265,10 +282,10 @@ export const db = {
         },
       });
 
-      const userMap = new Map(users.map(u => [u.id, u]));
+      const userMap = new Map(users.map((u: { id: string; name?: string; progress?: { currentStreak?: number }; badges?: unknown[] }) => [u.id, u]));
 
-      return topUsers.map((entry, index) => {
-        const user = userMap.get(entry.userId);
+      return topUsers.map((entry: { userId: string; _sum: { points: number | null } }, index: number) => {
+        const user = userMap.get(entry.userId) as { id: string; name?: string; progress?: { currentStreak?: number }; badges?: unknown[] } | undefined;
         return {
           rank: index + 1,
           userId: entry.userId,

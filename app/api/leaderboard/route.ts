@@ -1,22 +1,36 @@
-import { NextRequest } from 'next/server';
-import { createHandler, ApiResponse } from '@/lib/api/createHandler';
+import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/database/queries';
 
-export const GET = createHandler(
-  async (req: NextRequest) => {
+export async function GET(req: NextRequest) {
+  try {
     const { searchParams } = new URL(req.url);
-    const timeframe = searchParams.get('timeframe') as any || 'weekly';
+    const timeframeParam = searchParams.get('timeframe') || 'weekly';
 
-    const validTimeframes = ['daily', 'weekly', 'monthly', 'all-time'];
-    if (!validTimeframes.includes(timeframe)) {
-      return ApiResponse.error('Invalid timeframe', 400);
+    const validTimeframes = ['daily', 'weekly', 'monthly', 'all-time'] as const;
+    type ValidTimeframe = typeof validTimeframes[number];
+
+    if (!validTimeframes.includes(timeframeParam as ValidTimeframe)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid timeframe' },
+        { status: 400 }
+      );
     }
 
+    const timeframe = timeframeParam as ValidTimeframe;
     const leaderboard = await db.gamification.getLeaderboard(timeframe);
 
-    return ApiResponse.success({
-      timeframe,
-      entries: leaderboard,
+    return NextResponse.json({
+      success: true,
+      data: {
+        timeframe,
+        entries: leaderboard,
+      }
     });
+  } catch (error) {
+    console.error('API Error:', error);
+    return NextResponse.json(
+      { success: false, error: error instanceof Error ? error.message : 'Internal server error' },
+      { status: 500 }
+    );
   }
-);
+}

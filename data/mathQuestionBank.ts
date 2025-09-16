@@ -1,8 +1,8 @@
 import { DiagnosticQuestion } from '@/types';
-import { comprehensiveQuestionBank } from './comprehensiveQuestionBank';
+import { questionBank } from './questionBank';
 
 // Main question bank that includes comprehensive math topics
-export const mathQuestionBank = comprehensiveQuestionBank;
+export const mathQuestionBank = questionBank;
 
 // Default export
 export default mathQuestionBank;
