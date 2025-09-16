@@ -1,0 +1,45 @@
+export const POINTS = {
+  DIAGNOSTIC_COMPLETE: 50,
+  PRACTICE_PROBLEM: 10,
+  STREAK_BONUS: 5,
+  PERFECT_SCORE: 20,
+  BADGE_EARNED: 15,
+  DAILY_LOGIN: 5,
+} as const;
+
+export const DURATIONS = {
+  MIN_QUESTION_TIME: 30,
+  MAX_QUESTION_TIME: 300,
+  AVG_QUESTION_TIME: 120,
+  SESSION_TIMEOUT: 3600,
+} as const;
+
+export const LIMITS = {
+  MIN_QUESTIONS: 4,
+  MAX_QUESTIONS: 7,
+  MAX_ATTEMPTS: 3,
+  FREE_DIAGNOSTICS_PER_MONTH: 3,
+  FREE_PRACTICE_PER_DAY: 10,
+} as const;
+
+export const ROUTES = {
+  HOME: '/',
+  DASHBOARD: '/dashboard',
+  DIAGNOSTIC: '/diagnostic',
+  PRACTICE: '/practice',
+  PROFILE: '/profile',
+  LEADERBOARD: '/leaderboard',
+  SETTINGS: '/settings',
+} as const;
+
+export const BADGE_THRESHOLDS = {
+  STREAK_BRONZE: 3,
+  STREAK_SILVER: 7,
+  STREAK_GOLD: 30,
+  PROBLEMS_BRONZE: 10,
+  PROBLEMS_SILVER: 50,
+  PROBLEMS_GOLD: 100,
+  ACCURACY_BRONZE: 0.7,
+  ACCURACY_SILVER: 0.85,
+  ACCURACY_GOLD: 0.95,
+} as const;

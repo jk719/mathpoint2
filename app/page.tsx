@@ -1,103 +1,261 @@
-import Image from "next/image";
+'use client';
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Brain, Target, Zap, Award, CheckCircle } from 'lucide-react';
+import { GradeSelectorSimple } from '@/components/GradeSelectorSimple';
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-gray-100">
+      {/* Hero Section */}
+      <section className="relative py-20 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-100 rounded-full text-orange-700 text-sm font-medium mb-6">
+              <Zap className="w-4 h-4" />
+              Adaptive AI-Powered Diagnostics
+            </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+              Where
+              <span className="bg-gradient-to-r from-[#1a3a52] to-[#ff6b35] bg-clip-text text-transparent">
+                {" "}Math Meets Mastery
+              </span>
+            </h1>
+            <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Comprehensive diagnostics for grades 6-12. Our adaptive AI covers Algebra 1,
+              Algebra 2, and Geometry to identify your unique learning patterns and create personalized paths to success.
+            </p>
+
+            <GradeSelectorSimple />
+          </div>
+
+          {/* Features Grid */}
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            <Card className="relative overflow-hidden group hover:shadow-lg transition-shadow bg-white">
+              <CardHeader>
+                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
+                  <Brain className="w-6 h-6 text-orange-600" />
+                </div>
+                <CardTitle className="text-xl text-gray-900">Grade-Specific Content</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-700">
+                  Tailored assessments for grades 6-12, covering Algebra 1, Algebra 2, and
+                  Geometry with age-appropriate difficulty levels.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="relative overflow-hidden group hover:shadow-lg transition-shadow bg-white">
+              <CardHeader>
+                <div className="w-12 h-12 bg-[#1a3a52] bg-opacity-10 rounded-lg flex items-center justify-center mb-4">
+                  <Target className="w-6 h-6 text-[#1a3a52]" />
+                </div>
+                <CardTitle className="text-xl text-gray-900">Comprehensive Coverage</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-700">
+                  From linear equations to polynomials, from basic geometry to trigonometry -
+                  complete mathematical diagnostic coverage.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="relative overflow-hidden group hover:shadow-lg transition-shadow bg-white">
+              <CardHeader>
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                  <Award className="w-6 h-6 text-green-600" />
+                </div>
+                <CardTitle className="text-xl text-gray-900">Gamified Learning</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-700">
+                  Earn points, unlock badges, and track streaks while building
+                  mathematical confidence through engaging challenges.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* How It Works */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto max-w-6xl px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              How MathPoint Works
+            </h2>
+            <p className="text-xl text-gray-600">
+              Our adaptive system adjusts to your grade level and performance in real-time
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-[#1a3a52] rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">
+                1
+              </div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-900">Grade Selection</h3>
+              <p className="text-gray-700 text-sm">
+                Choose your grade level for appropriately challenging questions
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-[#ff6b35] rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">
+                2
+              </div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-900">Adaptive Branching</h3>
+              <p className="text-gray-700 text-sm">
+                AI analyzes your response and selects the optimal next question
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">
+                3
+              </div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-900">Pattern Recognition</h3>
+              <p className="text-gray-700 text-sm">
+                Identify specific error patterns and knowledge gaps
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">
+                4
+              </div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-900">Personalized Plan</h3>
+              <p className="text-gray-700 text-sm">
+                Receive a custom learning path with targeted practice
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits */}
+      <section className="py-20 bg-gradient-to-r from-[#1a3a52] to-[#0f2436] text-white">
+        <div className="container mx-auto max-w-6xl px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-4xl font-bold mb-6">
+                Why Students Choose MathPoint
+              </h2>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-green-300 mt-1" />
+                  <div>
+                    <h3 className="font-semibold mb-1">Saves Time</h3>
+                    <p className="text-gray-300">
+                      Get precise feedback in minutes, not hours of traditional practice
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-green-300 mt-1" />
+                  <div>
+                    <h3 className="font-semibold mb-1">Builds Confidence</h3>
+                    <p className="text-gray-300">
+                      Focus on your actual weaknesses instead of reviewing what you already know
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-green-300 mt-1" />
+                  <div>
+                    <h3 className="font-semibold mb-1">Tracks Progress</h3>
+                    <p className="text-gray-300">
+                      Visual progress tracking and achievement system keeps you motivated
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-green-300 mt-1" />
+                  <div>
+                    <h3 className="font-semibold mb-1">Expert-Designed</h3>
+                    <p className="text-gray-300">
+                      Created by math educators and learning scientists
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
+                <div className="text-3xl font-bold mb-2">4-7</div>
+                <div className="text-sm text-gray-300">Questions per diagnostic</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
+                <div className="text-3xl font-bold mb-2">95%</div>
+                <div className="text-sm text-gray-300">Student satisfaction</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
+                <div className="text-3xl font-bold mb-2">15-20</div>
+                <div className="text-sm text-gray-300">Minutes to complete</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
+                <div className="text-3xl font-bold mb-2">∞</div>
+                <div className="text-sm text-gray-300">Improvement potential</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto max-w-4xl px-4">
+          <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-6">
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                How long does the diagnostic assessment take?
+              </h3>
+              <p className="text-gray-700">
+                The comprehensive diagnostic assessment typically requires 20-30 minutes to complete,
+                with the exact duration varying based on individual student performance and knowledge level.
+                Our adaptive algorithm customizes the question sequence to efficiently evaluate each student's
+                mathematical proficiency across multiple concept areas.
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Is MathPoint really free?
+              </h3>
+              <p className="text-gray-700">
+                Yes! The diagnostic assessment is completely free with instant results.
+                No credit card required, no hidden fees, and no time limits.
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                What topics does MathPoint cover?
+              </h3>
+              <p className="text-gray-700">
+                MathPoint covers comprehensive mathematics from grades 6-12, including Pre-Algebra,
+                Algebra 1, Geometry, Algebra 2, Pre-Calculus, and Calculus. Our adaptive system
+                adjusts questions based on your grade level.
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                How does the adaptive technology work?
+              </h3>
+              <p className="text-gray-700">
+                Our AI analyzes your responses in real-time, identifying patterns in your problem-solving
+                approach. Based on this analysis, it selects the next most informative question to
+                pinpoint your exact learning needs.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

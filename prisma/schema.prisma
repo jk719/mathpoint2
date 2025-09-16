@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String              @id @default(cuid())
+  email             String              @unique
+  name              String
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  profile           UserProfile?
+  subscription      Subscription?
+  progress          UserProgress?
+  diagnosticSessions DiagnosticSession[]
+  badges            UserBadge[]
+  pointsTransactions PointsTransaction[]
+
+  @@index([email])
+}
+
+model UserProfile {
+  id                  String    @id @default(cuid())
+  userId              String    @unique
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gradeLevel          Int?
+  learningGoals       String[]
+  preferredDifficulty String?
+  weeklyGoalMinutes   Int?
+  timezone            String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+model Subscription {
+  id                    String    @id @default(cuid())
+  userId                String    @unique
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan                  String    @default("free") // free, premium, pro
+  status                String    @default("active") // active, canceled, past_due
+  currentPeriodEnd      DateTime?
+  stripeCustomerId      String?
+  stripeSubscriptionId  String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+}
+
+model UserProgress {
+  id                        String            @id @default(cuid())
+  userId                    String            @unique
+  user                      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  totalPoints               Int               @default(0)
+  currentStreak             Int               @default(0)
+  longestStreak             Int               @default(0)
+  lastActivityDate          DateTime?
+  completedDiagnostics      Int               @default(0)
+  practiceProblemsCompleted Int               @default(0)
+  totalTimeSpent            Int               @default(0) // in seconds
+  conceptMastery            ConceptMastery[]
+  createdAt                 DateTime          @default(now())
+  updatedAt                 DateTime          @updatedAt
+}
+
+model ConceptMastery {
+  id              String        @id @default(cuid())
+  progressId      String
+  progress        UserProgress  @relation(fields: [progressId], references: [id], onDelete: Cascade)
+  conceptId       String
+  conceptName     String
+  conceptCategory String
+  masteryLevel    Float         @default(0) // 0 to 1
+  lastPracticed   DateTime      @default(now())
+  problemsSolved  Int           @default(0)
+  accuracy        Float         @default(0) // 0 to 1
+  averageTime     Int           @default(0) // in seconds
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@unique([progressId, conceptId])
+  @@index([conceptId])
+}
+
+model DiagnosticSession {
+  id                String              @id @default(cuid())
+  userId            String
+  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startTime         DateTime            @default(now())
+  endTime           DateTime?
+  isComplete        Boolean             @default(false)
+  questionsAsked    Json                // Array of question objects
+  responses         Json                // Array of response objects
+  currentPath       String[]            // Branch path taken
+  finalDiagnosis    Json?               // Final diagnosis object
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  @@index([userId, isComplete])
+}
+
+model Badge {
+  id          String      @id @default(cuid())
+  name        String      @unique
+  description String
+  icon        String
+  category    String      // mastery, streak, speed, accuracy, exploration, milestone
+  requirement Json        // Requirement criteria
+  points      Int
+  rarity      String      // common, rare, epic, legendary
+  userBadges  UserBadge[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model UserBadge {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badgeId   String
+  badge     Badge    @relation(fields: [badgeId], references: [id])
+  earnedAt  DateTime @default(now())
+  isNew     Boolean  @default(true)
+
+  @@unique([userId, badgeId])
+  @@index([userId, isNew])
+}
+
+model PointsTransaction {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  points      Int
+  type        String   // diagnostic-complete, problem-solved, streak-bonus, etc.
+  description String
+  createdAt   DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
