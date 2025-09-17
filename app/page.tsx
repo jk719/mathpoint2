@@ -49,7 +49,7 @@ export default function Home() {
 
             <Card className="relative overflow-hidden group hover:shadow-lg transition-shadow bg-white">
               <CardHeader>
-                <div className="w-12 h-12 bg-[#1a3a52] bg-opacity-10 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-[#1a3a52]/10 rounded-lg flex items-center justify-center mb-4">
                   <Target className="w-6 h-6 text-[#1a3a52]" />
                 </div>
                 <CardTitle className="text-xl text-gray-900">Comprehensive Coverage</CardTitle>
