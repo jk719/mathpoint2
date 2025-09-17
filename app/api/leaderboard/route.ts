@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   // Mock leaderboard data for demo
   const mockLeaderboard = [
     { rank: 1, userId: 'user1', userName: 'Alex M.', points: 2500, streak: 7, badges: 5 },

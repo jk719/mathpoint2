@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-MathPoint is an adaptive math diagnostics application built with Next.js 15, focusing on quadratic equations. It features an intelligent diagnostic engine that adapts questions based on student responses, gamification elements, and a PostgreSQL database via Prisma ORM.
+MathPoint is an adaptive math diagnostics application built with Next.js 15, focusing on quadratic equations. It features an intelligent diagnostic engine that adapts questions based on student responses, gamification elements, and currently uses a mock database implementation for demo deployment (can be switched to PostgreSQL via Prisma ORM for production).
 
 ## Common Commands
 
@@ -17,18 +17,17 @@ npm run lint         # Run ESLint
 npx tsc             # Run TypeScript type checking
 ```
 
-### Database
-```bash
-npx prisma generate  # Generate Prisma client
-npx prisma migrate dev  # Run database migrations
-npx prisma studio    # Open Prisma Studio GUI
-```
-
 ### Testing
 ```bash
 node test-demo.js      # Test demo page with Playwright
 node test-diagnostic.js # Test diagnostic page
-node visual-test.js    # Run visual regression tests
+```
+
+### Database (when using PostgreSQL - currently using mock)
+```bash
+npx prisma generate  # Generate Prisma client
+npx prisma migrate dev  # Run database migrations
+npx prisma studio    # Open Prisma Studio GUI
 ```
 
 ## Architecture
@@ -42,28 +41,38 @@ node visual-test.js    # Run visual regression tests
 - `DiagnosisGenerator.ts`: Creates comprehensive learning reports
 - `index.ts`: Central export point for all diagnostic components
 
+**Adaptive Branching Logic**
+- Initial question: "Solve x² - 3x - 10 = 0 and verify one solution"
+- Branch A: Factoring errors → Tests factor pairs, FOIL understanding
+- Branch B: Quadratic formula errors → Tests coefficient identification, discriminant
+- Branch C: Method correct but errors → Tests zero product property, substitution
+- Branch D: No attempt → Tests basic equation solving confidence
+- Questions adapt based on responses, 4-7 questions maximum per session
+
 **Key Data Flow**
-1. User starts diagnostic session → API creates session in database
-2. DiagnosticEngine generates questions based on DecisionTree branches
-3. ResponseAnalyzer processes answers, identifying strengths/weaknesses
-4. Engine adapts next question based on analysis
-5. DiagnosisGenerator creates final report with learning recommendations
+1. User starts diagnostic → Creates session with mock/real database
+2. DiagnosticEngine generates questions from `data/questionBank.ts`
+3. ResponseAnalyzer identifies error patterns and concept mastery
+4. DecisionTree determines next question based on branching rules
+5. DiagnosisGenerator creates detailed report with specific recommendations
 
-### Database Schema
+### Database Implementation
 
-The application uses PostgreSQL with Prisma ORM. Key models:
-- `User`: Core user accounts with related profiles and progress
-- `DiagnosticSession`: Stores complete diagnostic test data (questions, responses, paths as JSON)
-- `UserProgress`: Tracks learning metrics and concept mastery
-- `ConceptMastery`: Granular tracking of math concept understanding
-- Gamification: `Badge`, `UserBadge`, `PointsTransaction` for engagement
+Currently using **mock database** (`lib/database/queries.ts`) for demo deployment:
+- Returns pre-configured demo data
+- No persistence between sessions
+- Perfect for testing and demonstrations
+
+For production, can switch to PostgreSQL with Prisma ORM:
+- Full schema defined in `prisma/schema.prisma`
+- Models: User, DiagnosticSession, UserProgress, ConceptMastery, Badge system
+- Sessions store complete diagnostic data as JSON
 
 ### API Routes (`app/api/`)
-- `/diagnostic/start`: Initiates new diagnostic session
-- `/diagnostic/submit`: Processes answers and returns next question
-- `/diagnostic/start-mock` & `/diagnostic/submit-mock`: Mock endpoints for testing
-- `/user/progress`: Retrieves user progress data
-- `/leaderboard`: Fetches gamification leaderboard
+- `/diagnostic/start-mock`: Initiates diagnostic with mock data (current)
+- `/diagnostic/submit-mock`: Processes answers with mock backend (current)
+- `/user/progress`: Returns mock/real user progress
+- `/leaderboard`: Returns mock/real leaderboard data
 
 ### Component Structure
 - `components/ui/`: Shadcn/ui components (Button, Card, Dialog, Progress, Input, Label, Badge, Skeleton, TypeWriter, MathTypeWriter)
@@ -80,19 +89,29 @@ All diagnostic types are centralized in `types/diagnostic.ts`, including:
 - Error types: sign-error, arithmetic-error, factor-pair-error, foil-error, formula-application, etc.
 - Core interfaces: DiagnosticQuestion, StudentResponse, BranchingRule, PartialDiagnosis, FinalDiagnosis
 
-### Supporting Libraries (`lib/`)
-- `database/`: Prisma client instance and database queries
-- `utils/`: Common utilities including constants and cn helper
-- `validation/`: Zod schemas for form validation
-- `api/`: API route handler utilities
-- `hooks/`: Custom React hooks (useDiagnostic)
-- `gamification/`: BadgeEngine for achievement system
-- `theme/`: Color constants and theming
+### Gamification System
+- Points: +50 for completing diagnostics, +10 for practice problems
+- Badges: Defined in `data/badges.ts` with requirements and rarity levels
+- BadgeEngine (`lib/gamification/BadgeEngine.ts`): Awards badges based on progress
+- Leaderboard: Shows top performers with points, streaks, and badge counts
+
+### Question Bank (`data/questionBank.ts`)
+- 30+ diagnostic questions organized by branch (A, B, C, D, main)
+- Each question includes: content, type, difficulty, concepts tested, correct answer
+- Branching rules define next question based on response analysis
+- Questions test multiple concepts simultaneously for efficient diagnosis
+
+## Deployment
+
+The application is configured for demo deployment without a database:
+- GitHub Actions workflow (`.github/workflows/deploy.yml`) for CI/CD
+- Mock data implementation allows deployment without PostgreSQL
+- To switch to production database: Replace mock implementation in `lib/database/queries.ts` with Prisma client
 
 ## Key Technologies
 
 - **Framework**: Next.js 15 with App Router
-- **Database**: PostgreSQL + Prisma ORM
+- **Database**: Mock implementation (demo) / PostgreSQL + Prisma ORM (production)
 - **Styling**: Tailwind CSS v4
 - **Math Rendering**: KaTeX for LaTeX equations
 - **UI Components**: Radix UI primitives with shadcn/ui

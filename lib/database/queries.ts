@@ -4,6 +4,8 @@ const mockProgress = {
   currentStreak: 5,
   totalPoints: 1250,
   diagnosticsCompleted: 3,
+  completedDiagnostics: 3,
+  practiceProblemsCompleted: 15,
   conceptMastery: []
 };
 const mockBadges: unknown[] = [];
@@ -15,7 +17,7 @@ export const db = {
       return Promise.resolve({ ...mockUser, ...data });
     },
 
-    async findByEmail(email: string) {
+    async findByEmail(_email: string) {
       return Promise.resolve(mockUser);
     },
 
@@ -25,7 +27,7 @@ export const db = {
   },
 
   diagnostic: {
-    async createSession(data: any) {
+    async createSession(data: { userId: string }) {
       return Promise.resolve({
         id: `session_${Date.now()}_demo`,
         userId: data.userId,
@@ -51,17 +53,17 @@ export const db = {
       });
     },
 
-    async updateSession(sessionId: string, data: any) {
+    async updateSession(sessionId: string, data: Record<string, unknown>) {
       return Promise.resolve({ id: sessionId, ...data });
     },
 
-    async getUserSessions(userId: string, limit: number) {
+    async getUserSessions(_userId: string, _limit: number) {
       return Promise.resolve(mockSessions);
     },
   },
 
   progress: {
-    async get(userId: string) {
+    async get(_userId: string) {
       return Promise.resolve(mockProgress);
     },
 
@@ -75,7 +77,7 @@ export const db = {
   },
 
   gamification: {
-    async getLeaderboard(timeframe: string) {
+    async getLeaderboard(_timeframe: string) {
       return Promise.resolve([
         { rank: 1, userId: 'user1', userName: 'Alex M.', points: 2500, streak: 7, badges: 5 },
         { rank: 2, userId: 'user2', userName: 'Sarah K.', points: 2100, streak: 5, badges: 3 },
@@ -83,7 +85,7 @@ export const db = {
       ]);
     },
 
-    async getUserBadges(userId: string) {
+    async getUserBadges(_userId: string) {
       return Promise.resolve(mockBadges);
     },
 

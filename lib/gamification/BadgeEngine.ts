@@ -1,4 +1,4 @@
-import { Badge, UserProgress, ConceptMastery, BadgeRequirement } from '@/types';
+import { Badge, BadgeRequirement } from '@/types';
 import { badgeData } from '@/data/badges';
 import { db } from '@/lib/database/queries';
 
@@ -10,7 +10,7 @@ export class BadgeEngine {
     if (!progress) return [];
 
     const userBadges = await db.gamification.getUserBadges(userId);
-    const earnedBadgeIds = new Set(userBadges.map((ub: { badgeId: string }) => ub.badgeId));
+    const earnedBadgeIds = new Set((userBadges as Array<{ badgeId: string }>).map(ub => ub.badgeId));
 
     const newBadges: Badge[] = [];
 
@@ -34,7 +34,8 @@ export class BadgeEngine {
     return newBadges;
   }
 
-  private checkRequirement(requirement: BadgeRequirement, progress: UserProgress): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private checkRequirement(requirement: BadgeRequirement, progress: any): boolean {
     switch (requirement.type) {
       case 'streak-days':
         return progress.currentStreak >= requirement.value;
@@ -51,7 +52,8 @@ export class BadgeEngine {
 
       case 'concept-mastery':
         if (!requirement.conceptId) return false;
-        const concept = progress.conceptMastery.find(cm => cm.conceptId === requirement.conceptId);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const concept = progress.conceptMastery.find((cm: any) => cm.conceptId === requirement.conceptId);
         return concept ? concept.masteryLevel >= requirement.value : false;
 
       default:
@@ -59,7 +61,8 @@ export class BadgeEngine {
     }
   }
 
-  private calculateAverageAccuracy(conceptMastery: ConceptMastery[]): number {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private calculateAverageAccuracy(conceptMastery: any[]): number {
     if (conceptMastery.length === 0) return 0;
     const totalAccuracy = conceptMastery.reduce((sum, cm) => sum + cm.accuracy, 0);
     return totalAccuracy / conceptMastery.length;
@@ -85,7 +88,7 @@ export class BadgeEngine {
     if (!progress) return null;
 
     const userBadges = await db.gamification.getUserBadges(userId);
-    const isEarned = userBadges.some((ub: { badgeId: string }) => ub.badgeId === badgeId);
+    const isEarned = (userBadges as Array<{ badgeId: string }>).some(ub => ub.badgeId === badgeId);
 
     let progressValue = 0;
 
@@ -109,7 +112,7 @@ export class BadgeEngine {
 
       case 'concept-mastery':
         if (badge.requirement.conceptId) {
-          const concept = progress.conceptMastery.find((cm: { conceptId: string; masteryLevel: number }) => cm.conceptId === badge.requirement.conceptId);
+          const concept = (progress.conceptMastery as Array<{ conceptId: string; masteryLevel: number }>).find(cm => cm.conceptId === badge.requirement.conceptId);
           progressValue = concept ? Math.min(100, (concept.masteryLevel / badge.requirement.value) * 100) : 0;
         }
         break;
