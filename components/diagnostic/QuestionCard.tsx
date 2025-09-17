@@ -190,10 +190,10 @@ export function QuestionCard({
           transition={{ delay: 0.3 }}
           className="flex gap-2"
         >
-          <span className="px-3 py-1 text-sm font-semibold rounded-md bg-[#1a3a52] bg-opacity-10 text-[#1a3a52]">
+          <span className="px-3 py-1 text-sm font-semibold rounded-md bg-[#1a3a52]/10 text-[#1a3a52]">
             {question.difficulty}
           </span>
-          <span className="px-3 py-1 text-sm font-semibold rounded-md bg-[#ff6b35] bg-opacity-10 text-[#ff6b35]">
+          <span className="px-3 py-1 text-sm font-semibold rounded-md bg-[#ff6b35]/10 text-[#ff6b35]">
             {question.branch}
           </span>
         </motion.div>
