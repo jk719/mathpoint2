@@ -150,14 +150,14 @@ export class DiagnosticEngine {
     // Start with a medium difficulty question from any branch
     const mediumQuestions = this.questions.filter(q => q.difficulty === 'medium');
     if (mediumQuestions.length > 0) {
-      const randomIndex = Math.floor(Math.random() * mediumQuestions.length);
-      return mediumQuestions[randomIndex];
+      // Use first medium question for consistency (avoids hydration issues)
+      return mediumQuestions[0];
     }
     // Fallback to easy question if no medium questions
     const easyQuestions = this.questions.filter(q => q.difficulty === 'easy');
     if (easyQuestions.length > 0) {
-      const randomIndex = Math.floor(Math.random() * easyQuestions.length);
-      return easyQuestions[randomIndex];
+      // Use first easy question for consistency
+      return easyQuestions[0];
     }
     // Final fallback to first question
     if (this.questions.length === 0) {

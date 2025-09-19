@@ -213,7 +213,7 @@ export default function DiagnosticContent() {
             </div>
             <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
               <div
-                className="h-full transition-all duration-500 ease-out bg-gradient-to-r from-[#1a3a52] to-[#ff6b35]"
+                className="h-full transition-all duration-500 ease-out bg-[#1a3a52]"
                 style={{ width: `${progress.percentComplete}%` }}
               />
             </div>

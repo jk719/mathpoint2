@@ -103,7 +103,7 @@
 
   /* Custom Input Styles */
   .mathpoint-input {
-    @apply w-full p-3 rounded-md transition-all duration-200;
+    @apply w-full p-3 rounded-md transition-all duration-200 text-gray-900 bg-white;
     border: 2px solid var(--color-primary);
     font-family: 'Orbitron', sans-serif;
   }
