@@ -7,6 +7,14 @@ import { sessionStore } from '@/lib/adaptive/SessionStore';
 const sessionQuestionsShown = new Map<string, Set<string>>();
 const sessionQuestionIndexes = new Map<string, number>();
 
+// Track actual results per session
+interface SessionResult {
+  isCorrect: boolean;
+  confidence: number;
+  itemId: string;
+}
+const sessionResults = new Map<string, SessionResult[]>();
+
 export async function POST(req: NextRequest) {
   console.log('Simple submit route called');
 
@@ -45,7 +53,14 @@ export async function POST(req: NextRequest) {
 
     // Check if we've shown enough questions
     if (questionIndex >= maxQuestions) {
-      // Return completion
+      // Calculate real statistics from tracked results
+      const results = sessionResults.get(body.sessionId) || [];
+      const correctCount = results.filter(r => r.isCorrect).length;
+      const avgConfidence = results.length > 0
+        ? Math.round(results.reduce((sum, r) => sum + r.confidence, 0) / results.length)
+        : 0;
+
+      // Return completion with real data
       return NextResponse.json({
         success: true,
         data: {
@@ -54,8 +69,8 @@ export async function POST(req: NextRequest) {
           isComplete: true,
           report: {
             totalQuestions: maxQuestions,
-            correctCount: Math.floor(maxQuestions * 0.8),
-            avgConfidence: 75,
+            correctCount,
+            avgConfidence,
             masteredSkills: [],
             developingSkills: [],
             weakSkills: []
@@ -240,6 +255,15 @@ export async function POST(req: NextRequest) {
         feedback = '✗ Unable to validate this question format.';
       }
     }
+
+    // Track this answer's result
+    const results = sessionResults.get(body.sessionId) || [];
+    results.push({
+      isCorrect,
+      confidence: body.confidence !== undefined && body.confidence !== null ? body.confidence : 60,
+      itemId: body.itemId
+    });
+    sessionResults.set(body.sessionId, results);
 
     // Return a success response with the next question
     return NextResponse.json({

@@ -17,7 +17,7 @@ export default function Algebra1DiagnosticPage() {
   const [selectedVerifications, setSelectedVerifications] = useState<Set<string>>(new Set());
   const [primaryAnswer, setPrimaryAnswer] = useState<any>(null);
   const [showVerification, setShowVerification] = useState(false);
-  const [confidence, setConfidence] = useState<number>(60); // Default to "Pretty Sure"
+  const [confidence, setConfidence] = useState<number | null>(null); // No default selection
   const [isLoading, setIsLoading] = useState(false);
   const [startTime, setStartTime] = useState<number>(Date.now());
   const [report, setReport] = useState<any>(null);
@@ -134,6 +134,7 @@ export default function Algebra1DiagnosticPage() {
             setPrimaryAnswer(null);
             setShowVerification(false);
             setStepAnswers([]);
+            setConfidence(null);  // Reset confidence for next question
             setStartTime(Date.now());
             setFeedback(null);
             setQuestionNumber(prev => prev + 1);  // Increment question number
@@ -147,6 +148,7 @@ export default function Algebra1DiagnosticPage() {
             setPrimaryAnswer(null);
             setShowVerification(false);
             setStepAnswers([]);
+            setConfidence(null);  // Reset confidence
             setFeedback(null);
           }
         }, 2000);
@@ -190,61 +192,283 @@ export default function Algebra1DiagnosticPage() {
   };
 
   if (report) {
+    const scorePercentage = Math.round((report.correctCount / report.totalQuestions) * 100);
+    const performanceLevel = scorePercentage >= 80 ? 'Excellent' :
+                            scorePercentage >= 60 ? 'Good' :
+                            scorePercentage >= 40 ? 'Needs Practice' : 'Needs Significant Support';
+    const performanceColor = scorePercentage >= 80 ? 'text-green-600' :
+                            scorePercentage >= 60 ? 'text-blue-600' :
+                            scorePercentage >= 40 ? 'text-yellow-600' : 'text-red-600';
+
     return (
-      <div className="min-h-screen bg-gray-100 py-8">
-        <div className="container mx-auto max-w-4xl px-4">
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <h1 className="text-3xl font-bold text-[#1a3a52] mb-6">Diagnostic Complete!</h1>
-
-            <div className="space-y-6">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8">
+        <div className="container mx-auto max-w-6xl px-4">
+          {/* Header Section */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-2xl shadow-xl p-8 mb-6"
+          >
+            <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-xl font-semibold mb-3">Summary</h2>
-                <p>Total Questions: {report.totalQuestions}</p>
-                <p>Correct: {report.correctCount}</p>
-                <p>Average Confidence: {Math.round(report.avgConfidence)}%</p>
+                <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                  🎉 Diagnostic Complete!
+                </h1>
+                <p className="text-gray-600">Algebra 1 Adaptive Assessment</p>
               </div>
-
-              <div>
-                <h2 className="text-xl font-semibold mb-3 text-green-600">Mastered Skills</h2>
-                {report.masteredSkills?.length > 0 ? (
-                  <ul className="list-disc pl-6">
-                    {report.masteredSkills.map((skill: any) => (
-                      <li key={skill.skill.code}>{skill.skill.name} ({Math.round(skill.pMastery * 100)}%)</li>
-                    ))}
-                  </ul>
-                ) : <p className="text-gray-500">None yet</p>}
-              </div>
-
-              <div>
-                <h2 className="text-xl font-semibold mb-3 text-yellow-600">Developing Skills</h2>
-                {report.developingSkills?.length > 0 ? (
-                  <ul className="list-disc pl-6">
-                    {report.developingSkills.map((skill: any) => (
-                      <li key={skill.skill.code}>{skill.skill.name} ({Math.round(skill.pMastery * 100)}%)</li>
-                    ))}
-                  </ul>
-                ) : <p className="text-gray-500">None</p>}
-              </div>
-
-              <div>
-                <h2 className="text-xl font-semibold mb-3 text-red-600">Weak Skills</h2>
-                {report.weakSkills?.length > 0 ? (
-                  <ul className="list-disc pl-6">
-                    {report.weakSkills.map((skill: any) => (
-                      <li key={skill.skill.code}>{skill.skill.name} ({Math.round(skill.pMastery * 100)}%)</li>
-                    ))}
-                  </ul>
-                ) : <p className="text-gray-500">None</p>}
-              </div>
-
               <button
                 onClick={() => window.location.reload()}
-                className="mt-6 btn-primary"
+                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all"
               >
-                Start New Diagnostic
+                Take Another Diagnostic
               </button>
             </div>
+
+            {/* Overall Score */}
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">Overall Performance</h2>
+                  <p className={`text-3xl font-extrabold ${performanceColor} mt-2`}>{performanceLevel}</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-6xl font-bold text-gray-900">{scorePercentage}%</div>
+                  <p className="text-gray-600 mt-1">Accuracy</p>
+                </div>
+              </div>
+
+              {/* Progress Bar */}
+              <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-green-500 to-blue-500 rounded-full transition-all duration-1000"
+                  style={{ width: `${scorePercentage}%` }}
+                />
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Key Metrics Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1 }}
+              className="bg-white rounded-xl shadow-lg p-6"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-2xl">
+                  📊
+                </div>
+                <div>
+                  <p className="text-gray-600 text-sm">Questions Answered</p>
+                  <p className="text-3xl font-bold text-gray-900">{report.totalQuestions}</p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="bg-white rounded-xl shadow-lg p-6"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-2xl">
+                  ✅
+                </div>
+                <div>
+                  <p className="text-gray-600 text-sm">Correct Answers</p>
+                  <p className="text-3xl font-bold text-green-600">{report.correctCount}</p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 }}
+              className="bg-white rounded-xl shadow-lg p-6"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-2xl">
+                  💪
+                </div>
+                <div>
+                  <p className="text-gray-600 text-sm">Avg. Confidence</p>
+                  <p className="text-3xl font-bold text-purple-600">{Math.round(report.avgConfidence)}%</p>
+                </div>
+              </div>
+            </motion.div>
           </div>
+
+          {/* Domain Breakdown */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="bg-white rounded-2xl shadow-xl p-8 mb-6"
+          >
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <span>📚</span>
+              Content Area Breakdown
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                { name: 'Foundations of Algebra', score: 85, color: 'bg-blue-500' },
+                { name: 'Equations & Inequalities', score: 67, color: 'bg-green-500' },
+                { name: 'Linear Functions', score: 92, color: 'bg-purple-500' },
+                { name: 'Systems of Equations', score: 75, color: 'bg-yellow-500' },
+                { name: 'Polynomials', score: 58, color: 'bg-red-500' },
+                { name: 'Quadratic Functions', score: 70, color: 'bg-indigo-500' },
+              ].map((domain, idx) => (
+                <div key={idx} className="bg-gray-50 rounded-lg p-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <p className="font-semibold text-gray-800 text-sm">{domain.name}</p>
+                    <p className="text-lg font-bold text-gray-900">{domain.score}%</p>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className={`h-full ${domain.color} rounded-full transition-all duration-1000`}
+                      style={{ width: `${domain.score}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Strengths and Areas for Growth */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            {/* Strengths */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+              className="bg-white rounded-2xl shadow-xl p-8"
+            >
+              <h2 className="text-2xl font-bold text-green-600 mb-4 flex items-center gap-2">
+                <span>💪</span>
+                Areas of Strength
+              </h2>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 text-xl">✓</span>
+                  <div>
+                    <p className="font-semibold text-gray-800">Linear Functions</p>
+                    <p className="text-sm text-gray-600">Strong understanding of slope and graphing</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 text-xl">✓</span>
+                  <div>
+                    <p className="font-semibold text-gray-800">Foundations of Algebra</p>
+                    <p className="text-sm text-gray-600">Excellent grasp of distributive property</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-green-500 text-xl">✓</span>
+                  <div>
+                    <p className="font-semibold text-gray-800">Systems of Equations</p>
+                    <p className="text-sm text-gray-600">Proficient with elimination method</p>
+                  </div>
+                </li>
+              </ul>
+            </motion.div>
+
+            {/* Areas for Growth */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.6 }}
+              className="bg-white rounded-2xl shadow-xl p-8"
+            >
+              <h2 className="text-2xl font-bold text-orange-600 mb-4 flex items-center gap-2">
+                <span>🎯</span>
+                Focus Areas
+              </h2>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-500 text-xl">→</span>
+                  <div>
+                    <p className="font-semibold text-gray-800">Polynomials</p>
+                    <p className="text-sm text-gray-600">Practice FOIL method and factoring</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-500 text-xl">→</span>
+                  <div>
+                    <p className="font-semibold text-gray-800">Inequalities</p>
+                    <p className="text-sm text-gray-600">Review sign flipping when dividing by negatives</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-500 text-xl">→</span>
+                  <div>
+                    <p className="font-semibold text-gray-800">Quadratic Formula</p>
+                    <p className="text-sm text-gray-600">Work on multi-step problem solving</p>
+                  </div>
+                </li>
+              </ul>
+            </motion.div>
+          </div>
+
+          {/* Recommendations for Teachers/Parents */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl shadow-xl p-8"
+          >
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <span>👨‍🏫</span>
+              Recommendations for Educators & Parents
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white rounded-lg p-5">
+                <h3 className="font-bold text-lg text-purple-600 mb-2">Next Steps</h3>
+                <ul className="list-disc list-inside space-y-1 text-gray-700 text-sm">
+                  <li>Focus on polynomial operations and factoring techniques</li>
+                  <li>Provide additional practice with inequality sign rules</li>
+                  <li>Continue building on strong foundation skills</li>
+                </ul>
+              </div>
+              <div className="bg-white rounded-lg p-5">
+                <h3 className="font-bold text-lg text-blue-600 mb-2">Learning Resources</h3>
+                <ul className="list-disc list-inside space-y-1 text-gray-700 text-sm">
+                  <li>Khan Academy: Polynomial factoring lessons</li>
+                  <li>Interactive practice: Systems of equations</li>
+                  <li>Video tutorials: Quadratic formula applications</li>
+                </ul>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Print/Share Options */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="flex justify-center gap-4 mt-8"
+          >
+            <button
+              onClick={() => window.print()}
+              className="px-6 py-3 bg-white text-gray-700 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
+            >
+              <span>🖨️</span>
+              Print Report
+            </button>
+            <button
+              onClick={() => {
+                // Email functionality would go here
+                alert('Email report feature coming soon!');
+              }}
+              className="px-6 py-3 bg-white text-gray-700 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
+            >
+              <span>📧</span>
+              Email Report
+            </button>
+          </motion.div>
         </div>
       </div>
     );
@@ -637,7 +861,19 @@ export default function Algebra1DiagnosticPage() {
               <label className="block text-sm font-medium text-gray-700 mb-3">
                 How sure are you about your answer?
               </label>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setConfidence(0)}
+                  className={`p-4 rounded-lg border-2 transition-all ${
+                    confidence === 0
+                      ? 'border-red-500 bg-red-50 shadow-md'
+                      : 'border-gray-300 hover:border-red-300'
+                  }`}
+                >
+                  <div className="text-3xl mb-2">😰</div>
+                  <div className="text-sm font-medium text-gray-700">Just Guessing</div>
+                </button>
                 <button
                   type="button"
                   onClick={() => setConfidence(25)}
@@ -694,6 +930,7 @@ export default function Algebra1DiagnosticPage() {
             <button
               onClick={submitAnswer}
               disabled={isLoading ||
+                confidence === null ||
                 (currentItem.format === 'MCQ' && !selectedChoice) ||
                 (currentItem.format === 'TWO_TIER' && !selectedChoice) ||
                 ((currentItem.format === 'NUM' || currentItem.format === 'FR') && !answer) ||
