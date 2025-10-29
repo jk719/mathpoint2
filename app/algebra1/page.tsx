@@ -17,7 +17,7 @@ export default function Algebra1DiagnosticPage() {
   const [selectedVerifications, setSelectedVerifications] = useState<Set<string>>(new Set());
   const [primaryAnswer, setPrimaryAnswer] = useState<any>(null);
   const [showVerification, setShowVerification] = useState(false);
-  const [confidence, setConfidence] = useState<number>(75);
+  const [confidence, setConfidence] = useState<number>(60); // Default to "Pretty Sure"
   const [isLoading, setIsLoading] = useState(false);
   const [startTime, setStartTime] = useState<number>(Date.now());
   const [report, setReport] = useState<any>(null);
@@ -557,19 +557,49 @@ export default function Algebra1DiagnosticPage() {
               </div>
             )}
 
-            {/* Confidence Slider */}
+            {/* Confidence Selector - Kid Friendly */}
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Confidence: {confidence}%
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                How sure are you about your answer?
               </label>
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={confidence}
-                onChange={(e) => setConfidence(Number(e.target.value))}
-                className="w-full"
-              />
+              <div className="grid grid-cols-3 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setConfidence(25)}
+                  className={`p-4 rounded-lg border-2 transition-all ${
+                    confidence === 25
+                      ? 'border-orange-500 bg-orange-50 shadow-md'
+                      : 'border-gray-300 hover:border-orange-300'
+                  }`}
+                >
+                  <div className="text-3xl mb-2">😟</div>
+                  <div className="text-sm font-medium text-gray-700">Not Sure</div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setConfidence(60)}
+                  className={`p-4 rounded-lg border-2 transition-all ${
+                    confidence === 60
+                      ? 'border-blue-500 bg-blue-50 shadow-md'
+                      : 'border-gray-300 hover:border-blue-300'
+                  }`}
+                >
+                  <div className="text-3xl mb-2">😊</div>
+                  <div className="text-sm font-medium text-gray-700">Pretty Sure</div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setConfidence(90)}
+                  className={`p-4 rounded-lg border-2 transition-all ${
+                    confidence === 90
+                      ? 'border-green-500 bg-green-50 shadow-md'
+                      : 'border-gray-300 hover:border-green-300'
+                  }`}
+                >
+                  <div className="text-3xl mb-2">😃</div>
+                  <div className="text-sm font-medium text-gray-700">Very Confident</div>
+                </button>
+              </div>
             </div>
 
             {/* Feedback */}
