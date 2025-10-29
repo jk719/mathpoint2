@@ -25,7 +25,7 @@ export default function Home() {
               </span>
             </h1>
             <p className="text-lg sm:text-xl text-gray-700 mb-8 max-w-2xl mx-auto leading-relaxed">
-              Comprehensive adaptive assessments that identify strengths, pinpoint gaps, and provide personalized learning pathways
+              FREE diagnostics identify your weak topics, then our human-managed AI tutor helps you master them with personalized learning
             </p>
           </div>
 
@@ -136,47 +136,47 @@ export default function Home() {
 
           {/* Features Grid */}
           <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <Card className="relative overflow-hidden group hover:shadow-lg transition-shadow bg-white">
-              <CardHeader>
-                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
-                  <Brain className="w-6 h-6 text-orange-600" />
-                </div>
-                <CardTitle className="text-xl text-gray-900">Grade-Specific Content</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-700">
-                  Tailored assessments for grades 6-12, covering Algebra 1, Algebra 2, and
-                  Geometry with age-appropriate difficulty levels.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="relative overflow-hidden group hover:shadow-lg transition-shadow bg-white">
-              <CardHeader>
-                <div className="w-12 h-12 bg-[#1a3a52]/10 rounded-lg flex items-center justify-center mb-4">
-                  <Target className="w-6 h-6 text-[#1a3a52]" />
-                </div>
-                <CardTitle className="text-xl text-gray-900">Comprehensive Coverage</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-700">
-                  From linear equations to polynomials, from basic geometry to trigonometry -
-                  complete mathematical diagnostic coverage.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="relative overflow-hidden group hover:shadow-lg transition-shadow bg-white">
+            <Card className="relative overflow-hidden group hover:shadow-lg transition-shadow bg-white border-2 border-green-100">
               <CardHeader>
                 <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                  <Award className="w-6 h-6 text-green-600" />
+                  <Target className="w-6 h-6 text-green-600" />
                 </div>
-                <CardTitle className="text-xl text-gray-900">Gamified Learning</CardTitle>
+                <CardTitle className="text-xl text-gray-900">FREE Diagnostics</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-700">
-                  Earn points, unlock badges, and track streaks while building
-                  mathematical confidence through engaging challenges.
+                  Fast, accurate assessment of your math skills in just 10-15 minutes.
+                  Identify exactly which topics you need to work on - completely free.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="relative overflow-hidden group hover:shadow-lg transition-shadow bg-white border-2 border-blue-100">
+              <CardHeader>
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                  <Brain className="w-6 h-6 text-blue-600" />
+                </div>
+                <CardTitle className="text-xl text-gray-900">AI Tutor + Human Oversight</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-700">
+                  Personalized AI tutoring on your weak topics, monitored 24/7 by expert
+                  educators to ensure quality, accuracy, and effective learning strategies.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="relative overflow-hidden group hover:shadow-lg transition-shadow bg-white border-2 border-purple-100">
+              <CardHeader>
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                  <Award className="w-6 h-6 text-purple-600" />
+                </div>
+                <CardTitle className="text-xl text-gray-900">Concept Mastery Tests</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-700">
+                  After tutoring each topic, take targeted tests to verify true mastery.
+                  Track your progress and see exactly which concepts you've conquered.
                 </p>
               </CardContent>
             </Card>
