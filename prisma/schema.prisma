@@ -1,0 +1,316 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model for authentication and profile
+model User {
+  id                String             @id @default(uuid())
+  email             String             @unique
+  name              String?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  diagnosticRuns    DiagnosticRun[]
+  attempts          Attempt[]
+  masteryStates     MasteryState[]
+  badges            UserBadge[]
+
+  @@index([email])
+}
+
+// Skill model - hierarchical structure for Algebra 1 skills
+model Skill {
+  id                String             @id @default(uuid())
+  code              String             @unique // e.g., "ALG1.LINEAR.ONE_STEP"
+  name              String             // e.g., "One-step linear equations"
+  description       String?
+  domain            String             // e.g., "Equations & Inequalities"
+  category          String             // e.g., "Linear Equations"
+  difficulty        Int                @default(1) // 1-5 scale
+
+  // Hierarchical relationships
+  parentId          String?
+  parent            Skill?             @relation("SkillHierarchy", fields: [parentId], references: [id])
+  children          Skill[]            @relation("SkillHierarchy")
+
+  // Prerequisites (many-to-many)
+  prerequisites     Skill[]            @relation("Prerequisites")
+  dependentSkills   Skill[]            @relation("Prerequisites")
+
+  items             Item[]
+  masteryStates     MasteryState[]
+
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  @@index([code])
+  @@index([domain])
+}
+
+// Item model - enhanced question with IRT parameters
+model Item {
+  id                String             @id @default(uuid())
+  code              String             @unique // e.g., "ALG1_LINEAR_001"
+  stem              String             // Question text (supports LaTeX)
+  format            ItemFormat         // MCQ, NUM, FR, TWO_TIER, ERROR_ANALYSIS
+  difficulty        ItemDifficulty     // low, medium, high
+
+  // IRT Parameters
+  irtA              Float              @default(1.0) // Discrimination
+  irtB              Float              @default(0.0) // Difficulty
+  irtC              Float              @default(0.25) // Guessing
+
+  // Content
+  choices           Json?              // Array of choices with misconception mapping
+  correctAnswer     Json               // Correct answer(s)
+  rubric            Json?              // Scoring rubric for open-ended
+  solution          String?            // Full solution explanation
+  hints             Json?              // Progressive hints
+
+  // Timing
+  timeLimit         Int                @default(120) // seconds
+  avgTimeSpent      Float?             // Average time from attempts
+
+  // Relations
+  skillId           String
+  skill             Skill              @relation(fields: [skillId], references: [id])
+  misconceptions    ItemMisconception[]
+  attempts          Attempt[]
+
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  @@index([skillId])
+  @@index([format])
+}
+
+// Misconception library
+model Misconception {
+  id                String             @id @default(uuid())
+  code              String             @unique // e.g., "ALG1-INEQ-FLIP"
+  name              String             // e.g., "Not flipping inequality"
+  description       String             // Detailed description
+  category          String             // e.g., "Inequalities"
+  remediation       String?            // How to address this misconception
+
+  items             ItemMisconception[]
+  detections        MisconceptionDetection[]
+
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  @@index([code])
+  @@index([category])
+}
+
+// Junction table: Items <-> Misconceptions
+model ItemMisconception {
+  itemId            String
+  misconceptionId   String
+  distractor        String?            // Which choice triggers this misconception
+  weight            Float              @default(1.0) // Strength of association
+
+  item              Item               @relation(fields: [itemId], references: [id])
+  misconception     Misconception      @relation(fields: [misconceptionId], references: [id])
+
+  @@id([itemId, misconceptionId])
+  @@index([itemId])
+  @@index([misconceptionId])
+}
+
+// Diagnostic session/run
+model DiagnosticRun {
+  id                String             @id @default(uuid())
+  userId            String
+  user              User               @relation(fields: [userId], references: [id])
+
+  startTime         DateTime           @default(now())
+  endTime           DateTime?
+  status            DiagnosticStatus   @default(ACTIVE)
+
+  // Session config
+  maxItems          Int                @default(25)
+  minItems          Int                @default(10)
+  adaptiveMode      Boolean            @default(true)
+
+  // Progress tracking
+  itemsPresented    Json               // Array of item IDs in order
+  currentItemIndex  Int                @default(0)
+
+  // Results
+  finalReport       Json?              // Complete diagnostic report
+  overallMastery    Float?             // 0-1 overall score
+
+  attempts          Attempt[]
+  masteryUpdates    MasteryState[]
+  misconceptionDetections MisconceptionDetection[]
+
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  @@index([userId])
+  @@index([status])
+}
+
+// Individual attempt/response
+model Attempt {
+  id                String             @id @default(uuid())
+
+  diagnosticRunId   String
+  diagnosticRun     DiagnosticRun      @relation(fields: [diagnosticRunId], references: [id])
+
+  userId            String
+  user              User               @relation(fields: [userId], references: [id])
+
+  itemId            String
+  item              Item               @relation(fields: [itemId], references: [id])
+
+  // Response data
+  answerGiven       Json               // Student's answer
+  isCorrect         Boolean
+  partialCredit     Float?             // 0-1 for partial credit
+
+  // Rich data collection
+  timeSpentMs       Int                // Time in milliseconds
+  confidence        Int?               // 0-100 confidence level
+  attemptNumber     Int                @default(1)
+
+  // Process data
+  keystrokes        Json?              // Keystroke data if available
+  workShown         String?            // Student's work/steps
+  hintUsed          Boolean            @default(false)
+
+  // Analysis
+  misconceptionsTriggered String[]     // Array of misconception codes
+
+  createdAt         DateTime           @default(now())
+
+  @@index([diagnosticRunId])
+  @@index([userId])
+  @@index([itemId])
+}
+
+// Mastery tracking per skill per user
+model MasteryState {
+  id                String             @id @default(uuid())
+
+  userId            String
+  user              User               @relation(fields: [userId], references: [id])
+
+  skillId           String
+  skill             Skill              @relation(fields: [skillId], references: [id])
+
+  // Bayesian Knowledge Tracing parameters
+  pMastery          Float              @default(0.3) // Probability of mastery
+  pInit             Float              @default(0.3) // Initial probability
+  pLearn            Float              @default(0.15) // Learning rate
+  pSlip             Float              @default(0.1) // Slip probability
+  pGuess            Float              @default(0.2) // Guess probability
+
+  // Evidence
+  evidenceCount     Int                @default(0) // Number of attempts
+  correctCount      Int                @default(0)
+  incorrectCount    Int                @default(0)
+
+  // Status
+  masteryLevel      MasteryLevel       // WEAK, DEVELOPING, MASTERED
+  lastUpdated       DateTime           @updatedAt
+
+  // Link to diagnostic run if applicable
+  diagnosticRunId   String?
+  diagnosticRun     DiagnosticRun?     @relation(fields: [diagnosticRunId], references: [id])
+
+  @@unique([userId, skillId])
+  @@index([userId])
+  @@index([skillId])
+  @@index([masteryLevel])
+}
+
+// Misconception detection tracking
+model MisconceptionDetection {
+  id                String             @id @default(uuid())
+
+  diagnosticRunId   String
+  diagnosticRun     DiagnosticRun      @relation(fields: [diagnosticRunId], references: [id])
+
+  misconceptionId   String
+  misconception     Misconception      @relation(fields: [misconceptionId], references: [id])
+
+  // Evidence
+  frequency         Float              // How often it appeared (0-1)
+  confidence        Float              // Confidence in detection (0-1)
+  evidenceItems     String[]           // Item IDs where detected
+
+  detectedAt        DateTime           @default(now())
+
+  @@unique([diagnosticRunId, misconceptionId])
+  @@index([diagnosticRunId])
+  @@index([misconceptionId])
+}
+
+// Badge/Achievement system
+model Badge {
+  id                String             @id @default(uuid())
+  code              String             @unique
+  name              String
+  description       String
+  imageUrl          String?
+  category          String
+  requirement       Json               // Criteria for earning
+  points            Int                @default(10)
+
+  userBadges        UserBadge[]
+
+  createdAt         DateTime           @default(now())
+}
+
+model UserBadge {
+  userId            String
+  user              User               @relation(fields: [userId], references: [id])
+
+  badgeId           String
+  badge             Badge              @relation(fields: [badgeId], references: [id])
+
+  earnedAt          DateTime           @default(now())
+
+  @@id([userId, badgeId])
+  @@index([userId])
+  @@index([badgeId])
+}
+
+// Enums
+enum ItemFormat {
+  MCQ              // Multiple choice
+  NUM              // Numerical input
+  FR               // Free response
+  TWO_TIER         // Answer + reasoning
+  ERROR_ANALYSIS   // Find and fix errors
+  MULTI_STEP       // Step-by-step solution
+}
+
+enum ItemDifficulty {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum DiagnosticStatus {
+  ACTIVE
+  PAUSED
+  COMPLETED
+  ABANDONED
+}
+
+enum MasteryLevel {
+  WEAK        // < 0.6
+  DEVELOPING  // 0.6 - 0.84
+  MASTERED    // >= 0.85
+}

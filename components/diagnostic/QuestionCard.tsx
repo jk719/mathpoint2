@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DiagnosticQuestion } from '@/types';
 import { MathTypeWriter } from '@/components/ui/MathTypeWriter';
+import { MathInput } from '@/components/math-input';
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 
@@ -138,15 +139,15 @@ export function QuestionCard({
             >
               Your Answer
             </label>
-            <motion.input
+            <MathInput
               id="answer"
-              type="text"
               value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
+              onChange={setAnswer}
+              onSubmit={handleSubmit}
               placeholder="Enter your answer here..."
-              className="mathpoint-input"
-              whileFocus={{ scale: 1.01 }}
-              transition={{ type: 'spring', stiffness: 300 }}
+              expectedFormat="expression"
+              showPreview={true}
+              autoFocus={true}
             />
           </motion.div>
         );
