@@ -280,42 +280,42 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold mb-6">
-                Why Students Choose MathPoint
+                The Complete Learning Solution
               </h2>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-green-300 mt-1" />
                   <div>
-                    <h3 className="font-semibold mb-1">Saves Time</h3>
+                    <h3 className="font-semibold mb-1">FREE Diagnostic Assessment</h3>
                     <p className="text-gray-300">
-                      Get precise feedback in minutes, not hours of traditional practice
+                      Get precise insights into your strengths and weak topics in just 10-15 minutes
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-green-300 mt-1" />
                   <div>
-                    <h3 className="font-semibold mb-1">Builds Confidence</h3>
+                    <h3 className="font-semibold mb-1">AI Tutor with Human Oversight</h3>
                     <p className="text-gray-300">
-                      Focus on your actual weaknesses instead of reviewing what you already know
+                      Personalized AI tutoring on your weak topics, monitored by expert educators to ensure quality
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-green-300 mt-1" />
                   <div>
-                    <h3 className="font-semibold mb-1">Tracks Progress</h3>
+                    <h3 className="font-semibold mb-1">Targeted Learning Path</h3>
                     <p className="text-gray-300">
-                      Visual progress tracking and achievement system keeps you motivated
+                      Focus only on topics you need to improve - no wasted time reviewing what you already know
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-green-300 mt-1" />
                   <div>
-                    <h3 className="font-semibold mb-1">Expert-Designed</h3>
+                    <h3 className="font-semibold mb-1">Track Your Progress</h3>
                     <p className="text-gray-300">
-                      Created by math educators and learning scientists
+                      Retest to see improvement and achieve mastery with visual progress tracking
                     </p>
                   </div>
                 </div>
@@ -324,20 +324,20 @@ export default function Home() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
-                <div className="text-3xl font-bold mb-2">4-7</div>
-                <div className="text-sm text-gray-300">Questions per diagnostic</div>
+                <div className="text-3xl font-bold mb-2">FREE</div>
+                <div className="text-sm text-gray-300">Diagnostic assessment</div>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
-                <div className="text-3xl font-bold mb-2">95%</div>
-                <div className="text-sm text-gray-300">Student satisfaction</div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
-                <div className="text-3xl font-bold mb-2">15-20</div>
+                <div className="text-3xl font-bold mb-2">10-15</div>
                 <div className="text-sm text-gray-300">Minutes to complete</div>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
-                <div className="text-3xl font-bold mb-2">∞</div>
-                <div className="text-sm text-gray-300">Improvement potential</div>
+                <div className="text-3xl font-bold mb-2">24/7</div>
+                <div className="text-sm text-gray-300">AI tutor availability</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
+                <div className="text-3xl font-bold mb-2">100%</div>
+                <div className="text-sm text-gray-300">Human-managed quality</div>
               </div>
             </div>
           </div>
