@@ -25,6 +25,7 @@ export default function Algebra1DiagnosticPage() {
   const [feedback, setFeedback] = useState<string | null>(null);
   const [questionNumber, setQuestionNumber] = useState<number>(1);
   const [useMvpMode, setUseMvpMode] = useState<boolean>(true); // Default to MVP mode for demos
+  const [stepAnswers, setStepAnswers] = useState<string[]>([]); // For MULTI_STEP format
 
   const startDiagnostic = async () => {
     setIsLoading(true);
@@ -89,6 +90,11 @@ export default function Algebra1DiagnosticPage() {
           primaryAnswer: primaryAnswer || answer,
           verifications: Array.from(selectedVerifications)
         };
+      } else if (currentItem.format === 'MULTI_STEP') {
+        // For multi-step, send all step responses
+        answerToSubmit = {
+          stepResponses: stepAnswers
+        };
       } else {
         answerToSubmit = answer;
       }
@@ -127,6 +133,7 @@ export default function Algebra1DiagnosticPage() {
             setSelectedVerifications(new Set());
             setPrimaryAnswer(null);
             setShowVerification(false);
+            setStepAnswers([]);
             setStartTime(Date.now());
             setFeedback(null);
             setQuestionNumber(prev => prev + 1);  // Increment question number
@@ -139,6 +146,7 @@ export default function Algebra1DiagnosticPage() {
             setSelectedVerifications(new Set());
             setPrimaryAnswer(null);
             setShowVerification(false);
+            setStepAnswers([]);
             setFeedback(null);
           }
         }, 2000);
@@ -154,13 +162,30 @@ export default function Algebra1DiagnosticPage() {
   };
 
   const renderMath = (text: string) => {
-    const parts = text.split(/(\$[^$]+\$)/g);
-    return parts.map((part, index) => {
-      if (part.startsWith('$') && part.endsWith('$')) {
-        const math = part.slice(1, -1);
-        return <InlineMath key={index} math={math} />;
-      }
-      return <span key={index}>{part}</span>;
+    // Replace \n with actual line breaks
+    const textWithBreaks = text.replace(/\\n/g, '\n');
+
+    // Split by newlines first
+    const lines = textWithBreaks.split('\n');
+
+    return lines.map((line, lineIndex) => {
+      // Split each line by math expressions
+      const parts = line.split(/(\$[^$]+\$)/g);
+      const renderedParts = parts.map((part, partIndex) => {
+        if (part.startsWith('$') && part.endsWith('$')) {
+          const math = part.slice(1, -1);
+          return <InlineMath key={`${lineIndex}-${partIndex}`} math={math} />;
+        }
+        return <span key={`${lineIndex}-${partIndex}`}>{part}</span>;
+      });
+
+      // Add line break after each line except the last
+      return (
+        <React.Fragment key={lineIndex}>
+          {renderedParts}
+          {lineIndex < lines.length - 1 && <br />}
+        </React.Fragment>
+      );
     });
   };
 
@@ -246,14 +271,14 @@ export default function Algebra1DiagnosticPage() {
               <div className="flex-1">
                 <span className="font-semibold text-gray-900">MVP Demo Mode</span>
                 <p className="text-sm text-gray-600">
-                  {useMvpMode ? '15 curated questions (10-15 min)' : '5-10 questions (demo)'}
+                  {useMvpMode ? '15 curated questions (10-15 min)' : '10 questions (demo)'}
                 </p>
               </div>
             </label>
           </div>
 
           <p className="text-sm text-gray-500 mb-6">
-            • {useMvpMode ? '15' : '5-10'} adaptive questions<br/>
+            • {useMvpMode ? '15' : '10'} adaptive questions<br/>
             • Uses Bayesian Knowledge Tracing<br/>
             • Detects common misconceptions<br/>
             • Provides personalized recommendations
@@ -380,7 +405,7 @@ export default function Algebra1DiagnosticPage() {
                   onSubmit={submitAnswer}
                   placeholder={currentItem.format === 'FR' ? 'Enter your answer (e.g., 3/4, 0.75)...' : 'Enter your answer...'}
                   expectedFormat={currentItem.format === 'FR' ? 'fraction' : 'number'}
-                  showPreview={true}
+                  showPreview={false}
                   autoFocus={true}
                   hint={currentItem.format === 'FR' ? 'You can enter fractions like 3/4 or decimals like 0.75' : undefined}
                 />
@@ -402,7 +427,7 @@ export default function Algebra1DiagnosticPage() {
                         }}
                         placeholder="Enter your answer..."
                         expectedFormat="expression"
-                        showPreview={true}
+                        showPreview={false}
                         autoFocus={true}
                       />
                     </div>
@@ -543,17 +568,67 @@ export default function Algebra1DiagnosticPage() {
                     </div>
                   ))}
                 </div>
-                {selectedSteps.size > 0 && (
-                  <div className="mt-3 p-2 bg-blue-50 rounded text-sm text-blue-700">
-                    Order: {Array.from(stepOrders.entries())
-                      .sort((a, b) => a[1] - b[1])
-                      .map(([id]) => {
-                        const step = currentItem.stepOptions?.find(s => s.id === id);
-                        return `${stepOrders.get(id)}. ${step?.text.substring(0, 30)}...`;
-                      })
-                      .join(' → ')}
+              </div>
+            )}
+
+            {/* ERROR_ANALYSIS format - Find and fix the error */}
+            {currentItem.format === 'ERROR_ANALYSIS' && (
+              <div className="mb-6">
+                <div className="p-4 bg-red-50 border-2 border-red-200 rounded-lg mb-4">
+                  <p className="text-sm font-semibold text-red-700 mb-2">
+                    ❌ Student Work (contains an error):
+                  </p>
+                  <div className="text-gray-800 font-mono bg-white p-3 rounded">
+                    {renderMath(currentItem.errorProblem || '')}
                   </div>
-                )}
+                </div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  What is the correct answer?
+                </label>
+                <MathInput
+                  value={answer}
+                  onChange={setAnswer}
+                  onSubmit={submitAnswer}
+                  placeholder="Enter the correct answer..."
+                  expectedFormat="expression"
+                  showPreview={false}
+                  autoFocus={true}
+                  hint={currentItem.errorType ? `Error type: ${currentItem.errorType}` : undefined}
+                />
+              </div>
+            )}
+
+            {/* MULTI_STEP format - Step-by-step solution */}
+            {currentItem.format === 'MULTI_STEP' && currentItem.steps && (
+              <div className="mb-6 space-y-4">
+                <p className="text-sm font-medium text-gray-700 mb-3">
+                  Solve this problem step-by-step:
+                </p>
+                {currentItem.steps.map((step, idx) => (
+                  <div key={step.id} className="p-4 bg-blue-50 border-2 border-blue-200 rounded-lg">
+                    <label className="block text-sm font-semibold text-blue-800 mb-2">
+                      Step {idx + 1}: {step.instruction}
+                    </label>
+                    <MathInput
+                      value={stepAnswers[idx] || ''}
+                      onChange={(val) => {
+                        const newAnswers = [...stepAnswers];
+                        newAnswers[idx] = val;
+                        setStepAnswers(newAnswers);
+                      }}
+                      onSubmit={() => {
+                        // Move to next step or submit if last step
+                        if (idx === currentItem.steps!.length - 1) {
+                          submitAnswer();
+                        }
+                      }}
+                      placeholder="Enter your answer for this step..."
+                      expectedFormat="expression"
+                      showPreview={false}
+                      autoFocus={idx === 0}
+                    />
+                  </div>
+                ))}
               </div>
             )}
 

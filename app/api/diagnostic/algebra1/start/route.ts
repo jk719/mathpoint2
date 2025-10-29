@@ -45,8 +45,8 @@ export async function POST(req: NextRequest) {
 
     // Initialize session configuration
     const sessionConfig: SessionConfig = {
-      maxItems: config.maxItems || (useMvpMode ? 15 : 25),
-      minItems: config.minItems || (useMvpMode ? 10 : 10),
+      maxItems: config.maxItems || (useMvpMode ? 15 : 10),
+      minItems: config.minItems || (useMvpMode ? 10 : 8),
       targetDomains: config.targetDomains || [],
       adaptiveMode: config.adaptiveMode !== false,
       allowHints: config.allowHints !== false,

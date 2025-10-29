@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
     sessionQuestionsShown.set(body.sessionId, shownQuestions);
 
     // Determine max questions based on mode
-    const maxQuestions = useMvpMode ? Math.min(questionBank.length, 15) : 5;
+    const maxQuestions = useMvpMode ? 15 : 10;
 
     // Check if we've shown enough questions
     if (questionIndex >= maxQuestions) {
@@ -140,10 +140,104 @@ export async function POST(req: NextRequest) {
           }
           feedback = feedback || 'Not quite right. Review the correct solution steps.';
         }
-      } else {
-        // For other formats, use simple random check for now
-        isCorrect = Math.random() > 0.3;
+      } else if (currentQuestion.format === 'MCQ' || currentQuestion.format === 'TWO_TIER') {
+        // Multiple choice validation
+        isCorrect = body.answer === currentQuestion.correctAnswer;
+        if (isCorrect) {
+          feedback = '✓ Correct!';
+        } else {
+          const selectedChoice = currentQuestion.choices?.find(c => c.id === body.answer);
+          feedback = selectedChoice?.feedback || '✗ Not quite. Review the solution and try again.';
+        }
+      } else if (currentQuestion.format === 'NUM') {
+        // Numerical answer validation with tolerance
+        const correctNum = Number(currentQuestion.correctAnswer);
+        const studentNum = Number(body.answer);
+        const tolerance = 0.01;
+        isCorrect = Math.abs(correctNum - studentNum) <= tolerance;
+        feedback = isCorrect ? '✓ Correct!' : '✗ Not quite. Check your calculations.';
+      } else if (currentQuestion.format === 'FR') {
+        // Free response validation using rubric
+        const answerStr = String(body.answer).toLowerCase().trim();
+        const rubric = currentQuestion.rubric || [];
+
+        isCorrect = false;
+        for (const r of rubric) {
+          const pattern = typeof r.pattern === 'string' ? new RegExp(r.pattern, 'i') : r.pattern;
+          if (pattern.test(answerStr)) {
+            isCorrect = r.points >= 1;
+            feedback = r.feedback || (isCorrect ? '✓ Correct!' : '✗ Not quite.');
+            break;
+          }
+        }
+
+        if (!feedback) {
+          feedback = '✗ Not quite. Review the solution and try again.';
+        }
+      } else if (currentQuestion.format === 'HYBRID_VERIFY') {
+        // Validate primary answer and verification selections
+        let primaryCorrect = false;
+        const primaryAnswer = body.answer?.primaryAnswer || body.answer;
+
+        if (typeof currentQuestion.correctAnswer === 'number') {
+          primaryCorrect = Math.abs(Number(primaryAnswer) - currentQuestion.correctAnswer) <= 0.01;
+        } else {
+          const correctStr = String(currentQuestion.correctAnswer).toLowerCase().trim();
+          const studentStr = String(primaryAnswer).toLowerCase().trim();
+          primaryCorrect = correctStr === studentStr || correctStr.replace(/\s/g, '') === studentStr.replace(/\s/g, '');
+        }
+
+        // Check verification selections if provided
+        let verificationsCorrect = true;
+        if (currentQuestion.requiredVerifications && body.answer?.verifications) {
+          const required = new Set(currentQuestion.requiredVerifications);
+          const selected = new Set(body.answer.verifications || []);
+          verificationsCorrect = Array.from(required).every(r => selected.has(r));
+        }
+
+        isCorrect = primaryCorrect && verificationsCorrect;
+
+        if (!primaryCorrect) {
+          feedback = '✗ The answer is incorrect.';
+        } else if (!verificationsCorrect) {
+          feedback = '⚠️ Answer is correct but you missed some required steps.';
+        } else {
+          feedback = '✓ Perfect! Correct answer and process.';
+        }
+      } else if (currentQuestion.format === 'ERROR_ANALYSIS') {
+        // Error analysis validation
+        const answerStr = String(body.answer).toLowerCase().trim();
+        const correctStr = String(currentQuestion.correctAnswer).toLowerCase().trim();
+
+        // Check if answer contains the correct factorization or key terms
+        isCorrect = answerStr.includes(correctStr) ||
+                   correctStr.split(/\s+/).some(word => word.length > 2 && answerStr.includes(word));
+
         feedback = isCorrect ? '✓ Correct!' : '✗ Not quite. Review the solution and try again.';
+      } else if (currentQuestion.format === 'MULTI_STEP') {
+        // Multi-step validation - check all steps
+        const steps = currentQuestion.steps || [];
+        const responses = body.answer?.stepResponses || body.stepResponses || [];
+
+        let correctSteps = 0;
+        steps.forEach((step, idx) => {
+          const response = responses[idx];
+          if (response) {
+            const expectedStr = String(step.expectedAnswer).toLowerCase().trim();
+            const studentStr = String(response).toLowerCase().trim();
+            if (expectedStr === studentStr || expectedStr.replace(/\s/g, '') === studentStr.replace(/\s/g, '')) {
+              correctSteps++;
+            }
+          }
+        });
+
+        isCorrect = correctSteps === steps.length;
+        feedback = isCorrect ? '✓ All steps correct!' :
+                   `${correctSteps}/${steps.length} steps correct. Keep trying!`;
+      } else {
+        // Fallback for unknown formats
+        isCorrect = false;
+        feedback = '✗ Unable to validate this question format.';
       }
     }
 
