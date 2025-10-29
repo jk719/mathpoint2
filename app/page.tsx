@@ -353,42 +353,42 @@ export default function Home() {
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                How long does the diagnostic assessment take?
+                Is the diagnostic assessment really free?
               </h3>
               <p className="text-gray-700">
-                The comprehensive diagnostic assessment typically requires 20-30 minutes to complete,
-                with the exact duration varying based on individual student performance and knowledge level.
-                Our adaptive algorithm customizes the question sequence to efficiently evaluate each student&apos;s
-                mathematical proficiency across multiple concept areas.
+                Yes! The diagnostic assessment is 100% free with instant results. It takes 10-15 minutes and identifies your strengths and weak topics. No credit card required, no hidden fees. After the diagnostic, you'll have the option to get personalized AI tutoring on your weak topics.
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Is MathPoint really free?
+                How does the AI tutoring work?
               </h3>
               <p className="text-gray-700">
-                Yes! The diagnostic assessment is completely free with instant results.
-                No credit card required, no hidden fees, and no time limits.
+                After your free diagnostic, our AI tutor creates a personalized learning plan focused on your weak topics. You get 24/7 access to AI-powered tutoring that adapts to your learning pace. All tutoring sessions are monitored by expert educators to ensure quality and accuracy.
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                What topics does MathPoint cover?
+                What does "human-managed AI tutor" mean?
               </h3>
               <p className="text-gray-700">
-                MathPoint covers comprehensive mathematics from grades 6-12, including Pre-Algebra,
-                Algebra 1, Geometry, Algebra 2, Pre-Calculus, and Calculus. Our adaptive system
-                adjusts questions based on your grade level.
+                Our AI tutor is powered by advanced algorithms, but every learning path and tutoring session is reviewed by certified math educators. This ensures the AI provides accurate explanations, appropriate difficulty levels, and effective teaching strategies - combining AI efficiency with human expertise.
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                How does the adaptive technology work?
+                What grade levels do you support?
               </h3>
               <p className="text-gray-700">
-                Our AI analyzes your responses in real-time, identifying patterns in your problem-solving
-                approach. Based on this analysis, it selects the next most informative question to
-                pinpoint your exact learning needs.
+                Currently, we offer diagnostics for Grade 6 Math and Algebra 1 (typically grades 8-9). We're actively developing diagnostics for Grade 7, Geometry, Algebra 2, and other high school math courses. Sign up for free to get notified when new courses launch!
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                How do I track my progress?
+              </h3>
+              <p className="text-gray-700">
+                After completing your tutoring sessions, you can retake the diagnostic to see your improvement. Our system tracks your mastery level for each topic, showing you exactly how much you've improved and which areas you've mastered. Visual progress charts help you stay motivated!
               </p>
             </div>
           </div>
