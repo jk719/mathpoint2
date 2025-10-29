@@ -98,7 +98,7 @@ export async function POST(req: NextRequest) {
       studentId,
       config: sessionConfig,
       startTime: new Date(),
-      status: 'ACTIVE',
+      status: 'ACTIVE' as const,
       itemsPresented: [firstQuestion],
       attempts: [],
       currentItemIndex: 0,

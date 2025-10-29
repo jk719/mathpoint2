@@ -61,6 +61,7 @@ export interface Grade6VerificationOption {
   points?: number;
   misconceptionCode?: string;
   skillCode?: string;
+  feedback?: string;
 }
 
 export interface Grade6Item {
