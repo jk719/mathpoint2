@@ -62,26 +62,10 @@ export type PointsTransactionType =
   | 'daily-login'
   | 'perfect-score';
 
-export interface Leaderboard {
-  timeframe: 'daily' | 'weekly' | 'monthly' | 'all-time';
-  entries: LeaderboardEntry[];
-  userRank?: number;
-}
-
-export interface LeaderboardEntry {
-  rank: number;
-  userId: string;
-  userName: string;
-  points: number;
-  streak: number;
-  badges: number;
-}
-
 export interface GamificationState {
   userPoints: number;
   userBadges: UserBadge[];
   achievements: Achievement[];
   currentStreak: number;
   recentTransactions: PointsTransaction[];
-  leaderboard: Leaderboard | null;
 }

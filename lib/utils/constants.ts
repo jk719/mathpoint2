@@ -28,7 +28,6 @@ export const ROUTES = {
   DIAGNOSTIC: '/diagnostic',
   PRACTICE: '/practice',
   PROFILE: '/profile',
-  LEADERBOARD: '/leaderboard',
   SETTINGS: '/settings',
 } as const;
 

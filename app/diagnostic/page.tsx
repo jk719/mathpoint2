@@ -11,14 +11,14 @@ function DiagnosticRouterContent() {
   const grade = searchParams.get('grade');
 
   useEffect(() => {
-    // If grade is 8 or 9, automatically redirect to Algebra 1 diagnostic
-    if (grade === '8' || grade === '9') {
+    // If grade is 8, automatically redirect to Algebra 1 diagnostic
+    if (grade === '8') {
       router.push('/algebra1');
     }
   }, [grade, router]);
 
-  // If grade is 8 or 9, show loading state while redirecting
-  if (grade === '8' || grade === '9') {
+  // If grade is 8, show loading state while redirecting
+  if (grade === '8') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
         <Card className="max-w-md w-full">
@@ -39,7 +39,7 @@ function DiagnosticRouterContent() {
           <div className="mx-auto w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">
             <span className="text-4xl font-bold text-white">{grade}</span>
           </div>
-          <CardTitle className="text-3xl">Grade {grade} Diagnostic</CardTitle>
+          <CardTitle className="text-2xl sm:text-3xl">Grade {grade} Diagnostic</CardTitle>
           <CardDescription className="text-lg">
             Coming Soon
           </CardDescription>
@@ -50,7 +50,7 @@ function DiagnosticRouterContent() {
               We're expanding our diagnostic system
             </h3>
             <p className="text-blue-800">
-              Currently, we offer a comprehensive Algebra 1 adaptive diagnostic (Grades 8-9).
+              Currently, we offer a comprehensive Algebra 1 adaptive diagnostic (Grade 8).
               Additional grade levels are in development and will be available soon.
             </p>
           </div>
@@ -60,7 +60,7 @@ function DiagnosticRouterContent() {
             <ul className="space-y-2 text-gray-700">
               <li className="flex items-center gap-2">
                 <span className="text-green-500">✓</span>
-                <span>Algebra 1 Diagnostic (Grades 8-9) - 15 adaptive questions</span>
+                <span>Algebra 1 Diagnostic (Grade 8) - 15 adaptive questions</span>
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-green-500">✓</span>

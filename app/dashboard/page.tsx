@@ -88,10 +88,6 @@ export default function DashboardPage() {
                   <TrendingUp className="w-4 h-4 mr-2" />
                   Practice Problems
                 </Button>
-                <Button variant="ghost" className="w-full">
-                  <Award className="w-4 h-4 mr-2" />
-                  View Leaderboard
-                </Button>
               </CardContent>
             </Card>
           </div>
