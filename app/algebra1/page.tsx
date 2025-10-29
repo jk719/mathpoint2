@@ -503,7 +503,7 @@ export default function Algebra1DiagnosticPage() {
 
           <p className="text-sm text-gray-500 mb-6">
             • {useMvpMode ? '15' : '10'} adaptive questions<br/>
-            • Uses Bayesian Knowledge Tracing<br/>
+            • Advanced adaptive algorithm<br/>
             • Detects common misconceptions<br/>
             • Provides personalized recommendations
           </p>

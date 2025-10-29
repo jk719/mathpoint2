@@ -253,9 +253,9 @@ export interface DiagnosticReport {
   avgConfidence: number;
 
   // Skill mastery
-  masteredSkills: SkillReport[];      // P(mastery) >= 0.85
-  developingSkills: SkillReport[];    // 0.6 <= P(mastery) < 0.85
-  weakSkills: SkillReport[];          // P(mastery) < 0.6
+  masteredSkills: SkillReport[];      // Strong understanding
+  developingSkills: SkillReport[];    // Developing understanding
+  weakSkills: SkillReport[];          // Needs more practice
 
   // Misconceptions
   misconceptions: MisconceptionReport[];
@@ -274,7 +274,7 @@ export interface DiagnosticReport {
 
 export interface SkillReport {
   skill: AlgebraSkill;
-  pMastery: number;
+  level: 'STRONG' | 'DEVELOPING' | 'WEAK';  // Simplified mastery level
   evidenceCount: number;
   correctRate: number;
   avgResponseTime: number;
@@ -351,13 +351,6 @@ export interface SubmitAnswerResponse {
   feedback?: string;
   correctAnswer?: any;
   solution?: string;
-
-  // Mastery updates
-  skillUpdates: {
-    skillCode: string;
-    previousMastery: number;
-    newMastery: number;
-  }[];
 
   // Misconceptions detected
   misconceptionsDetected: string[];

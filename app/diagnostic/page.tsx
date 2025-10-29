@@ -64,7 +64,7 @@ function DiagnosticRouterContent() {
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-green-500">✓</span>
-                <span>Bayesian Knowledge Tracing for personalized assessment</span>
+                <span>Advanced adaptive algorithm for personalized assessment</span>
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-green-500">✓</span>

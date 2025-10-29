@@ -93,8 +93,8 @@ export const mvpStats = {
   skillsCovered: 38, // Approximate number of atomic skills tested
 
   features: [
-    "Bayesian Knowledge Tracing for skill mastery estimation",
-    "Item Response Theory (IRT) for adaptive item selection",
+    "Advanced adaptive algorithm for skill mastery estimation",
+    "Smart item selection for optimal assessment",
     "8 different question formats to assess understanding depth",
     "Misconception detection and targeted feedback",
     "Detailed diagnostic report with mastery levels",
