@@ -476,12 +476,40 @@ export default function Algebra1DiagnosticPage() {
 
   if (!sessionId) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-        <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8 max-w-md w-full">
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-8">
+        <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8 max-w-2xl w-full">
           <h1 className="text-2xl sm:text-3xl font-bold text-[#1a3a52] mb-4">Algebra 1 Adaptive Diagnostic</h1>
           <p className="text-sm sm:text-base text-gray-600 mb-6">
-            This advanced diagnostic will adapt to your responses and identify your strengths and areas for improvement.
+            Get a precise assessment of your math skills, then work with our AI tutor (managed by expert educators) to master the topics where you need help.
           </p>
+
+          {/* 3-Step Process */}
+          <div className="mb-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 border border-blue-200">
+            <h3 className="font-semibold text-gray-900 mb-3">How It Works:</h3>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 w-8 h-8 bg-[#ff6b35] text-white rounded-full flex items-center justify-center font-bold">1</div>
+                <div>
+                  <p className="font-medium text-gray-900">📊 Diagnostic Assessment (FREE)</p>
+                  <p className="text-sm text-gray-600">Take our adaptive diagnostic to identify your strengths and weak topics</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 w-8 h-8 bg-[#ff6b35] text-white rounded-full flex items-center justify-center font-bold">2</div>
+                <div>
+                  <p className="font-medium text-gray-900">🤖 AI Tutoring (Human-Managed)</p>
+                  <p className="text-sm text-gray-600">Get personalized AI tutoring on weak topics, monitored by expert educators</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 w-8 h-8 bg-[#ff6b35] text-white rounded-full flex items-center justify-center font-bold">3</div>
+                <div>
+                  <p className="font-medium text-gray-900">✅ Retest & Master</p>
+                  <p className="text-sm text-gray-600">Take follow-up diagnostics to track improvement and achieve mastery</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* MVP Mode Toggle */}
           <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
@@ -501,12 +529,16 @@ export default function Algebra1DiagnosticPage() {
             </label>
           </div>
 
-          <p className="text-sm text-gray-500 mb-6">
-            • {useMvpMode ? '15' : '10'} adaptive questions<br/>
-            • Advanced adaptive algorithm<br/>
-            • Detects common misconceptions<br/>
-            • Provides personalized recommendations
-          </p>
+          <div className="mb-6 text-sm text-gray-600">
+            <p className="font-semibold text-gray-900 mb-2">This Diagnostic Includes:</p>
+            <ul className="space-y-1 ml-4">
+              <li>• {useMvpMode ? '15' : '10'} adaptive questions</li>
+              <li>• Advanced algorithm adjusts difficulty based on your answers</li>
+              <li>• Identifies misconceptions and knowledge gaps</li>
+              <li>• Detailed report with personalized learning recommendations</li>
+            </ul>
+          </div>
+
           {error && (
             <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
               {error}
@@ -517,8 +549,11 @@ export default function Algebra1DiagnosticPage() {
             disabled={isLoading}
             className="w-full btn-accent"
           >
-            {isLoading ? 'Starting...' : 'Start Diagnostic'}
+            {isLoading ? 'Starting...' : 'Start Free Diagnostic'}
           </button>
+          <p className="text-xs text-center text-gray-500 mt-3">
+            After the diagnostic, you'll receive recommendations for AI tutoring on your weak topics
+          </p>
         </div>
       </div>
     );
