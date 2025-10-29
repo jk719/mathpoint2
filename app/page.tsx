@@ -227,50 +227,49 @@ export default function Home() {
               How It Works
             </h2>
             <p className="text-lg sm:text-xl text-gray-600">
-              Four simple steps to comprehensive mathematical assessment
+              Three simple steps from assessment to mastery
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid sm:grid-cols-3 gap-12 max-w-5xl mx-auto">
             <div className="text-center">
-              <div className="w-16 h-16 bg-[#1a3a52] rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-2xl shadow-md">
+              <div className="w-20 h-20 bg-[#ff6b35] rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-3xl shadow-lg">
                 1
               </div>
-              <h3 className="text-lg font-semibold mb-2 text-gray-900">Select Course</h3>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">📊 Diagnostic Assessment</h3>
+              <p className="text-sm font-semibold text-green-600 mb-2">FREE</p>
               <p className="text-gray-600 text-sm">
-                Choose your grade level and begin the adaptive diagnostic assessment
+                Take our adaptive diagnostic to identify your strengths and weak topics. Get a detailed report in minutes.
               </p>
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-[#ff6b35] rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-2xl shadow-md">
+              <div className="w-20 h-20 bg-[#ff6b35] rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-3xl shadow-lg">
                 2
               </div>
-              <h3 className="text-lg font-semibold mb-2 text-gray-900">Answer Questions</h3>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">🤖 AI Tutoring</h3>
+              <p className="text-sm font-semibold text-blue-600 mb-2">Human-Managed</p>
               <p className="text-gray-600 text-sm">
-                Respond to adaptive questions that adjust to your skill level in real-time
+                Get personalized AI tutoring on your weak topics, monitored by expert educators to ensure quality learning.
               </p>
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-2xl shadow-md">
+              <div className="w-20 h-20 bg-[#ff6b35] rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-3xl shadow-lg">
                 3
               </div>
-              <h3 className="text-lg font-semibold mb-2 text-gray-900">AI Analysis</h3>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">✅ Retest & Master</h3>
+              <p className="text-sm font-semibold text-purple-600 mb-2">Track Progress</p>
               <p className="text-gray-600 text-sm">
-                Advanced algorithms analyze your performance across multiple skill domains
+                Take follow-up diagnostics to track improvement and achieve mastery. See your growth over time.
               </p>
             </div>
+          </div>
 
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-2xl shadow-md">
-                4
-              </div>
-              <h3 className="text-lg font-semibold mb-2 text-gray-900">Review Report</h3>
-              <p className="text-gray-600 text-sm">
-                Receive detailed insights and personalized learning recommendations
-              </p>
-            </div>
+          <div className="text-center mt-12">
+            <p className="text-gray-600 mb-6">
+              <span className="font-semibold text-gray-900">Complete Learning Loop:</span> Diagnose → Learn → Improve → Repeat
+            </p>
           </div>
         </div>
       </section>
