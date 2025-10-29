@@ -86,7 +86,7 @@ export default function DashboardPage() {
                 </Button>
                 <Button variant="outline" className="w-full">
                   <TrendingUp className="w-4 h-4 mr-2" />
-                  Practice Problems
+                  Get AI Tutoring
                 </Button>
               </CardContent>
             </Card>

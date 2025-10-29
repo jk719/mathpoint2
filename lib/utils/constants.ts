@@ -1,6 +1,6 @@
 export const POINTS = {
   DIAGNOSTIC_COMPLETE: 50,
-  PRACTICE_PROBLEM: 10,
+  TUTORING_PROBLEM: 10,
   STREAK_BONUS: 5,
   PERFECT_SCORE: 20,
   BADGE_EARNED: 15,
@@ -19,14 +19,14 @@ export const LIMITS = {
   MAX_QUESTIONS: 7,
   MAX_ATTEMPTS: 3,
   FREE_DIAGNOSTICS_PER_MONTH: 3,
-  FREE_PRACTICE_PER_DAY: 10,
+  FREE_TUTORING_PER_DAY: 10,
 } as const;
 
 export const ROUTES = {
   HOME: '/',
   DASHBOARD: '/dashboard',
   DIAGNOSTIC: '/diagnostic',
-  PRACTICE: '/practice',
+  TUTOR: '/tutor',
   PROFILE: '/profile',
   SETTINGS: '/settings',
 } as const;

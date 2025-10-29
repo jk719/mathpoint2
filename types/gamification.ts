@@ -18,7 +18,7 @@ export type BadgeCategory =
   | 'milestone';
 
 export interface BadgeRequirement {
-  type: 'concept-mastery' | 'streak-days' | 'problems-solved' | 'accuracy-rate' | 'diagnostic-complete';
+  type: 'concept-mastery' | 'streak-days' | 'tutoring-problems' | 'accuracy-rate' | 'diagnostic-complete';
   value: number;
   conceptId?: string;
 }
@@ -55,7 +55,7 @@ export interface PointsTransaction {
 
 export type PointsTransactionType =
   | 'diagnostic-complete'
-  | 'problem-solved'
+  | 'tutoring-problem'
   | 'streak-bonus'
   | 'badge-earned'
   | 'achievement-unlocked'

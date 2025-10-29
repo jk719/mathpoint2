@@ -22,7 +22,7 @@ export function PointsDisplay({
     switch (type) {
       case 'diagnostic-complete':
         return '🎯';
-      case 'problem-solved':
+      case 'tutoring-problem':
         return '✅';
       case 'streak-bonus':
         return '🔥';

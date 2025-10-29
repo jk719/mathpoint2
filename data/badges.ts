@@ -75,7 +75,7 @@ export const badgeData: Badge[] = [
     icon: '⚡',
     category: 'speed',
     requirement: {
-      type: 'problems-solved',
+      type: 'tutoring-problems',
       value: 10,
     },
     points: 100,
@@ -110,11 +110,11 @@ export const badgeData: Badge[] = [
   {
     id: 'problem-solver',
     name: 'Problem Solver',
-    description: 'Solve 50 practice problems',
+    description: 'Solve 50 tutoring problems',
     icon: '🧠',
     category: 'milestone',
     requirement: {
-      type: 'problems-solved',
+      type: 'tutoring-problems',
       value: 50,
     },
     points: 100,
@@ -123,11 +123,11 @@ export const badgeData: Badge[] = [
   {
     id: 'mathematician',
     name: 'Mathematician',
-    description: 'Solve 100 practice problems',
+    description: 'Solve 100 tutoring problems',
     icon: '🎓',
     category: 'milestone',
     requirement: {
-      type: 'problems-solved',
+      type: 'tutoring-problems',
       value: 100,
     },
     points: 200,
@@ -140,7 +140,7 @@ export const badgeData: Badge[] = [
     icon: '🗺️',
     category: 'exploration',
     requirement: {
-      type: 'problems-solved',
+      type: 'tutoring-problems',
       value: 20,
     },
     points: 75,

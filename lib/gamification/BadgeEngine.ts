@@ -40,7 +40,7 @@ export class BadgeEngine {
       case 'streak-days':
         return progress.currentStreak >= requirement.value;
 
-      case 'problems-solved':
+      case 'tutoring-problems':
         return progress.practiceProblemsCompleted >= requirement.value;
 
       case 'diagnostic-complete':
@@ -97,7 +97,7 @@ export class BadgeEngine {
         progressValue = Math.min(100, (progress.currentStreak / badge.requirement.value) * 100);
         break;
 
-      case 'problems-solved':
+      case 'tutoring-problems':
         progressValue = Math.min(100, (progress.practiceProblemsCompleted / badge.requirement.value) * 100);
         break;
 

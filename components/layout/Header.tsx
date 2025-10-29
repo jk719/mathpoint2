@@ -61,7 +61,7 @@ export function Header({ userPoints = 0, userName }: HeaderProps) {
                 Diagnostic
               </Link>
               <div className="flex items-center gap-1">
-                <span className="text-gray-500 font-medium">Practice</span>
+                <span className="text-gray-500 font-medium">Tutor</span>
                 <span className="text-xs bg-gray-600 text-gray-300 px-2 py-0.5 rounded-full font-normal">
                   Coming Soon
                 </span>
