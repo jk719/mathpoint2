@@ -331,8 +331,8 @@ export default function Grade6DiagnosticPage() {
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 w-8 h-8 bg-[#ff6b35] text-white rounded-full flex items-center justify-center font-bold">3</div>
                 <div>
-                  <p className="font-medium text-gray-900">✅ Retest & Master</p>
-                  <p className="text-sm text-gray-600">Take follow-up diagnostics to track improvement and achieve mastery</p>
+                  <p className="font-medium text-gray-900">✅ Master & Verify</p>
+                  <p className="text-sm text-gray-600">After tutoring, take concept-specific mastery tests to verify you've mastered each topic</p>
                 </div>
               </div>
             </div>

@@ -258,10 +258,10 @@ export default function Home() {
               <div className="w-20 h-20 bg-[#ff6b35] rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-3xl shadow-lg">
                 3
               </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-900">✅ Retest & Master</h3>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">✅ Master & Verify</h3>
               <p className="text-sm font-semibold text-purple-600 mb-2">Track Progress</p>
               <p className="text-gray-600 text-sm">
-                Take follow-up diagnostics to track improvement and achieve mastery. See your growth over time.
+                After tutoring, take concept-specific mastery tests to verify you've mastered each topic. See your growth over time.
               </p>
             </div>
           </div>
@@ -315,7 +315,7 @@ export default function Home() {
                   <div>
                     <h3 className="font-semibold mb-1">Track Your Progress</h3>
                     <p className="text-gray-300">
-                      Retest to see improvement and achieve mastery with visual progress tracking
+                      Take concept-specific mastery tests to verify you've mastered each topic with visual progress tracking
                     </p>
                   </div>
                 </div>
@@ -388,7 +388,7 @@ export default function Home() {
                 How do I track my progress?
               </h3>
               <p className="text-gray-700">
-                After completing your tutoring sessions, you can retake the diagnostic to see your improvement. Our system tracks your mastery level for each topic, showing you exactly how much you've improved and which areas you've mastered. Visual progress charts help you stay motivated!
+                After completing tutoring on each topic, you take concept-specific mastery tests to verify you've truly mastered that concept. Our system tracks your mastery level for each topic, showing you exactly which areas you've conquered. Visual progress charts help you stay motivated as you work through your learning path!
               </p>
             </div>
           </div>
