@@ -25,7 +25,7 @@ export default function Home() {
               </span>
             </h1>
             <p className="text-lg sm:text-xl text-gray-700 mb-8 max-w-2xl mx-auto leading-relaxed">
-              FREE diagnostics identify your weak topics, then our human-managed AI tutor helps you master them with personalized learning
+              FREE diagnostics identify ALL your weak topics, then master them one-by-one with our human-managed AI tutor. Verify complete course mastery when you're done.
             </p>
           </div>
 
@@ -171,12 +171,12 @@ export default function Home() {
                 <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
                   <Award className="w-6 h-6 text-purple-600" />
                 </div>
-                <CardTitle className="text-xl text-gray-900">Concept Mastery Tests</CardTitle>
+                <CardTitle className="text-xl text-gray-900">Topic-by-Topic Mastery</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-700">
-                  After tutoring each topic, take targeted tests to verify true mastery.
-                  Track your progress and see exactly which concepts you've conquered.
+                  Master each weak topic with AI tutoring → concept quiz → mark as mastered.
+                  After mastering all topics, verify complete course mastery by retaking the full diagnostic.
                 </p>
               </CardContent>
             </Card>
@@ -227,48 +227,136 @@ export default function Home() {
               How It Works
             </h2>
             <p className="text-lg sm:text-xl text-gray-600">
-              Three simple steps from assessment to mastery
+              Your complete journey from assessment to course mastery
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-3 gap-12 max-w-5xl mx-auto">
+          <div className="grid sm:grid-cols-3 gap-12 max-w-5xl mx-auto mb-12">
             <div className="text-center">
               <div className="w-20 h-20 bg-[#ff6b35] rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-3xl shadow-lg">
                 1
               </div>
               <h3 className="text-xl font-bold mb-3 text-gray-900">📊 Diagnostic Assessment</h3>
-              <p className="text-sm font-semibold text-green-600 mb-2">FREE</p>
-              <p className="text-gray-600 text-sm">
+              <p className="text-sm font-semibold text-green-600 mb-2">FREE • 10-15 minutes</p>
+              <p className="text-gray-600 text-sm mb-4">
                 Take our adaptive diagnostic to identify your strengths and weak topics. Get a detailed report in minutes.
               </p>
+              <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-left">
+                <p className="text-xs font-semibold text-green-800 mb-1">You Get:</p>
+                <ul className="text-xs text-gray-700 space-y-1">
+                  <li>• Instant detailed report</li>
+                  <li>• ALL weak topics identified</li>
+                  <li>• Personalized learning path</li>
+                </ul>
+              </div>
             </div>
 
             <div className="text-center">
               <div className="w-20 h-20 bg-[#ff6b35] rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-3xl shadow-lg">
                 2
               </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-900">🤖 AI Tutoring</h3>
-              <p className="text-sm font-semibold text-blue-600 mb-2">Human-Managed</p>
-              <p className="text-gray-600 text-sm">
-                Get personalized AI tutoring on your weak topics, monitored by expert educators to ensure quality learning.
+              <h3 className="text-xl font-bold mb-3 text-gray-900">🔄 Topic-by-Topic Mastery</h3>
+              <p className="text-sm font-semibold text-blue-600 mb-2">Human-Managed AI</p>
+              <p className="text-gray-600 text-sm mb-4">
+                For EACH weak topic, work with our AI tutor until you master it, then move to the next.
               </p>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-left">
+                <p className="text-xs font-semibold text-blue-800 mb-1">For Each Topic:</p>
+                <ul className="text-xs text-gray-700 space-y-1">
+                  <li>• AI tutoring session (24/7 access)</li>
+                  <li>• Interactive practice problems</li>
+                  <li>• Concept-specific mastery quiz</li>
+                  <li>• ✓ Mark as mastered, move to next</li>
+                </ul>
+              </div>
             </div>
 
             <div className="text-center">
               <div className="w-20 h-20 bg-[#ff6b35] rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-3xl shadow-lg">
                 3
               </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-900">✅ Master & Verify</h3>
-              <p className="text-sm font-semibold text-purple-600 mb-2">Track Progress</p>
-              <p className="text-gray-600 text-sm">
-                After tutoring, take concept-specific mastery tests to verify you've mastered each topic. See your growth over time.
+              <h3 className="text-xl font-bold mb-3 text-gray-900">✅ Course Mastery Verification</h3>
+              <p className="text-sm font-semibold text-purple-600 mb-2">Final Step</p>
+              <p className="text-gray-600 text-sm mb-4">
+                After mastering ALL topics, retake the full diagnostic to verify complete course mastery.
               </p>
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 text-left">
+                <p className="text-xs font-semibold text-purple-800 mb-1">Final Verification:</p>
+                <ul className="text-xs text-gray-700 space-y-1">
+                  <li>• Retake full diagnostic</li>
+                  <li>• See your improvement score</li>
+                  <li>• Verify course mastery</li>
+                  <li>• Celebrate your achievement!</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Visual Learning Loop */}
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-gradient-to-r from-orange-50 via-blue-50 to-purple-50 rounded-2xl p-8 border-2 border-gray-200">
+              <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">
+                Your Learning Journey (Example)
+              </h3>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">✓</div>
+                  <div className="flex-1 bg-white rounded-lg p-3 border-l-4 border-green-500">
+                    <p className="text-sm font-semibold text-gray-900">Diagnostic Complete</p>
+                    <p className="text-xs text-gray-600">ALL weak topics identified (e.g., Quadratic equations, Systems of equations, Polynomials, Inequalities, Functions)</p>
+                  </div>
+                </div>
+
+                <div className="ml-4 space-y-2">
+                  <div className="flex items-center gap-3">
+                    <div className="flex-shrink-0 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xs">✓</div>
+                    <div className="flex-1 bg-white rounded-lg p-2 border-l-4 border-blue-500">
+                      <p className="text-xs font-semibold text-gray-900">Topic 1: Quadratic equations → AI Tutor → Quiz → ✓ Mastered</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex-shrink-0 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xs">✓</div>
+                    <div className="flex-1 bg-white rounded-lg p-2 border-l-4 border-blue-500">
+                      <p className="text-xs font-semibold text-gray-900">Topic 2: Systems of equations → AI Tutor → Quiz → ✓ Mastered</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex-shrink-0 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xs">✓</div>
+                    <div className="flex-1 bg-white rounded-lg p-2 border-l-4 border-blue-500">
+                      <p className="text-xs font-semibold text-gray-900">Topic 3: Polynomials → AI Tutor → Quiz → ✓ Mastered</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex-shrink-0 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xs">✓</div>
+                    <div className="flex-1 bg-white rounded-lg p-2 border-l-4 border-blue-500">
+                      <p className="text-xs font-semibold text-gray-900">Topic 4: Inequalities → AI Tutor → Quiz → ✓ Mastered</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex-shrink-0 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xs">✓</div>
+                    <div className="flex-1 bg-white rounded-lg p-2 border-l-4 border-blue-500">
+                      <p className="text-xs font-semibold text-gray-900">Topic 5: Functions → AI Tutor → Quiz → ✓ Mastered</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="flex-shrink-0 w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm">🎉</div>
+                  <div className="flex-1 bg-white rounded-lg p-3 border-l-4 border-purple-500">
+                    <p className="text-sm font-semibold text-gray-900">All Topics Mastered → Retake Full Diagnostic → Course Mastery Verified!</p>
+                    <p className="text-xs text-gray-600">Your score improved from 65% to 95% - Course Mastered!</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           <div className="text-center mt-12">
-            <p className="text-gray-600 mb-6">
-              <span className="font-semibold text-gray-900">Complete Learning Loop:</span> Diagnose → Learn → Improve → Repeat
+            <p className="text-gray-600 mb-2">
+              <span className="font-semibold text-gray-900">Complete Learning Loop:</span>
+            </p>
+            <p className="text-sm text-gray-600">
+              Diagnose → Learn Topic 1 → Quiz → Learn Topic 2 → Quiz → ... → Master All Topics → Verify Course Mastery
             </p>
           </div>
         </div>
@@ -313,9 +401,9 @@ export default function Home() {
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-green-300 mt-1" />
                   <div>
-                    <h3 className="font-semibold mb-1">Track Your Progress</h3>
+                    <h3 className="font-semibold mb-1">Topic-by-Topic Mastery</h3>
                     <p className="text-gray-300">
-                      Take concept-specific mastery tests to verify you've mastered each topic with visual progress tracking
+                      Master each weak topic one at a time with AI tutoring → concept quiz → mark as mastered, then verify complete course mastery
                     </p>
                   </div>
                 </div>
@@ -388,7 +476,15 @@ export default function Home() {
                 How do I track my progress?
               </h3>
               <p className="text-gray-700">
-                After completing tutoring on each topic, you take concept-specific mastery tests to verify you've truly mastered that concept. Our system tracks your mastery level for each topic, showing you exactly which areas you've conquered. Visual progress charts help you stay motivated as you work through your learning path!
+                Our system shows you exactly which topics you've mastered in real-time. For each weak topic identified in your diagnostic, you'll work through: AI Tutoring → Concept Quiz → Mark as Mastered. Once ALL topics are mastered, you retake the full diagnostic to verify complete course mastery and see your overall improvement score. Visual progress charts help you stay motivated as you conquer each topic!
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                What happens after I master all my weak topics?
+              </h3>
+              <p className="text-gray-700">
+                Once you've mastered all the topics identified in your diagnostic (each with its own concept quiz), you'll retake the full diagnostic assessment to verify your course mastery. This shows you how much you've improved from your initial score - students typically see 20-30+ percentage point improvements! This validates that you've truly mastered the entire course.
               </p>
             </div>
           </div>

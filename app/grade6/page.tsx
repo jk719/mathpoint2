@@ -38,6 +38,20 @@ export default function Grade6DiagnosticPage() {
   const [feedback, setFeedback] = useState<string | null>(null);
   const [questionNumber, setQuestionNumber] = useState<number>(1);
   const [stepAnswers, setStepAnswers] = useState<string[]>([]);
+  const [showTimer, setShowTimer] = useState<boolean>(true);
+  const [elapsedTime, setElapsedTime] = useState<number>(0);
+  const [questionTimes, setQuestionTimes] = useState<{questionId: string, timeSpent: number}[]>([]);
+
+  // Timer effect
+  React.useEffect(() => {
+    if (!currentItem || report || isLoading) return;
+
+    const interval = setInterval(() => {
+      setElapsedTime((Date.now() - startTime) / 1000);
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [currentItem, report, isLoading, startTime]);
 
   const startDiagnostic = async () => {
     setIsLoading(true);
@@ -125,6 +139,10 @@ export default function Grade6DiagnosticPage() {
       if (result.success && result.data) {
         const data: SubmitAnswerResponse = result.data;
 
+        // Track time spent on this question
+        const timeSpent = (Date.now() - startTime) / 1000;
+        setQuestionTimes(prev => [...prev, { questionId: currentItem.id, timeSpent }]);
+
         setFeedback(data.feedback || (data.isCorrect ? '✓ Correct!' : '✗ Incorrect'));
 
         setTimeout(() => {
@@ -142,6 +160,7 @@ export default function Grade6DiagnosticPage() {
             setStepAnswers([]);
             setConfidence(null);
             setStartTime(Date.now());
+            setElapsedTime(0);
             setFeedback(null);
             setQuestionNumber(prev => prev + 1);
           } else {
@@ -200,6 +219,17 @@ export default function Grade6DiagnosticPage() {
                             scorePercentage >= 60 ? 'text-blue-600' :
                             scorePercentage >= 40 ? 'text-yellow-600' : 'text-red-600';
 
+    // Calculate total time and average time per question
+    const totalTime = questionTimes.reduce((sum, qt) => sum + qt.timeSpent, 0);
+    const avgTimePerQuestion = totalTime / questionTimes.length;
+
+    // Format time helper
+    const formatTimeReport = (seconds: number) => {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+    };
+
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8">
         <div className="container mx-auto max-w-6xl px-4">
@@ -244,7 +274,7 @@ export default function Grade6DiagnosticPage() {
             </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-6">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -256,7 +286,7 @@ export default function Grade6DiagnosticPage() {
                   📊
                 </div>
                 <div>
-                  <p className="text-gray-600 text-xs sm:text-sm">Questions Answered</p>
+                  <p className="text-gray-600 text-xs sm:text-sm">Questions</p>
                   <p className="text-2xl sm:text-3xl font-bold text-gray-900">{report.totalQuestions}</p>
                 </div>
               </div>
@@ -273,7 +303,7 @@ export default function Grade6DiagnosticPage() {
                   ✅
                 </div>
                 <div>
-                  <p className="text-gray-600 text-xs sm:text-sm">Correct Answers</p>
+                  <p className="text-gray-600 text-xs sm:text-sm">Correct</p>
                   <p className="text-2xl sm:text-3xl font-bold text-green-600">{report.correctCount}</p>
                 </div>
               </div>
@@ -290,12 +320,73 @@ export default function Grade6DiagnosticPage() {
                   💪
                 </div>
                 <div>
-                  <p className="text-gray-600 text-xs sm:text-sm">Avg. Confidence</p>
+                  <p className="text-gray-600 text-xs sm:text-sm">Confidence</p>
                   <p className="text-2xl sm:text-3xl font-bold text-purple-600">{Math.round(report.avgConfidence)}%</p>
                 </div>
               </div>
             </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4 }}
+              className="bg-white rounded-xl shadow-lg p-4 sm:p-6"
+            >
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-100 rounded-lg flex items-center justify-center text-xl sm:text-2xl flex-shrink-0">
+                  ⏱️
+                </div>
+                <div>
+                  <p className="text-gray-600 text-xs sm:text-sm">Total Time</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-orange-600">{formatTimeReport(totalTime)}</p>
+                </div>
+              </div>
+            </motion.div>
           </div>
+
+          {/* Time Breakdown Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+            className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 md:p-8 mb-6"
+          >
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center gap-2">
+              <span>⏱️</span>
+              Time Breakdown
+            </h2>
+
+            <div className="mb-4 p-4 bg-orange-50 rounded-lg border border-orange-200">
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-semibold text-gray-700">Average Time per Question:</span>
+                <span className="text-lg font-bold text-orange-600">{formatTimeReport(avgTimePerQuestion)}</span>
+              </div>
+            </div>
+
+            <div className="space-y-2 max-h-96 overflow-y-auto">
+              {questionTimes.map((qt, idx) => (
+                <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-semibold text-gray-700">Question {idx + 1}</span>
+                    <span className="text-xs px-2 py-1 bg-gray-200 rounded text-gray-600 font-mono">{qt.questionId.substring(0, 8)}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-32 bg-gray-200 rounded-full h-2 hidden sm:block">
+                      <div
+                        className={`h-2 rounded-full transition-all ${
+                          qt.timeSpent < 30 ? 'bg-green-500' :
+                          qt.timeSpent < 60 ? 'bg-yellow-500' :
+                          qt.timeSpent < 120 ? 'bg-orange-500' : 'bg-red-500'
+                        }`}
+                        style={{ width: `${Math.min((qt.timeSpent / 180) * 100, 100)}%` }}
+                      />
+                    </div>
+                    <span className="text-sm font-bold text-gray-900 w-16 text-right">{formatTimeReport(qt.timeSpent)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </div>
     );
@@ -371,6 +462,21 @@ export default function Grade6DiagnosticPage() {
 
   if (!currentItem) return null;
 
+  // Format time as MM:SS
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  // Get color based on time elapsed
+  const getTimerColor = (seconds: number) => {
+    if (seconds < 30) return 'from-green-500 to-emerald-400';
+    if (seconds < 60) return 'from-yellow-500 to-orange-400';
+    if (seconds < 120) return 'from-orange-500 to-red-400';
+    return 'from-red-500 to-pink-500';
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 py-4 sm:py-8">
       <div className="container mx-auto max-w-4xl px-4">
@@ -387,7 +493,28 @@ export default function Grade6DiagnosticPage() {
               <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
                 Question {questionNumber}
               </h2>
-              <div className="flex gap-2 flex-wrap">
+              <div className="flex gap-2 flex-wrap items-center">
+                {/* Timer Display */}
+                {showTimer && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className={`px-3 py-1 bg-gradient-to-r ${getTimerColor(elapsedTime)} text-white rounded-lg font-bold text-sm shadow-lg flex items-center gap-2`}
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>{formatTime(elapsedTime)}</span>
+                  </motion.div>
+                )}
+                {/* Timer Toggle */}
+                <button
+                  onClick={() => setShowTimer(!showTimer)}
+                  className="px-2 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded text-xs transition-colors"
+                  title={showTimer ? "Hide Timer" : "Show Timer"}
+                >
+                  {showTimer ? '👁️' : '👁️‍🗨️'}
+                </button>
                 <span className="px-2 sm:px-3 py-1 bg-blue-100 text-blue-700 rounded text-xs sm:text-sm">
                   {currentItem.difficulty}
                 </span>
