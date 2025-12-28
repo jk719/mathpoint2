@@ -1,13 +1,17 @@
-// Minimal type definition for shared QuestionCard component
-export interface DiagnosticQuestion {
-  id: string;
-  content: string;
-  type: 'multiple-choice' | 'open-ended' | 'multi-select';
-  options?: string[];
-  hint?: string;
-  difficulty?: string;
-  branch?: string;
-}
+// SAT Math types
+export * from './sat';
 
+// User and gamification types
 export * from './user';
 export * from './gamification';
+
+// Legacy diagnostic question type for QuestionCard component
+export interface DiagnosticQuestion {
+  id: string;
+  type: 'multiple-choice' | 'multi-select' | 'open-ended';
+  difficulty: string;
+  branch: string;
+  content: string;
+  options?: string[];
+  hint?: string;
+}

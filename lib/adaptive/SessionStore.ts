@@ -1,8 +1,13 @@
-// Session storage for algebra1 adaptive diagnostic
+// Session storage for SAT adaptive diagnostic
 // This is a simple in-memory store for demo purposes
 // In production, use Redis or a database
 
-import { AdaptiveDiagnosticSession } from '@/types/algebra1-diagnostic';
+// Generic session type for adaptive diagnostics
+interface AdaptiveDiagnosticSession {
+  id: string;
+  startTime: Date;
+  [key: string]: unknown;
+}
 
 class SessionStore {
   private static instance: SessionStore;

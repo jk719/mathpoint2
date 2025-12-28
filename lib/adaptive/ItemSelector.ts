@@ -2,7 +2,6 @@
 // Selects optimal questions based on Expected Information Gain (EIG) and other criteria
 
 import { BayesianKT, SkillMastery } from './BayesianKT';
-import { AlgebraSkill } from '@/data/algebra1-skills';
 
 export interface ItemCandidate {
   id: string;

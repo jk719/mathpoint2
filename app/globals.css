@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
 
 @layer base {
   :root {
@@ -18,7 +18,7 @@
     --card: #ffffff;
     --card-foreground: #1a3a52;
     --muted: #e8e8e8;
-    --muted-foreground: #6b7280;
+    --muted-foreground: #4b5563;
     --border: #d1d5db;
   }
 
@@ -41,7 +41,7 @@
   }
 
   body {
-    font-family: 'Orbitron', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
     background-color: var(--background);
     color: var(--foreground);
     line-height: 1.6;
@@ -52,6 +52,7 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Orbitron', system-ui, -apple-system, sans-serif;
     font-weight: 700;
+    letter-spacing: -0.02em;
   }
 }
 
@@ -84,7 +85,7 @@
   .btn-primary {
     @apply py-3 px-6 rounded-md font-semibold tracking-wide transition-all duration-200 text-white;
     background-color: var(--color-primary);
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Inter', sans-serif;
     box-shadow: 0 3px 8px rgba(26, 58, 82, 0.3);
   }
 
@@ -103,7 +104,7 @@
     @apply py-3 px-6 rounded-md font-semibold tracking-wide transition-all duration-200;
     background-color: var(--color-accent);
     color: white;
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Inter', sans-serif;
     box-shadow: 0 3px 8px rgba(251, 146, 60, 0.3);
   }
 
@@ -132,7 +133,7 @@
   .mathpoint-input {
     @apply w-full p-3 rounded-md transition-all duration-200 text-gray-900 bg-white;
     border: 2px solid var(--color-primary);
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Inter', sans-serif;
   }
 
   .mathpoint-input:focus {

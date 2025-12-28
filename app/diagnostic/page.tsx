@@ -1,124 +1,134 @@
 'use client';
 
-import { useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Clock, TrendingUp, Award, ArrowRight, CheckCircle } from 'lucide-react';
 
-function DiagnosticRouterContent() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const grade = searchParams.get('grade');
+export default function SATDiagnosticPage() {
+  const [isStarting, setIsStarting] = useState(false);
 
-  useEffect(() => {
-    // If grade is 8, automatically redirect to Algebra 1 diagnostic
-    if (grade === '8') {
-      router.push('/algebra1');
-    }
-  }, [grade, router]);
+  const startDiagnostic = () => {
+    setIsStarting(true);
+    // TODO: Initialize diagnostic session and navigate to first question
+    setTimeout(() => {
+      setIsStarting(false);
+      alert('Diagnostic questions will be available once you import them into data/sat-questions.ts');
+    }, 1000);
+  };
 
-  // If grade is 8, show loading state while redirecting
-  if (grade === '8') {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
-        <Card className="max-w-md w-full">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Loading Diagnostic...</CardTitle>
-            <CardDescription>Preparing your Algebra 1 assessment</CardDescription>
-          </CardHeader>
-        </Card>
-      </div>
-    );
-  }
-
-  // For other grades, show coming soon message
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
-      <Card className="max-w-2xl w-full">
-        <CardHeader className="text-center space-y-4">
-          <div className="mx-auto w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">
-            <span className="text-4xl font-bold text-white">{grade}</span>
-          </div>
-          <CardTitle className="text-2xl sm:text-3xl">Grade {grade} Diagnostic</CardTitle>
-          <CardDescription className="text-lg">
-            Coming Soon
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 space-y-3">
-            <h3 className="font-semibold text-blue-900 text-lg">
-              We're expanding our diagnostic system
-            </h3>
-            <p className="text-blue-800">
-              Currently, we offer a comprehensive Algebra 1 adaptive diagnostic (Grade 8).
-              Additional grade levels are in development and will be available soon.
+    <div className="min-h-screen bg-gray-100 py-12 sm:py-16">
+      <div className="container mx-auto px-4 max-w-2xl">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
+        >
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            SAT Math Diagnostic
+          </h1>
+          <p className="text-lg text-gray-600">
+            Identify your weak skills in 15-20 minutes
+          </p>
+        </motion.div>
+
+        {/* Main Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="bg-white rounded-2xl shadow-lg overflow-hidden border-t-4 border-[#ff6b35]"
+        >
+          <div className="p-8">
+            {/* Stats Row */}
+            <div className="flex justify-center gap-8 mb-10 pb-8 border-b border-gray-100">
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-1.5 mb-1">
+                  <Clock className="w-4 h-4 text-[#ff6b35]" />
+                  <span className="text-2xl font-bold text-gray-900">15-20</span>
+                </div>
+                <span className="text-sm text-gray-500">minutes</span>
+              </div>
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-1.5 mb-1">
+                  <TrendingUp className="w-4 h-4 text-[#1a3a52]" />
+                  <span className="text-2xl font-bold text-gray-900">Adaptive</span>
+                </div>
+                <span className="text-sm text-gray-500">questions</span>
+              </div>
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-1.5 mb-1">
+                  <Award className="w-4 h-4 text-[#ff6b35]" />
+                  <span className="text-2xl font-bold text-gray-900">Free</span>
+                </div>
+                <span className="text-sm text-gray-500">report</span>
+              </div>
+            </div>
+
+            {/* What You'll Get */}
+            <div className="mb-10">
+              <h3 className="font-semibold text-gray-900 mb-4">What you'll get:</h3>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-[#ff6b35] mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">Skill-by-skill breakdown of your strengths and weaknesses</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-[#ff6b35] mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">Personalized practice recommendations</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-[#ff6b35] mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">Questions adapt to your level as you go</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Start Button */}
+            <button
+              onClick={startDiagnostic}
+              disabled={isStarting}
+              className="w-full py-4 bg-[#ff6b35] text-white rounded-xl font-semibold text-lg shadow-lg hover:bg-[#e55a2a] transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            >
+              {isStarting ? (
+                'Starting...'
+              ) : (
+                <>
+                  Start Diagnostic
+                  <ArrowRight className="w-5 h-5" />
+                </>
+              )}
+            </button>
+
+            <p className="text-center text-sm text-gray-500 mt-4">
+              No account required. Results saved automatically.
             </p>
           </div>
+        </motion.div>
 
-          <div className="space-y-3">
-            <h4 className="font-semibold text-gray-900">Available Now:</h4>
-            <ul className="space-y-2 text-gray-700">
-              <li className="flex items-center gap-2">
-                <span className="text-green-500">✓</span>
-                <span>Algebra 1 Diagnostic (Grade 8) - 15 adaptive questions</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-500">✓</span>
-                <span>Advanced adaptive algorithm for personalized assessment</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-500">✓</span>
-                <span>Comprehensive skill mapping across 11 domains</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-500">✓</span>
-                <span>Detailed diagnostic reports with mastery levels</span>
-              </li>
-            </ul>
+        {/* Topics Covered */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="mt-8"
+        >
+          <h3 className="text-sm font-medium text-gray-500 mb-4 text-center uppercase tracking-wide">
+            Topics Covered
+          </h3>
+          <div className="flex flex-wrap justify-center gap-2">
+            {['Algebra', 'Problem Solving', 'Advanced Math', 'Geometry'].map((topic) => (
+              <span
+                key={topic}
+                className="px-3 py-1.5 bg-white rounded-full text-sm text-gray-700 border border-gray-200"
+              >
+                {topic}
+              </span>
+            ))}
           </div>
-
-          <div className="flex gap-3 pt-4">
-            <Button
-              onClick={() => router.push('/algebra1')}
-              className="flex-1"
-            >
-              Try Algebra 1 Diagnostic
-            </Button>
-            <Button
-              onClick={() => router.push('/')}
-              variant="outline"
-              className="flex-1"
-            >
-              Back to Home
-            </Button>
-          </div>
-
-          <div className="text-center pt-4 border-t">
-            <p className="text-sm text-gray-600">
-              Interested in early access for your school?{' '}
-              <a href="mailto:contact@mathpoint.com" className="text-blue-600 hover:underline font-medium">
-                Contact us
-              </a>
-            </p>
-          </div>
-        </CardContent>
-      </Card>
+        </motion.div>
+      </div>
     </div>
-  );
-}
-
-export default function DiagnosticRouter() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
-        <Card className="max-w-md w-full">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Loading...</CardTitle>
-          </CardHeader>
-        </Card>
-      </div>
-    }>
-      <DiagnosticRouterContent />
-    </Suspense>
   );
 }

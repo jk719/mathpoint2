@@ -6,8 +6,8 @@ import { Header } from '@/components/layout/Header';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'MathPoint - Adaptive Math Diagnostics',
-  description: 'Intelligent diagnostic system for quadratic equations with personalized learning paths',
+  title: 'MathPoint - SAT Math Diagnostic',
+  description: 'Free SAT Math diagnostic to identify your weak skills, then master them with targeted practice.',
 };
 
 export default function RootLayout({
@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header userPoints={750} userName="Demo User" />
+        <Header />
         <main className="min-h-screen">
           {children}
         </main>

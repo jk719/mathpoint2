@@ -78,6 +78,17 @@ export function MathInput({
     setCursorPosition(e.target.selectionStart || 0);
   };
 
+  // Helper function to display fractions nicely
+  const formatFractionDisplay = (input: string): string | null => {
+    // Match simple fractions like 15/8, 3/4, etc.
+    const fractionMatch = input.match(/^(\d+)\/(\d+)$/);
+    if (fractionMatch) {
+      const [_, numerator, denominator] = fractionMatch;
+      return `${numerator}⁄${denominator}`;
+    }
+    return null;
+  };
+
   const handleKeyboardInput = (insert: string) => {
     if (!inputRef.current) return;
 
@@ -216,6 +227,40 @@ export function MathInput({
           </div>
         </div>
 
+        {/* Fraction Preview Window */}
+        <AnimatePresence>
+          {value && formatFractionDisplay(value) && !error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="mt-2 p-3 bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 rounded-lg"
+            >
+              <div className="flex items-center gap-3">
+                <div className="text-sm font-medium text-blue-700">Preview:</div>
+                {(() => {
+                  const match = value.match(/^(\d+)\/(\d+)$/);
+                  if (match) {
+                    const [_, num, den] = match;
+                    return (
+                      <div className="flex items-center gap-2">
+                        <div className="text-lg font-mono text-gray-600">{value}</div>
+                        <div className="text-blue-500 font-medium">=</div>
+                        <div className="flex flex-col items-center leading-none px-2">
+                          <div className="text-2xl font-bold text-gray-800">{num}</div>
+                          <div className="w-full border-t-2 border-gray-800 my-1"></div>
+                          <div className="text-2xl font-bold text-gray-800">{den}</div>
+                        </div>
+                      </div>
+                    );
+                  }
+                  return null;
+                })()}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Validation feedback */}
         <AnimatePresence>
           {(error || hint || parseResult.suggestions) && (
@@ -231,7 +276,7 @@ export function MathInput({
                   {error}
                 </div>
               )}
-              
+
               {!error && hint && (
                 <div className="text-blue-500 text-sm flex items-center gap-1">
                   <HelpCircle className="w-3 h-3" />
