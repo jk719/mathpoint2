@@ -1,5 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Prisma schema for mathpoint.io — SAT Math Diagnostic Platform
+// https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
@@ -10,307 +10,566 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// User model for authentication and profile
+// =============================================================================
+// USERS
+// =============================================================================
+
 model User {
-  id                String             @id @default(uuid())
-  email             String             @unique
-  name              String?
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+  id String @id @default(uuid())
 
-  diagnosticRuns    DiagnosticRun[]
-  attempts          Attempt[]
-  masteryStates     MasteryState[]
-  badges            UserBadge[]
+  // Auth - optional initially (supports anonymous sessions)
+  email String? @unique
+  name  String?
 
-  @@index([email])
-}
+  // Anonymous session support - users can start without account
+  anonymousId String?   @unique // Browser fingerprint or session ID
+  claimedAt   DateTime? // When anonymous user created account
 
-// Skill model - hierarchical structure for Algebra 1 skills
-model Skill {
-  id                String             @id @default(uuid())
-  code              String             @unique // e.g., "ALG1.LINEAR.ONE_STEP"
-  name              String             // e.g., "One-step linear equations"
-  description       String?
-  domain            String             // e.g., "Equations & Inequalities"
-  category          String             // e.g., "Linear Equations"
-  difficulty        Int                @default(1) // 1-5 scale
-
-  // Hierarchical relationships
-  parentId          String?
-  parent            Skill?             @relation("SkillHierarchy", fields: [parentId], references: [id])
-  children          Skill[]            @relation("SkillHierarchy")
-
-  // Prerequisites (many-to-many)
-  prerequisites     Skill[]            @relation("Prerequisites")
-  dependentSkills   Skill[]            @relation("Prerequisites")
-
-  items             Item[]
-  masteryStates     MasteryState[]
-
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-
-  @@index([code])
-  @@index([domain])
-}
-
-// Item model - enhanced question with IRT parameters
-model Item {
-  id                String             @id @default(uuid())
-  code              String             @unique // e.g., "ALG1_LINEAR_001"
-  stem              String             // Question text (supports LaTeX)
-  format            ItemFormat         // MCQ, NUM, FR, TWO_TIER, ERROR_ANALYSIS
-  difficulty        ItemDifficulty     // low, medium, high
-
-  // IRT Parameters
-  irtA              Float              @default(1.0) // Discrimination
-  irtB              Float              @default(0.0) // Difficulty
-  irtC              Float              @default(0.25) // Guessing
-
-  // Content
-  choices           Json?              // Array of choices with misconception mapping
-  correctAnswer     Json               // Correct answer(s)
-  rubric            Json?              // Scoring rubric for open-ended
-  solution          String?            // Full solution explanation
-  hints             Json?              // Progressive hints
-
-  // Timing
-  timeLimit         Int                @default(120) // seconds
-  avgTimeSpent      Float?             // Average time from attempts
+  // Gamification
+  totalPoints    Int       @default(0)
+  currentStreak  Int       @default(0)
+  longestStreak  Int       @default(0)
+  lastActiveDate DateTime?
 
   // Relations
-  skillId           String
-  skill             Skill              @relation(fields: [skillId], references: [id])
-  misconceptions    ItemMisconception[]
-  attempts          Attempt[]
+  diagnosticSessions DiagnosticSession[]
+  practiceSessions   PracticeSession[]
+  questionResponses  QuestionResponse[]
+  skillMasteries     SkillMastery[]
+  userBadges         UserBadge[]
+  masteryHistory     MasteryHistory[]
 
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([anonymousId])
+  @@index([lastActiveDate])
+}
+
+// =============================================================================
+// SECTIONS & SKILLS — Section → Topic → Pattern → Skill
+// =============================================================================
+
+// The 4 SAT Math sections
+model Section {
+  id          String  @id @default(uuid())
+  name        String  @unique // "Algebra", "Advanced Math", etc.
+  slug        String  @unique // "algebra", "advanced-math", etc.
+  description String?
+  sortOrder   Int     @default(0)
+
+  topics              Topic[]
+  diagnosticSections  DiagnosticSection[]
+  diagnosticQuestions DiagnosticQuestion[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+  @@index([sortOrder])
+}
+
+model Topic {
+  id          String  @id @default(uuid())
+  name        String  @unique // "Linear Equations Two Variables"
+  slug        String  @unique // "linear-equations-two-variables"
+  description String?
+  sortOrder   Int     @default(0)
+
+  // Section relation (required - every topic belongs to a section)
+  sectionId String
+  section   Section @relation(fields: [sectionId], references: [id])
+
+  patterns Pattern[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+  @@index([sectionId])
+}
+
+model Pattern {
+  id          String  @id @default(uuid())
+  name        String // "Perpendicular Lines"
+  slug        String // "perpendicular-lines"
+  description String?
+  sortOrder   Int     @default(0)
+
+  topicId String
+  topic   Topic  @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  skills Skill[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([topicId, slug])
+  @@index([topicId])
+}
+
+model Skill {
+  id          String          @id @default(uuid())
+  code        String          @unique // "linear-eq-perp-nonstandard-hard"
+  variant     String // "From non-standard form"
+  difficulty  SkillDifficulty
+  displayName String // "Perpendicular Lines — Advanced"
+  description String?
+
+  // Pattern relation (Pattern → Topic → Section gives us full hierarchy)
+  patternId String
+  pattern   Pattern @relation(fields: [patternId], references: [id], onDelete: Cascade)
+
+  // Skill dependencies (which skills should be learned first)
+  prerequisites Skill[] @relation("SkillPrerequisites")
+  dependents    Skill[] @relation("SkillPrerequisites")
+
+  // Relations
+  questions      Question[]
+  skillMasteries SkillMastery[]
+  masteryHistory MasteryHistory[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([patternId])
+  @@index([difficulty])
+  @@index([code])
+}
+
+enum SkillDifficulty {
+  Easy
+  Medium
+  Hard
+}
+
+// =============================================================================
+// QUESTIONS
+// =============================================================================
+
+model Question {
+  id             String  @id @default(uuid())
+  collegeBoardId String? @unique // 8-char ID like "db422e7f"
+
+  // Content
+  questionText  String // Supports LaTeX via KaTeX
+  choices       Json // [{label: "A", text: "$y = 3x$"}, ...]
+  correctAnswer String // "A", "B", "C", or "D"
+  explanation   String? // Solution explanation
+
+  // Skill relation
+  skillId String
+  skill   Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  // IRT Parameters (for adaptive selection)
+  irtDiscrimination Float @default(1.0) // How well it differentiates ability
+  irtDifficulty     Float @default(0.0) // -3 to +3 scale
+  irtGuessing       Float @default(0.25) // Probability of guessing correctly
+
+  // Time analysis for guessing detection
+  minReasonableTimeMs Int  @default(8000) // Fastest legitimate solve time (8 sec)
+  expectedTimeMs      Int  @default(60000) // Average expected time (60 sec)
+  timeDataPoints      Int  @default(0) // How many responses collected for calibration
+  actualMedianTimeMs  Int? // Calculated from real response data
+
+  // Metadata
+  estimatedTimeSeconds Int     @default(90)
+  isActive             Boolean @default(true)
+
+  // Relations
+  responses           QuestionResponse[]
+  diagnosticQuestions DiagnosticQuestion[]
+  practiceQuestions   PracticeQuestion[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([skillId])
-  @@index([format])
+  @@index([collegeBoardId])
+  @@index([isActive])
 }
 
-// Misconception library
-model Misconception {
-  id                String             @id @default(uuid())
-  code              String             @unique // e.g., "ALG1-INEQ-FLIP"
-  name              String             // e.g., "Not flipping inequality"
-  description       String             // Detailed description
-  category          String             // e.g., "Inequalities"
-  remediation       String?            // How to address this misconception
+// =============================================================================
+// DIAGNOSTIC SESSIONS
+// =============================================================================
 
-  items             ItemMisconception[]
-  detections        MisconceptionDetection[]
+model DiagnosticSession {
+  id String @id @default(uuid())
 
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([code])
-  @@index([category])
-}
+  // Session state
+  status      SessionStatus @default(IN_PROGRESS)
+  startedAt   DateTime      @default(now())
+  completedAt DateTime?
 
-// Junction table: Items <-> Misconceptions
-model ItemMisconception {
-  itemId            String
-  misconceptionId   String
-  distractor        String?            // Which choice triggers this misconception
-  weight            Float              @default(1.0) // Strength of association
+  // Current section being worked on
+  currentSectionId String?
 
-  item              Item               @relation(fields: [itemId], references: [id])
-  misconception     Misconception      @relation(fields: [misconceptionId], references: [id])
+  // Adaptive config
+  minQuestions Int @default(10)
+  maxQuestions Int @default(25)
 
-  @@id([itemId, misconceptionId])
-  @@index([itemId])
-  @@index([misconceptionId])
-}
+  // Results (populated on completion)
+  totalQuestions Int?
+  correctCount   Int?
+  accuracy       Float? // 0-1
+  totalTimeMs    Int?
 
-// Diagnostic session/run
-model DiagnosticRun {
-  id                String             @id @default(uuid())
-  userId            String
-  user              User               @relation(fields: [userId], references: [id])
+  // Engagement & Quality (for detecting guessing/spam)
+  engagementScore      Float? // 0-1, ratio of valid responses
+  flaggedForReview     Boolean @default(false) // True if engagementScore < 0.7
+  invalidResponseCount Int     @default(0) // Count of RUSHED, GUESSING, SPAM_PATTERN, LOW_ENGAGEMENT
 
-  startTime         DateTime           @default(now())
-  endTime           DateTime?
-  status            DiagnosticStatus   @default(ACTIVE)
+  // Relations
+  questions DiagnosticQuestion[]
+  sections  DiagnosticSection[]
 
-  // Session config
-  maxItems          Int                @default(25)
-  minItems          Int                @default(10)
-  adaptiveMode      Boolean            @default(true)
-
-  // Progress tracking
-  itemsPresented    Json               // Array of item IDs in order
-  currentItemIndex  Int                @default(0)
-
-  // Results
-  finalReport       Json?              // Complete diagnostic report
-  overallMastery    Float?             // 0-1 overall score
-
-  attempts          Attempt[]
-  masteryUpdates    MasteryState[]
-  misconceptionDetections MisconceptionDetection[]
-
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@index([status])
+  @@index([startedAt])
+  @@index([flaggedForReview])
 }
 
-// Individual attempt/response
-model Attempt {
-  id                String             @id @default(uuid())
+// Tracks per-section progress within a diagnostic session
+model DiagnosticSection {
+  id String @id @default(uuid())
 
-  diagnosticRunId   String
-  diagnosticRun     DiagnosticRun      @relation(fields: [diagnosticRunId], references: [id])
+  diagnosticSessionId String
+  diagnosticSession   DiagnosticSession @relation(fields: [diagnosticSessionId], references: [id], onDelete: Cascade)
 
-  userId            String
-  user              User               @relation(fields: [userId], references: [id])
+  sectionId String
+  section   Section @relation(fields: [sectionId], references: [id])
 
-  itemId            String
-  item              Item               @relation(fields: [itemId], references: [id])
+  // Tracking
+  status      SectionStatus @default(NOT_STARTED)
+  startedAt   DateTime?
+  completedAt DateTime?
+  totalTimeMs Int?
 
-  // Response data
-  answerGiven       Json               // Student's answer
-  isCorrect         Boolean
-  partialCredit     Float?             // 0-1 for partial credit
+  // Results
+  questionsAttempted Int @default(0)
+  correctCount       Int @default(0)
 
-  // Rich data collection
-  timeSpentMs       Int                // Time in milliseconds
-  confidence        Int?               // 0-100 confidence level
-  attemptNumber     Int                @default(1)
+  // Engagement tracking
+  engagementScore      Float @default(1.0) // 0-1, calculated from valid responses
+  validResponseCount   Int   @default(0)
+  invalidResponseCount Int   @default(0)
 
-  // Process data
-  keystrokes        Json?              // Keystroke data if available
-  workShown         String?            // Student's work/steps
-  hintUsed          Boolean            @default(false)
+  @@unique([diagnosticSessionId, sectionId])
+  @@index([diagnosticSessionId])
+  @@index([sectionId])
+  @@index([status])
+}
 
-  // Analysis
-  misconceptionsTriggered String[]     // Array of misconception codes
+model DiagnosticQuestion {
+  id String @id @default(uuid())
 
-  createdAt         DateTime           @default(now())
+  diagnosticSessionId String
+  diagnosticSession   DiagnosticSession @relation(fields: [diagnosticSessionId], references: [id], onDelete: Cascade)
 
-  @@index([diagnosticRunId])
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id])
+
+  // Which section this question belongs to
+  sectionId String
+  section   Section @relation(fields: [sectionId], references: [id])
+
+  // Order in the diagnostic
+  sequenceNumber Int
+
+  // Time analysis
+  timeFlag TimeFlag? // NORMAL, SLOW, or RUSHED
+
+  // Response (null if not yet answered)
+  responseId String?           @unique
+  response   QuestionResponse? @relation(fields: [responseId], references: [id])
+
+  presentedAt DateTime @default(now())
+
+  @@unique([diagnosticSessionId, sequenceNumber])
+  @@index([diagnosticSessionId])
+  @@index([questionId])
+  @@index([sectionId])
+  @@index([timeFlag])
+}
+
+enum SectionStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum TimeFlag {
+  NORMAL
+  SLOW // > 2x expectedTimeMs
+  RUSHED // < 0.5x expectedTimeMs
+}
+
+// =============================================================================
+// PRACTICE SESSIONS
+// =============================================================================
+
+model PracticeSession {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // What they're practicing
+  focusType    PracticeFocusType // SKILL, TOPIC, WEAK_AREAS, REVIEW
+  focusSkillId String? // If practicing specific skill
+  focusTopicId String? // If practicing specific topic
+
+  // Session state
+  status      SessionStatus @default(IN_PROGRESS)
+  startedAt   DateTime      @default(now())
+  completedAt DateTime?
+
+  // Results
+  totalQuestions Int?
+  correctCount   Int?
+  pointsEarned   Int  @default(0)
+
+  // Relations
+  questions PracticeQuestion[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@index([userId])
-  @@index([itemId])
+  @@index([status])
+  @@index([focusSkillId])
 }
 
-// Mastery tracking per skill per user
-model MasteryState {
-  id                String             @id @default(uuid())
+model PracticeQuestion {
+  id String @id @default(uuid())
 
-  userId            String
-  user              User               @relation(fields: [userId], references: [id])
+  practiceSessionId String
+  practiceSession   PracticeSession @relation(fields: [practiceSessionId], references: [id], onDelete: Cascade)
 
-  skillId           String
-  skill             Skill              @relation(fields: [skillId], references: [id])
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id])
 
-  // Bayesian Knowledge Tracing parameters
-  pMastery          Float              @default(0.3) // Probability of mastery
-  pInit             Float              @default(0.3) // Initial probability
-  pLearn            Float              @default(0.15) // Learning rate
-  pSlip             Float              @default(0.1) // Slip probability
-  pGuess            Float              @default(0.2) // Guess probability
+  sequenceNumber Int
 
-  // Evidence
-  evidenceCount     Int                @default(0) // Number of attempts
-  correctCount      Int                @default(0)
-  incorrectCount    Int                @default(0)
+  responseId String?           @unique
+  response   QuestionResponse? @relation(fields: [responseId], references: [id])
 
-  // Status
-  masteryLevel      MasteryLevel       // WEAK, DEVELOPING, MASTERED
-  lastUpdated       DateTime           @updatedAt
+  presentedAt DateTime @default(now())
 
-  // Link to diagnostic run if applicable
-  diagnosticRunId   String?
-  diagnosticRun     DiagnosticRun?     @relation(fields: [diagnosticRunId], references: [id])
-
-  @@unique([userId, skillId])
-  @@index([userId])
-  @@index([skillId])
-  @@index([masteryLevel])
+  @@unique([practiceSessionId, sequenceNumber])
+  @@index([practiceSessionId])
+  @@index([questionId])
 }
 
-// Misconception detection tracking
-model MisconceptionDetection {
-  id                String             @id @default(uuid())
-
-  diagnosticRunId   String
-  diagnosticRun     DiagnosticRun      @relation(fields: [diagnosticRunId], references: [id])
-
-  misconceptionId   String
-  misconception     Misconception      @relation(fields: [misconceptionId], references: [id])
-
-  // Evidence
-  frequency         Float              // How often it appeared (0-1)
-  confidence        Float              // Confidence in detection (0-1)
-  evidenceItems     String[]           // Item IDs where detected
-
-  detectedAt        DateTime           @default(now())
-
-  @@unique([diagnosticRunId, misconceptionId])
-  @@index([diagnosticRunId])
-  @@index([misconceptionId])
+enum PracticeFocusType {
+  SKILL // Practice specific skill
+  TOPIC // Practice entire topic
+  WEAK_AREAS // System-recommended weak skills
+  REVIEW // Review mastered skills
 }
 
-// Badge/Achievement system
-model Badge {
-  id                String             @id @default(uuid())
-  code              String             @unique
-  name              String
-  description       String
-  imageUrl          String?
-  category          String
-  requirement       Json               // Criteria for earning
-  points            Int                @default(10)
-
-  userBadges        UserBadge[]
-
-  createdAt         DateTime           @default(now())
-}
-
-model UserBadge {
-  userId            String
-  user              User               @relation(fields: [userId], references: [id])
-
-  badgeId           String
-  badge             Badge              @relation(fields: [badgeId], references: [id])
-
-  earnedAt          DateTime           @default(now())
-
-  @@id([userId, badgeId])
-  @@index([userId])
-  @@index([badgeId])
-}
-
-// Enums
-enum ItemFormat {
-  MCQ              // Multiple choice
-  NUM              // Numerical input
-  FR               // Free response
-  TWO_TIER         // Answer + reasoning
-  ERROR_ANALYSIS   // Find and fix errors
-  MULTI_STEP       // Step-by-step solution
-}
-
-enum ItemDifficulty {
-  LOW
-  MEDIUM
-  HIGH
-}
-
-enum DiagnosticStatus {
-  ACTIVE
-  PAUSED
+enum SessionStatus {
+  IN_PROGRESS
   COMPLETED
   ABANDONED
 }
 
+// =============================================================================
+// QUESTION RESPONSES — Tracks every answer attempt
+// =============================================================================
+
+model QuestionResponse {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id])
+
+  // Response data
+  selectedAnswer String // "A", "B", "C", or "D"
+  isCorrect      Boolean
+  timeSpentMs    Int
+  confidence     Int? // 0-100 self-reported confidence
+
+  // Quality & Time analysis
+  responseQuality ResponseQuality @default(VALID)
+  timeFlag        TimeFlag? // NORMAL, SLOW, or RUSHED
+  avgTimeForSkill Int? // Average time for this skill (for comparison)
+
+  // Context (which session was this from)
+  context ResponseContext
+
+  // Reverse relations
+  diagnosticQuestion DiagnosticQuestion?
+  practiceQuestion   PracticeQuestion?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([questionId])
+  @@index([userId, questionId])
+  @@index([createdAt])
+  @@index([timeFlag])
+  @@index([responseQuality])
+}
+
+enum ResponseContext {
+  DIAGNOSTIC
+  PRACTICE
+  REVIEW
+}
+
+// Response quality for detecting guessing/gaming behavior
+enum ResponseQuality {
+  VALID // Normal response, trust it for mastery calculation
+  RUSHED // Response < 5000ms (can't even read the question)
+  GUESSING // Response < question.minReasonableTimeMs (too fast to solve)
+  SPAM_PATTERN // Part of 4+ consecutive same-answer streak
+  LOW_ENGAGEMENT // Part of 5+ fast wrong answers in a row
+}
+
+// =============================================================================
+// SKILL MASTERY — Bayesian Knowledge Tracing per user per skill
+// =============================================================================
+
+model SkillMastery {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  skillId String
+  skill   Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  // BKT Parameters
+  pMastery Float @default(0.3) // Current probability of mastery (0-1)
+  pLearn   Float @default(0.15) // Learning rate
+  pSlip    Float @default(0.1) // Error despite knowing
+  pGuess   Float @default(0.2) // Correct guess without knowing
+
+  // Evidence counts
+  totalAttempts Int @default(0)
+  correctCount  Int @default(0)
+
+  // Derived level
+  level MasteryLevel @default(WEAK)
+
+  // Time analysis
+  avgTimeMs       Int? // Average time spent on this skill (ms)
+  timeConsistency Float? // Standard deviation - are they consistent?
+
+  // Timestamps
+  firstAttemptAt DateTime?
+  lastAttemptAt  DateTime?
+  updatedAt      DateTime  @updatedAt
+
+  @@unique([userId, skillId])
+  @@index([userId])
+  @@index([skillId])
+  @@index([level])
+  @@index([pMastery])
+}
+
 enum MasteryLevel {
-  WEAK        // < 0.6
-  DEVELOPING  // 0.6 - 0.84
-  MASTERED    // >= 0.85
+  WEAK // pMastery < 0.6
+  DEVELOPING // 0.6 <= pMastery < 0.85
+  MASTERED // pMastery >= 0.85
+}
+
+// =============================================================================
+// MASTERY HISTORY — Track mastery changes over time for progress graphs
+// =============================================================================
+
+model MasteryHistory {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  skillId String
+  skill   Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  pMastery Float // Mastery at this point
+  level    MasteryLevel
+
+  // What triggered this update
+  trigger MasteryTrigger
+
+  recordedAt DateTime @default(now())
+
+  @@index([userId, skillId])
+  @@index([userId, recordedAt])
+  @@index([recordedAt])
+}
+
+enum MasteryTrigger {
+  DIAGNOSTIC_COMPLETE
+  PRACTICE_QUESTION
+  DAILY_DECAY // If implementing mastery decay
+}
+
+// =============================================================================
+// GAMIFICATION — Badges
+// =============================================================================
+
+model Badge {
+  id          String  @id @default(uuid())
+  code        String  @unique // "first-diagnostic", "streak-7"
+  name        String // "First Steps"
+  description String // "Complete your first diagnostic"
+  imageUrl    String?
+
+  // Badge metadata
+  category BadgeCategory
+  rarity   BadgeRarity
+  points   Int           @default(10)
+
+  // Requirement (JSON spec for BadgeEngine)
+  requirement Json // {type: "diagnostic_count", value: 1}
+
+  userBadges UserBadge[]
+
+  createdAt DateTime @default(now())
+
+  @@index([category])
+  @@index([rarity])
+}
+
+model UserBadge {
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  badgeId String
+  badge   Badge  @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  earnedAt DateTime @default(now())
+
+  @@id([userId, badgeId])
+  @@index([userId])
+  @@index([earnedAt])
+}
+
+enum BadgeCategory {
+  DIAGNOSTIC
+  PRACTICE
+  MASTERY
+  STREAK
+  SPECIAL
+}
+
+enum BadgeRarity {
+  COMMON
+  UNCOMMON
+  RARE
+  EPIC
+  LEGENDARY
 }

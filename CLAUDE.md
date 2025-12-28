@@ -4,19 +4,39 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-MathPoint is an adaptive SAT Math diagnostics application built with Next.js 15. It features a skill-based assessment system that identifies specific SAT Math skills students need to work on, with Bayesian Knowledge Tracing for skill mastery estimation.
+**mathpoint.io** — An SAT Math platform that diagnoses student weaknesses at an unprecedented level of detail.
 
-The application uses gamification elements, mock database for demo deployment, and can switch to PostgreSQL via Prisma ORM for production.
+### How It Works
+1. Student takes a 15-20 minute adaptive diagnostic
+2. System identifies exactly which micro-skills they're missing — across 19 topics and ~2,000+ questions, all personally analyzed and tagged by pattern, variant, and difficulty
+3. Student sees a clear skill checklist showing strengths and weaknesses
+4. System prescribes a practice sequence — ordered by skill dependencies and SAT point recovery potential
+5. Student practices with adaptive questions targeting their specific gaps
+
+### The Insight
+SAT difficulty isn't about harder math — it's about cognitive approach. Hard questions reward pattern recognition over computation. The platform teaches students to see what the SAT is actually testing.
+
+### Current Status
+- 3 topics complete (~125 questions imported)
+- 16 topics remaining (~1,600+ questions)
+- Platform structure built, diagnostic UI exists
+
+### Tech Stack
+- Next.js 15 with App Router
+- PostgreSQL + Prisma ORM (production) / Mock data (demo)
+- Tailwind CSS v4, Radix UI, shadcn/ui
+- KaTeX for LaTeX math rendering
+- Zustand for state, Framer Motion for animations
+- Bayesian Knowledge Tracing for skill mastery estimation
 
 ## Common Commands
 
-### Development
 ```bash
 npm run dev          # Start development server on http://localhost:3000
 npm run build        # Build for production
 npm run start        # Start production server
 npm run lint         # Run ESLint
-npx tsc             # Run TypeScript type checking
+npx tsc              # Run TypeScript type checking
 ```
 
 ### Database (when using PostgreSQL - currently using mock)
@@ -30,30 +50,23 @@ npx prisma studio      # Open Prisma Studio GUI
 
 ### Core Systems
 
-**Adaptive Engine** (`lib/adaptive/`)
-- `BayesianKT.ts`: Bayesian Knowledge Tracing for skill mastery estimation
-- `ItemSelector.ts`: Adaptive item selection using IRT and CAT algorithms
+**Adaptive Engine** (`lib/adaptive/`):
+- `BayesianKT.ts`: Bayesian Knowledge Tracing — updates skill mastery probabilities based on student responses using Bayes' rule with slip/guess/learn parameters
+- `ItemSelector.ts`: Adaptive item selection using Expected Information Gain (EIG) and 3-parameter IRT model — selects questions that maximize uncertainty reduction
 - `SessionStore.ts`: Session management for diagnostic sessions
 
-**Math Input System** (`lib/math-input/`)
+**Math Input System** (`lib/math-input/`):
 - `MathParser.ts`: Parses and validates mathematical expressions
 - Supports LaTeX rendering via KaTeX
 
 ### Data Architecture
 
-**SAT Math Skills** (`data/sat-skills.ts`):
-- Skills are organized by topic, pattern, variant, and difficulty
-- Each skill has a displayName shown to students
-- Skills will be populated as questions are imported
+**Skills** (`data/sat-skills.ts`): Organized by topic → pattern → variant → difficulty. Each skill has a `displayName` shown to students.
 
-**SAT Math Questions** (`data/sat-questions.ts`):
-- Questions are linked to skills via skillId
-- Each question has choices (A, B, C, D) and a correctAnswer
-- Optional collegeBoardId for College Board question mapping
+**Questions** (`data/sat-questions.ts`): Linked to skills via `skillId`. Each question has choices (A, B, C, D), `correctAnswer`, and optional `collegeBoardId`.
 
-### Type System (`types/`)
+### Type System (`types/sat.ts`)
 
-**SAT Types** (`types/sat.ts`):
 ```typescript
 type SATSkill = {
   id: string
@@ -74,28 +87,8 @@ type SATQuestion = {
 }
 ```
 
-### Navigation & Routing
-
-**App Flow**: Landing → Diagnostic → Results → Practice → Dashboard
-
-**Routes**:
-- `/` → Landing page with SAT Math focus
-- `/diagnostic` → SAT Math diagnostic assessment
-- `/practice` → Targeted skill practice
-- `/dashboard` → Progress tracking and skill mastery
-
-### Component Structure
-- `components/ui/`: Shadcn/ui components (Button, Card, Progress, etc.)
-- `components/diagnostic/`: QuestionCard for displaying questions
-- `components/math-input/`: MathKeyboard, MathInput, MathPreview
-- `components/gamification/`: PointsDisplay, BadgeDisplay, StreakCounter
-- `components/layout/`: PageLayout, Header
-
-### Gamification System
-- Points: Earned for completing diagnostics and practice
-- Badges: Defined in `data/badges.ts` with requirements and rarity levels
-- BadgeEngine (`lib/gamification/BadgeEngine.ts`): Awards badges based on progress
-- Streaks: Track consecutive days of practice
+### App Flow
+Landing (`/`) → Diagnostic (`/diagnostic`) → Results → Practice (`/practice`) → Dashboard (`/dashboard`)
 
 ## Adding SAT Questions
 
@@ -103,17 +96,16 @@ To add questions, populate the arrays in:
 1. `data/sat-skills.ts` - Add skill definitions
 2. `data/sat-questions.ts` - Add questions linked to skills
 
-Example skill:
-```typescript
-{
-  id: 'linear-eq-perp-lines-nonstandard',
-  topic: 'Linear Equations Two Variables',
-  pattern: 'Perpendicular Lines',
-  variant: 'From non-standard form',
-  difficulty: 'Hard',
-  displayName: 'Perpendicular Lines — Advanced',
-}
-```
+### LaTeX in Questions
+
+**Critical: Escape backslashes in TypeScript strings.**
+
+| Math | In TypeScript |
+|------|---------------|
+| `\frac{3}{4}` | `\\frac{3}{4}` |
+| `x^2` | `x^2` (no escaping needed) |
+| `\sqrt{x}` | `\\sqrt{x}` |
+| `1,000` with proper spacing | `1{,}000` |
 
 Example question:
 ```typescript
@@ -136,14 +128,4 @@ Example question:
 
 The application is configured for demo deployment without a database:
 - Mock data implementation allows deployment without PostgreSQL
-- To switch to production database: Replace mock implementation in `lib/database/queries.ts` with Prisma client
-
-## Key Technologies
-
-- **Framework**: Next.js 15 with App Router
-- **Database**: Mock implementation (demo) / PostgreSQL + Prisma ORM (production)
-- **Styling**: Tailwind CSS v4
-- **Math**: KaTeX for LaTeX equations
-- **UI Components**: Radix UI primitives with shadcn/ui
-- **State**: Zustand for client state management
-- **Animations**: Framer Motion
+- To switch to production: Replace mock implementation in `lib/database/queries.ts` with Prisma client

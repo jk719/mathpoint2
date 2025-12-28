@@ -686,6 +686,863 @@ export const satQuestions: SATQuestion[] = [
     correctAnswer: 'A',
     collegeBoardId: '39571c77',
   },
+
+  // ============================================
+  // Linear Equations in Two Variables - Medium
+  // ============================================
+
+  // Perpendicular Lines (from standard form)
+  {
+    id: 'q-01682aa5',
+    skillId: 'linear-eq-perp-standard-medium',
+    questionText: 'Line $p$ is defined by $2y + 18x = 9$. Line $r$ is perpendicular to line $p$ in the xy-plane. What is the slope of line $r$?',
+    choices: [
+      { label: 'A', text: '$-9$' },
+      { label: 'B', text: '$-\\frac{1}{9}$' },
+      { label: 'C', text: '$\\frac{1}{9}$' },
+      { label: 'D', text: '$9$' },
+    ],
+    correctAnswer: 'C',
+    collegeBoardId: '01682aa5',
+  },
+  {
+    id: 'q-92aa3a94',
+    skillId: 'linear-eq-perp-standard-medium',
+    questionText: 'Line $k$ is defined by $y = 7x + \\frac{1}{8}$. Line $j$ is perpendicular to line $k$ in the xy-plane. What is the slope of line $j$?',
+    choices: [
+      { label: 'A', text: '$-8$' },
+      { label: 'B', text: '$-\\frac{1}{7}$' },
+      { label: 'C', text: '$\\frac{1}{8}$' },
+      { label: 'D', text: '$7$' },
+    ],
+    correctAnswer: 'B',
+    collegeBoardId: '92aa3a94',
+  },
+
+  // Interpretation (variable/term meaning)
+  {
+    id: 'q-9b0a4eae',
+    skillId: 'linear-eq-interp-variable-medium',
+    questionText: 'The graph in the xy-plane models the possible combinations of length $x$, in meters (m), and width $y$, in meters, for a rectangle with a perimeter of $36$ m. Which statement is the best interpretation of the point $(8, 10)$ in this context?',
+    choices: [
+      { label: 'A', text: 'The length is $10$ m less than the perimeter, and the width is $8$ m less than the perimeter.' },
+      { label: 'B', text: 'The length is $10$ m, and the width is $8$ m.' },
+      { label: 'C', text: 'The length is $8$ m, and the width is $10$ m.' },
+      { label: 'D', text: 'The length is $8$ m less than the perimeter, and the width is $10$ m less than the perimeter.' },
+    ],
+    correctAnswer: 'C',
+    collegeBoardId: '9b0a4eae',
+  },
+  {
+    id: 'q-3c03cbd8',
+    skillId: 'linear-eq-interp-variable-medium',
+    questionText: 'A certain township consists of a $5$-hectare industrial park and a $24$-hectare neighborhood. The total number of trees in the township is $4{,}529$. The equation $5x + 24y = 4{,}529$ represents this situation. Which of the following is the best interpretation of $x$ in this context?',
+    choices: [
+      { label: 'A', text: 'The average number of trees per hectare in the industrial park' },
+      { label: 'B', text: 'The average number of trees per hectare in the neighborhood' },
+      { label: 'C', text: 'The total number of trees in the industrial park' },
+      { label: 'D', text: 'The total number of trees in the neighborhood' },
+    ],
+    correctAnswer: 'A',
+    collegeBoardId: '3c03cbd8',
+  },
+  {
+    id: 'q-df78b361',
+    skillId: 'linear-eq-interp-variable-medium',
+    questionText: 'Lily made $36$ cups of jam. Lily then filled $x$ small containers and $y$ large containers with all the jam she made. The equation $4x + 6y = 36$ represents this situation. Which is the best interpretation of $6y$ in this context?',
+    choices: [
+      { label: 'A', text: 'The number of large containers Lily filled' },
+      { label: 'B', text: 'The number of small containers Lily filled' },
+      { label: 'C', text: 'The total number of cups of jam in the large containers' },
+      { label: 'D', text: 'The total number of cups of jam in the small containers' },
+    ],
+    correctAnswer: 'C',
+    collegeBoardId: 'df78b361',
+  },
+  {
+    id: 'q-483d208d',
+    skillId: 'linear-eq-interp-variable-medium',
+    questionText: 'At a state fair, attendees can win tokens that are worth a different number of points depending on the shape. One attendee won $S$ square tokens and $C$ circle tokens worth a total of $1{,}120$ points. The equation $80S + 90C = 1{,}120$ represents this situation. How many more points is a circle token worth than a square token?',
+    choices: [
+      { label: 'A', text: '$950$' },
+      { label: 'B', text: '$90$' },
+      { label: 'C', text: '$80$' },
+      { label: 'D', text: '$10$' },
+    ],
+    correctAnswer: 'D',
+    collegeBoardId: '483d208d',
+  },
+  {
+    id: 'q-2e1a7f66',
+    skillId: 'linear-eq-interp-variable-medium',
+    questionText: 'Figure A and figure B are both regular polygons. The sum of the perimeter of figure A and the perimeter of figure B is $63$ inches. The equation $3x + 6y = 63$ represents this situation, where $x$ is the number of sides of figure A and $y$ is the number of sides of figure B. Which statement is the best interpretation of $6$ in this context?',
+    choices: [
+      { label: 'A', text: 'Each side of figure B has a length of $6$ inches.' },
+      { label: 'B', text: 'The number of sides of figure B is $6$.' },
+      { label: 'C', text: 'Each side of figure A has a length of $6$ inches.' },
+      { label: 'D', text: 'The number of sides of figure A is $6$.' },
+    ],
+    correctAnswer: 'A',
+    collegeBoardId: '2e1a7f66',
+  },
+  {
+    id: 'q-038d87d7',
+    skillId: 'linear-eq-interp-variable-medium',
+    questionText: 'A neighborhood consists of a $2$-hectare park and a $35$-hectare residential area. The total number of trees in the neighborhood is $3{,}934$. The equation $2x + 35y = 3{,}934$ represents this situation. Which of the following is the best interpretation of $x$ in this context?',
+    choices: [
+      { label: 'A', text: 'The average number of trees per hectare in the park' },
+      { label: 'B', text: 'The average number of trees per hectare in the residential area' },
+      { label: 'C', text: 'The total number of trees in the park' },
+      { label: 'D', text: 'The total number of trees in the residential area' },
+    ],
+    correctAnswer: 'A',
+    collegeBoardId: '038d87d7',
+  },
+  {
+    id: 'q-400798d6',
+    skillId: 'linear-eq-interp-variable-medium',
+    questionText: 'In triangle $QRS$, sides $\\overline{QR}$ and $\\overline{RS}$ each have a length of $x$ centimeters and side $\\overline{SQ}$ has a length of $y$ centimeters. The given equation $2x + y = 37$ represents this situation. Which of the following is the best interpretation of $37$ in this context?',
+    choices: [
+      { label: 'A', text: 'The difference, in centimeters, between the lengths of sides $\\overline{QR}$ and $\\overline{SQ}$' },
+      { label: 'B', text: 'The difference, in centimeters, between the lengths of sides $\\overline{QR}$ and $\\overline{RS}$' },
+      { label: 'C', text: 'The sum of the lengths, in centimeters, of the three sides of the triangle' },
+      { label: 'D', text: 'The length, in centimeters, of one of the two sides of equal length' },
+    ],
+    correctAnswer: 'C',
+    collegeBoardId: '400798d6',
+  },
+
+  // Parallel Lines (from standard/slope-intercept form)
+  {
+    id: 'q-0451d754',
+    skillId: 'linear-eq-parallel-standard-medium',
+    questionText: 'Line $k$ is defined by $y = \\frac{17}{7}x + 4$. Line $j$ is parallel to line $k$ in the xy-plane. What is the slope of line $j$?',
+    choices: [
+      { label: 'A', text: '$\\frac{7}{17}$' },
+      { label: 'B', text: '$\\frac{17}{7}$' },
+      { label: 'C', text: '$4$' },
+      { label: 'D', text: '$17$' },
+    ],
+    correctAnswer: 'B',
+    collegeBoardId: '0451d754',
+  },
+  {
+    id: 'q-c39dbbdf',
+    skillId: 'linear-eq-parallel-standard-medium',
+    questionText: 'Line $r$ is defined by the equation $4x - 9y = 3$. Line $s$ is parallel to line $r$ in the xy-plane. What is the slope of line $s$?',
+    choices: [
+      { label: 'A', text: '$\\frac{9}{4}$' },
+      { label: 'B', text: '$\\frac{4}{9}$' },
+      { label: 'C', text: '$-4$' },
+      { label: 'D', text: '$-9$' },
+    ],
+    correctAnswer: 'B',
+    collegeBoardId: 'c39dbbdf',
+  },
+  {
+    id: 'q-63be6c9a',
+    skillId: 'linear-eq-parallel-standard-medium',
+    questionText: 'In the xy-plane, line $s$ passes through the point $(0, 0)$ and is parallel to the line represented by the equation $y = 18x + 2$. If line $s$ also passes through the point $(4, d)$, what is the value of $d$?',
+    choices: [
+      { label: 'A', text: '$2$' },
+      { label: 'B', text: '$18$' },
+      { label: 'C', text: '$72$' },
+      { label: 'D', text: '$74$' },
+    ],
+    correctAnswer: 'C',
+    collegeBoardId: '63be6c9a',
+  },
+
+  // Slope Calculation
+  {
+    id: 'q-51568fb9',
+    skillId: 'linear-eq-slope-calc-medium',
+    questionText: 'What is the slope of the graph of $10x - 5y = -12$ in the xy-plane?',
+    choices: [
+      { label: 'A', text: '$-2$' },
+      { label: 'B', text: '$-\\frac{5}{6}$' },
+      { label: 'C', text: '$\\frac{5}{6}$' },
+      { label: 'D', text: '$2$' },
+    ],
+    correctAnswer: 'D',
+    collegeBoardId: '51568fb9',
+  },
+  {
+    id: 'q-265f2a53',
+    skillId: 'linear-eq-slope-calc-medium',
+    questionText: 'When line $n$ is graphed in the xy-plane, it has an x-intercept of $(-4, 0)$ and a y-intercept of $(0, \\frac{86}{3})$. What is the slope of line $n$?',
+    choices: [
+      { label: 'A', text: '$\\frac{3}{344}$' },
+      { label: 'B', text: '$\\frac{6}{43}$' },
+      { label: 'C', text: '$\\frac{43}{6}$' },
+      { label: 'D', text: '$\\frac{344}{3}$' },
+    ],
+    correctAnswer: 'C',
+    collegeBoardId: '265f2a53',
+  },
+  {
+    id: 'q-6f6dfe3e',
+    skillId: 'linear-eq-slope-calc-medium',
+    questionText: 'The table shows three values of $x$ and their corresponding values of $y$, where $n$ is a constant, for the linear relationship between $x$ and $y$: when $x = -6$, $y = n + 184$; when $x = -3$, $y = n + 92$; when $x = 0$, $y = n$. What is the slope of the line that represents this relationship in the xy-plane?',
+    choices: [
+      { label: 'A', text: '$-\\frac{92}{3}$' },
+      { label: 'B', text: '$-\\frac{3}{92}$' },
+      { label: 'C', text: '$\\frac{n + 92}{-3}$' },
+      { label: 'D', text: '$\\frac{2n - 92}{3}$' },
+    ],
+    correctAnswer: 'A',
+    collegeBoardId: '6f6dfe3e',
+  },
+
+  // Equation Building (from points or slope+point)
+  {
+    id: 'q-9f3cb472',
+    skillId: 'linear-eq-equation-build-medium',
+    questionText: 'Line $t$ in the xy-plane has a slope of $-\\frac{1}{3}$ and passes through the point $(9, 10)$. Which equation defines line $t$?',
+    choices: [
+      { label: 'A', text: '$y = 13x - \\frac{1}{3}$' },
+      { label: 'B', text: '$y = 9x + 10$' },
+      { label: 'C', text: '$y = -\\frac{x}{3} + 10$' },
+      { label: 'D', text: '$y = -\\frac{x}{3} + 13$' },
+    ],
+    correctAnswer: 'D',
+    collegeBoardId: '9f3cb472',
+  },
+  {
+    id: 'q-d7c8ba0b',
+    skillId: 'linear-eq-equation-build-medium',
+    questionText: 'In the xy-plane, line $t$ passes through the points $(0, 9)$ and $(1, 17)$. Which equation defines line $t$?',
+    choices: [
+      { label: 'A', text: '$y = \\frac{1}{8}x + 9$' },
+      { label: 'B', text: '$y = x + \\frac{1}{8}$' },
+      { label: 'C', text: '$y = x + 8$' },
+      { label: 'D', text: '$y = 8x + 9$' },
+    ],
+    correctAnswer: 'D',
+    collegeBoardId: 'd7c8ba0b',
+  },
+  {
+    id: 'q-f81a0503',
+    skillId: 'linear-eq-equation-build-medium',
+    questionText: 'In the xy-plane, line $k$ passes through the points $(0, -5)$ and $(1, -1)$. Which equation defines line $k$?',
+    choices: [
+      { label: 'A', text: '$y = -x + \\frac{1}{4}$' },
+      { label: 'B', text: '$y = \\frac{1}{4}x - 5$' },
+      { label: 'C', text: '$y = -x + 4$' },
+      { label: 'D', text: '$y = 4x - 5$' },
+    ],
+    correctAnswer: 'D',
+    collegeBoardId: 'f81a0503',
+  },
+
+  // Substitution (multi-step)
+  {
+    id: 'q-7625073d',
+    skillId: 'linear-eq-subst-multi-medium',
+    questionText: 'The equation $7g + 7b = 840$ represents the number of blue tiles, $b$, and the number of green tiles, $g$, an artist needs for an $840$-square-inch tile project. The artist needs $71$ blue tiles for the project. How many green tiles does he need?',
+    choices: [],
+    correctAnswer: '49',
+    collegeBoardId: '7625073d',
+  },
+  {
+    id: 'q-c5e38487',
+    skillId: 'linear-eq-subst-multi-medium',
+    questionText: 'A chemist combines water and acetic acid to make a mixture with a volume of $56$ milliliters (mL). The volume of acetic acid in the mixture is $10$ mL. What is the volume of water, in mL, in the mixture? (Assume that the volume of the mixture is the sum of the volumes of water and acetic acid before they were mixed.)',
+    choices: [],
+    correctAnswer: '46',
+    collegeBoardId: 'c5e38487',
+  },
+  {
+    id: 'q-637022d2',
+    skillId: 'linear-eq-subst-multi-medium',
+    questionText: 'The given equation $2.5b + 5r = 80$ describes the relationship between the number of birds, $b$, and the number of reptiles, $r$, that can be cared for at a pet care business on a given day. If the business cares for $16$ reptiles on a given day, how many birds can it care for on this day?',
+    choices: [
+      { label: 'A', text: '$0$' },
+      { label: 'B', text: '$5$' },
+      { label: 'C', text: '$40$' },
+      { label: 'D', text: '$80$' },
+    ],
+    correctAnswer: 'A',
+    collegeBoardId: '637022d2',
+  },
+  {
+    id: 'q-99ea3715',
+    skillId: 'linear-eq-subst-multi-medium',
+    questionText: 'If the graph of $27x + 33y = 297$ is shifted down $5$ units in the xy-plane, what is the y-intercept of the resulting graph?',
+    choices: [
+      { label: 'A', text: '$(0, 4)$' },
+      { label: 'B', text: '$(0, 6)$' },
+      { label: 'C', text: '$(0, 14)$' },
+      { label: 'D', text: '$(0, 28)$' },
+    ],
+    correctAnswer: 'A',
+    collegeBoardId: '99ea3715',
+  },
+
+  // Table to Equation
+  {
+    id: 'q-bbb0359a',
+    skillId: 'linear-eq-table-to-eq-medium',
+    questionText: 'The table shows three values of $x$ and their corresponding values of $y$: when $x = 1$, $y = 11$; when $x = 2$, $y = 16$; when $x = 3$, $y = 21$. Which equation represents the linear relationship between $x$ and $y$?',
+    choices: [
+      { label: 'A', text: '$y = 5x + 6$' },
+      { label: 'B', text: '$y = 5x + 11$' },
+      { label: 'C', text: '$y = 6x + 5$' },
+      { label: 'D', text: '$y = 6x + 11$' },
+    ],
+    correctAnswer: 'A',
+    collegeBoardId: 'bbb0359a',
+  },
+  {
+    id: 'q-606cdce7',
+    skillId: 'linear-eq-table-to-eq-medium',
+    questionText: 'The table shows four values of $x$ and their corresponding values of $y$: when $x = -6$, $y = 65$; when $x = -3$, $y = 56$; when $x = 3$, $y = 38$; when $x = 6$, $y = 29$. There is a linear relationship between $x$ and $y$. Which of the following equations represents this relationship?',
+    choices: [
+      { label: 'A', text: '$9x + 3y = 141$' },
+      { label: 'B', text: '$9x + 3y = 3$' },
+      { label: 'C', text: '$3x + 9y = 141$' },
+      { label: 'D', text: '$3x + 9y = 3$' },
+    ],
+    correctAnswer: 'A',
+    collegeBoardId: '606cdce7',
+  },
+  {
+    id: 'q-d62ad380',
+    skillId: 'linear-eq-table-to-eq-medium',
+    questionText: 'An artist paints and sells square tiles. The selling price $P$, in dollars, of a painted tile is a linear function of the side length of the tile $s$, in inches, as shown in the table: when $s = 3$, $P = 8.00$; when $s = 6$, $P = 18.00$; when $s = 9$, $P = 28.00$. Which of the following could define the relationship between $s$ and $P$?',
+    choices: [
+      { label: 'A', text: '$P = 3s + 10$' },
+      { label: 'B', text: '$P = \\frac{10}{3}s + 8$' },
+      { label: 'C', text: '$P = \\frac{10}{3}s - 2$' },
+      { label: 'D', text: '$P = \\frac{3}{10}s - \\frac{1}{10}$' },
+    ],
+    correctAnswer: 'C',
+    collegeBoardId: 'd62ad380',
+  },
+
+  // Graph to Equation
+  {
+    id: 'q-c307283c',
+    skillId: 'linear-eq-graph-standard-medium',
+    questionText: '[Graph showing a line passing through $(-8, 0)$ and $(0, -8)$]\n\nWhat is an equation of the graph shown?',
+    choices: [
+      { label: 'A', text: '$y = -2x - 8$' },
+      { label: 'B', text: '$y = x - 8$' },
+      { label: 'C', text: '$y = -x - 8$' },
+      { label: 'D', text: '$y = 2x - 8$' },
+    ],
+    correctAnswer: 'C',
+    collegeBoardId: 'c307283c',
+  },
+  {
+    id: 'q-2e0290c3',
+    skillId: 'linear-eq-graph-standard-medium',
+    questionText: '[Graph showing stocks relationship with y-intercept at 40 and x-intercept at 60]\n\nThe graph shows the relationship between the number of shares of stock from Company A, $x$, and the number of shares of stock from Company B, $y$, that Simone can purchase. Which equation could represent this relationship?',
+    choices: [
+      { label: 'A', text: '$y = 8x + 12$' },
+      { label: 'B', text: '$8x + 12y = 480$' },
+      { label: 'C', text: '$y = 12x + 8$' },
+      { label: 'D', text: '$12x + 8y = 480$' },
+    ],
+    correctAnswer: 'B',
+    collegeBoardId: '2e0290c3',
+  },
+  {
+    id: 'q-00b9bd37',
+    skillId: 'linear-eq-graph-standard-medium',
+    questionText: '[Graph showing relationship between T-shirts and sweatshirts with y-intercept ~35 and x-intercept ~90]\n\nThe graph models the relationship between the number of T-shirts, $x$, and the number of sweatshirts, $y$, that Kira can purchase for a school fundraiser. Which equation could represent this relationship?',
+    choices: [
+      { label: 'A', text: '$y = 7x + 18$' },
+      { label: 'B', text: '$7x + 18y = 630$' },
+      { label: 'C', text: '$y = 18x + 7$' },
+      { label: 'D', text: '$18x + 7y = 630$' },
+    ],
+    correctAnswer: 'B',
+    collegeBoardId: '00b9bd37',
+  },
+
+  // Word Problems
+  {
+    id: 'q-1087f6c4',
+    skillId: 'linear-eq-word-problem-medium',
+    questionText: '$24.5x + 24.75y = 641$\n\nIsabel ordered topsoil and crushed stone, which cost a total of $\\$641$, for her garden. The given equation represents the relationship between the number of cubic yards of topsoil, $x$, and the number of tons of crushed stone, $y$, Isabel ordered. How much more, in dollars, did a ton of crushed stone cost Isabel than a cubic yard of topsoil?',
+    choices: [],
+    correctAnswer: '0.25',
+    collegeBoardId: '1087f6c4',
+  },
+  {
+    id: 'q-9c7741c6',
+    skillId: 'linear-eq-word-problem-medium',
+    questionText: 'On a $210$-mile trip, Cameron drove at an average speed of $60$ miles per hour for the first $x$ hours. He then completed the trip, driving at an average speed of $50$ miles per hour for the remaining $y$ hours. If $x = 1$, what is the value of $y$?',
+    choices: [],
+    correctAnswer: '3',
+    collegeBoardId: '9c7741c6',
+  },
+  {
+    id: 'q-0d1b1e35',
+    skillId: 'linear-eq-word-problem-medium',
+    questionText: 'A batch of banana milkshakes consists of $4$ cups of ice cream and $2$ bananas and has $1{,}114$ milligrams (mg) of calcium. There is $276$ mg of calcium in $1$ cup of the ice cream used to make this batch of milkshakes. How much calcium, in mg, is in $1$ banana?',
+    choices: [
+      { label: 'A', text: '$5$' },
+      { label: 'B', text: '$10$' },
+      { label: 'C', text: '$419$' },
+      { label: 'D', text: '$1{,}104$' },
+    ],
+    correctAnswer: 'A',
+    collegeBoardId: '0d1b1e35',
+  },
+  {
+    id: 'q-431c3038',
+    skillId: 'linear-eq-word-problem-medium',
+    questionText: 'In an article about exercise, it is estimated that a $160$-pound adult uses $200$ calories for every $30$ minutes of hiking and $150$ calories for every $30$ minutes of bicycling. An adult who weighs $160$ pounds has completed $1$ hour of bicycling. Based on the article, how many hours should the adult hike to use a total of $1{,}900$ calories from bicycling and hiking?',
+    choices: [
+      { label: 'A', text: '$9.5$' },
+      { label: 'B', text: '$8.75$' },
+      { label: 'C', text: '$6$' },
+      { label: 'D', text: '$4$' },
+    ],
+    correctAnswer: 'D',
+    collegeBoardId: '431c3038',
+  },
+  {
+    id: 'q-62ef6f73',
+    skillId: 'linear-eq-word-problem-medium',
+    questionText: 'A total of $2$ squares each have side length $r$. A total of $6$ equilateral triangles each have side length $t$. None of these squares and triangles shares a side. The sum of the perimeters of all these squares and triangles is $210$. Which equation represents this situation?',
+    choices: [
+      { label: 'A', text: '$6r + 24t = 210$' },
+      { label: 'B', text: '$2r + 6t = 210$' },
+      { label: 'C', text: '$8r + 18t = 210$' },
+      { label: 'D', text: '$6r + 2t = 210$' },
+    ],
+    correctAnswer: 'C',
+    collegeBoardId: '62ef6f73',
+  },
+
+  // Free response - Slope Calculation
+  {
+    id: 'q-e0f59119',
+    skillId: 'linear-eq-slope-calc-medium',
+    questionText: 'What is the slope of the graph of $y = \\frac{1}{3}(29x + 10) + 5x$ in the xy-plane?',
+    choices: [],
+    correctAnswer: '44/3',
+    collegeBoardId: 'e0f59119',
+  },
+  {
+    id: 'q-ca452900',
+    skillId: 'linear-eq-slope-calc-medium',
+    questionText: 'What is the slope of the graph of $y = \\frac{5x}{13} - 23$ in the xy-plane?',
+    choices: [],
+    correctAnswer: '5/13',
+    collegeBoardId: 'ca452900',
+  },
+  {
+    id: 'q-9ed4c1a2',
+    skillId: 'linear-eq-slope-calc-medium',
+    questionText: 'What is the slope of the graph of $y = \\frac{1}{4}(27x + 15) + 7x$ in the xy-plane?',
+    choices: [],
+    correctAnswer: '55/4',
+    collegeBoardId: '9ed4c1a2',
+  },
+  {
+    id: 'q-fb43b85f',
+    skillId: 'linear-eq-slope-calc-medium',
+    questionText: 'A line passes through the points $(4, 6)$ and $(15, 24)$ in the xy-plane. What is the slope of the line?',
+    choices: [],
+    correctAnswer: '18/11',
+    collegeBoardId: 'fb43b85f',
+  },
+
+  // Free response - Equation Building
+  {
+    id: 'q-a4989860',
+    skillId: 'linear-eq-equation-build-medium',
+    questionText: 'A line in the xy-plane has a slope of $9$ and passes through the point $(0, -5)$. The equation $y = px + r$ defines the line, where $p$ and $r$ are constants. What is the value of $p$?',
+    choices: [],
+    correctAnswer: '9',
+    collegeBoardId: 'a4989860',
+  },
+
+  // Free response - Interpretation
+  {
+    id: 'q-a04190b7',
+    skillId: 'linear-eq-interp-variable-medium',
+    questionText: 'A store sells two different-sized containers of blueberries. The store\'s sales of these blueberries totaled $896.86$ dollars last month. The equation $4.51x + 6.07y = 896.86$ represents this situation, where $x$ is the number of smaller containers sold and $y$ is the number of larger containers sold. According to the equation, what is the price, in dollars, of each smaller container?',
+    choices: [],
+    correctAnswer: '4.51',
+    collegeBoardId: 'a04190b7',
+  },
+
+  // ============================================
+  // Linear Equations in Two Variables - Hard
+  // ============================================
+
+  // Perpendicular Lines (from non-standard form)
+  {
+    id: 'q-002dba45',
+    skillId: 'linear-eq-perp-nonstandard-hard',
+    questionText: 'Line $k$ is defined by $y = -\\frac{17}{3}x + 5$. Line $j$ is perpendicular to line $k$ in the xy-plane. What is the slope of line $j$?',
+    choices: [],
+    correctAnswer: '3/17',
+    collegeBoardId: '002dba45',
+  },
+  {
+    id: 'q-00723d16',
+    skillId: 'linear-eq-perp-nonstandard-hard',
+    questionText: 'Line $\\ell$ is defined by $3y + 12x = 5$. Line $n$ is perpendicular to line $\\ell$ in the xy-plane. What is the slope of line $n$?',
+    choices: [],
+    correctAnswer: '1/4',
+    collegeBoardId: '00723d16',
+  },
+  {
+    id: 'q-db422e7f',
+    skillId: 'linear-eq-perp-nonstandard-hard',
+    questionText: 'Line $p$ is defined by $4y + 8x = 6$. Line $r$ is perpendicular to line $p$ in the xy-plane. What is the slope of line $r$?',
+    choices: [],
+    correctAnswer: '1/2',
+    collegeBoardId: 'db422e7f',
+  },
+  {
+    id: 'q-184ce5aa',
+    skillId: 'linear-eq-perp-nonstandard-hard',
+    questionText: 'Line $h$ is defined by $\\frac{1}{5}x + \\frac{1}{7}y - 70 = 0$. Line $j$ is perpendicular to line $h$ in the xy-plane. What is the slope of line $j$?',
+    choices: [
+      { label: 'A', text: '$-\\frac{7}{5}$' },
+      { label: 'B', text: '$-\\frac{5}{7}$' },
+      { label: 'C', text: '$\\frac{7}{5}$' },
+      { label: 'D', text: '$\\frac{5}{7}$' },
+    ],
+    correctAnswer: 'C',
+    collegeBoardId: '184ce5aa',
+  },
+
+  // Perpendicular Lines (from graph)
+  {
+    id: 'q-6d8ad460',
+    skillId: 'linear-eq-perp-graph-hard',
+    questionText: '[Graph showing line $k$ passing through $(-5, 0)$ and $(0, -5)$ with negative slope]\n\nLine $k$ is shown in the xy-plane. Line $j$ (not shown) is perpendicular to line $k$. What is the slope of line $j$?',
+    choices: [],
+    correctAnswer: '-1',
+    collegeBoardId: '6d8ad460',
+  },
+
+  // Perpendicular Lines (vertical/horizontal)
+  {
+    id: 'q-98d3393a',
+    skillId: 'linear-eq-perp-vertical-hard',
+    questionText: 'Line $\\ell$ in the xy-plane is perpendicular to the line with equation $x = 2$. What is the slope of line $\\ell$?',
+    choices: [
+      { label: 'A', text: '$0$' },
+      { label: 'B', text: '$-\\frac{1}{2}$' },
+      { label: 'C', text: '$-2$' },
+      { label: 'D', text: 'The slope of line $\\ell$ is undefined.' },
+    ],
+    correctAnswer: 'A',
+    collegeBoardId: '98d3393a',
+  },
+
+  // Perpendicular Lines (abstract relationship)
+  {
+    id: 'q-a35c7164',
+    skillId: 'linear-eq-perp-abstract-hard',
+    questionText: '$5x + 7y = 1$\n$ax + by = 1$\n\nIn the given pair of equations, $a$ and $b$ are constants. The graph of this pair of equations in the xy-plane is a pair of perpendicular lines. Which of the following pairs of equations also represents a pair of perpendicular lines?',
+    choices: [
+      { label: 'A', text: '$10x + 7y = 1$\n$ax - 2by = 1$' },
+      { label: 'B', text: '$10x + 7y = 1$\n$ax + 2by = 1$' },
+      { label: 'C', text: '$10x + 7y = 1$\n$2ax + by = 1$' },
+      { label: 'D', text: '$5x - 7y = 1$\n$ax + by = 1$' },
+    ],
+    correctAnswer: 'C',
+    collegeBoardId: 'a35c7164',
+  },
+  {
+    id: 'q-a7a14e87',
+    skillId: 'linear-eq-perp-abstract-hard',
+    questionText: 'In the xy-plane, line $k$ is defined by $x + y = 0$. Line $j$ is perpendicular to line $k$, and the y-intercept of line $j$ is $(0, 3)$. Which of the following is an equation of line $j$?',
+    choices: [
+      { label: 'A', text: '$x + y = 3$' },
+      { label: 'B', text: '$x + y = -3$' },
+      { label: 'C', text: '$x - y = 3$' },
+      { label: 'D', text: '$x - y = -3$' },
+    ],
+    correctAnswer: 'D',
+    collegeBoardId: 'a7a14e87',
+  },
+
+  // Parameter Determination (single parameter)
+  {
+    id: 'q-3cdbf026',
+    skillId: 'linear-eq-param-single-hard',
+    questionText: 'The graph of the equation $ax + ky = 6$ is a line in the xy-plane, where $a$ and $k$ are constants. If the line contains the points $(-2, -6)$ and $(0, -3)$, what is the value of $k$?',
+    choices: [
+      { label: 'A', text: '$-2$' },
+      { label: 'B', text: '$-1$' },
+      { label: 'C', text: '$2$' },
+      { label: 'D', text: '$3$' },
+    ],
+    correctAnswer: 'A',
+    collegeBoardId: '3cdbf026',
+  },
+  {
+    id: 'q-fdee0fbf',
+    skillId: 'linear-eq-param-single-hard',
+    questionText: 'In the xy-plane, line $k$ intersects the y-axis at the point $(0, -6)$ and passes through the point $(2, 2)$. If the point $(20, w)$ lies on line $k$, what is the value of $w$?',
+    choices: [],
+    correctAnswer: '74',
+    collegeBoardId: 'fdee0fbf',
+  },
+  {
+    id: 'q-b9835972',
+    skillId: 'linear-eq-param-single-hard',
+    questionText: 'In the xy-plane, line $\\ell$ passes through the point $(0, 0)$ and is parallel to the line represented by the equation $y = 8x + 2$. If line $\\ell$ also passes through the point $(3, d)$, what is the value of $d$?',
+    choices: [],
+    correctAnswer: '24',
+    collegeBoardId: 'b9835972',
+  },
+
+  // Parameter Determination (two parameters)
+  {
+    id: 'q-3008cfc3',
+    skillId: 'linear-eq-param-dual-hard',
+    questionText: 'The table gives the coordinates of two points on a line in the xy-plane: $(k, 13)$ and $(k + 7, -15)$. The y-intercept of the line is $(k - 5, b)$, where $k$ and $b$ are constants. What is the value of $b$?',
+    choices: [],
+    correctAnswer: '33',
+    collegeBoardId: '3008cfc3',
+  },
+  {
+    id: 'q-0366d965',
+    skillId: 'linear-eq-param-dual-hard',
+    questionText: 'The table shows the coordinates of three points on a line in the xy-plane: $(3, 7)$, $(k, 11)$, $(12, n)$, where $k$ and $n$ are constants. If the slope of the line is $2$, what is the value of $k + n$?',
+    choices: [],
+    correctAnswer: '30',
+    collegeBoardId: '0366d965',
+  },
+
+  // Graph to Parameter
+  {
+    id: 'q-c4ea43ef',
+    skillId: 'linear-eq-graph-param-hard',
+    questionText: '[Graph showing line with points approximately at $(0, 10)$ and $(20, 0)$]\n\nTo earn money for college, Avery works two part-time jobs: A and B. She earns $\\$10$ per hour working at job A and $\\$20$ per hour working at job B. In one week, Avery earned a total of $s$ dollars for working at the two part-time jobs. The graph above represents all possible combinations of numbers of hours Avery could have worked at the two jobs to earn $s$ dollars. What is the value of $s$?',
+    choices: [
+      { label: 'A', text: '$128$' },
+      { label: 'B', text: '$160$' },
+      { label: 'C', text: '$200$' },
+      { label: 'D', text: '$320$' },
+    ],
+    correctAnswer: 'C',
+    collegeBoardId: 'c4ea43ef',
+  },
+  {
+    id: 'q-c362c210',
+    skillId: 'linear-eq-graph-param-hard',
+    questionText: '[Graph showing points representing combinations of cornflowers and wallflowers that cost $\\$24$]\n\nThe points plotted in the coordinate plane above represent the possible numbers of wallflowers and cornflowers that someone can buy at the Garden Store in order to spend exactly $\\$24.00$ total on the two types of flowers. The price of each wallflower is the same and the price of each cornflower is the same. What is the price, in dollars, of $1$ cornflower?',
+    choices: [],
+    correctAnswer: '1.50',
+    collegeBoardId: 'c362c210',
+  },
+  {
+    id: 'q-9d0396d4',
+    skillId: 'linear-eq-graph-param-hard',
+    questionText: '[Graph showing a line passing through $(0, 7)$ and $(14, 0)$ approximately]\n\nThe point with coordinates $(d, 4)$ lies on the line shown. What is the value of $d$?',
+    choices: [
+      { label: 'A', text: '$\\frac{7}{2}$' },
+      { label: 'B', text: '$\\frac{26}{7}$' },
+      { label: 'C', text: '$\\frac{24}{7}$' },
+      { label: 'D', text: '$\\frac{27}{8}$' },
+    ],
+    correctAnswer: 'B',
+    collegeBoardId: '9d0396d4',
+  },
+  {
+    id: 'q-5b7599a6',
+    skillId: 'linear-eq-graph-param-hard',
+    questionText: '[Graph showing a line with negative slope passing through approximately $(-2, 10)$ and $(2, -10)$]\n\nThe graph shows a linear relationship between $x$ and $y$. Which equation represents this relationship, where $R$ is a positive constant?',
+    choices: [
+      { label: 'A', text: '$Rx + 18y = 36$' },
+      { label: 'B', text: '$Rx - 18y = -36$' },
+      { label: 'C', text: '$18x + Ry = 36$' },
+      { label: 'D', text: '$18x - Ry = -36$' },
+    ],
+    correctAnswer: 'C',
+    collegeBoardId: '5b7599a6',
+  },
+
+  // Interpretation (coefficient difference)
+  {
+    id: 'q-686b7244',
+    skillId: 'linear-eq-interp-diff-hard',
+    questionText: 'A certain apprentice has enrolled in $85$ hours of training courses. The equation $10x + 15y = 85$ represents this situation, where $x$ is the number of on-site training courses and $y$ is the number of online training courses this apprentice has enrolled in. How many more hours does each online training course take than each on-site training course?',
+    choices: [],
+    correctAnswer: '5',
+    collegeBoardId: '686b7244',
+  },
+  {
+    id: 'q-2d54c272',
+    skillId: 'linear-eq-interp-diff-hard',
+    questionText: '$5G + 45R = 380$\n\nAt a school fair, students can win colored tokens that are worth a different number of points depending on the color. One student won $G$ green tokens and $R$ red tokens worth a total of $380$ points. The given equation represents this situation. How many more points is a red token worth than a green token?',
+    choices: [],
+    correctAnswer: '40',
+    collegeBoardId: '2d54c272',
+  },
+
+  // Interpretation (product meaning)
+  {
+    id: 'q-cc7ffe02',
+    skillId: 'linear-eq-interp-product-hard',
+    questionText: 'Keenan made $32$ cups of vegetable broth. Keenan then filled $x$ small jars and $y$ large jars with all the vegetable broth he made. The equation $3x + 5y = 32$ represents this situation. Which is the best interpretation of $5y$ in this context?',
+    choices: [
+      { label: 'A', text: 'The number of large jars Keenan filled' },
+      { label: 'B', text: 'The number of small jars Keenan filled' },
+      { label: 'C', text: 'The total number of cups of vegetable broth in the large jars' },
+      { label: 'D', text: 'The total number of cups of vegetable broth in the small jars' },
+    ],
+    correctAnswer: 'C',
+    collegeBoardId: 'cc7ffe02',
+  },
+
+  // Intercept Finding (with fractional coefficients)
+  {
+    id: 'q-cb58833c',
+    skillId: 'linear-eq-intercept-frac-hard',
+    questionText: 'The line with the equation $\\frac{4}{5}x + \\frac{1}{3}y = 1$ is graphed in the xy-plane. What is the x-coordinate of the x-intercept of the line?',
+    choices: [],
+    correctAnswer: '5/4',
+    collegeBoardId: 'cb58833c',
+  },
+  {
+    id: 'q-9aaf7786',
+    skillId: 'linear-eq-intercept-frac-hard',
+    questionText: 'In the xy-plane, line $p$ has a slope of $-\\frac{5}{3}$ and an x-intercept of $(-6, 0)$. What is the y-coordinate of the y-intercept of line $p$?',
+    choices: [],
+    correctAnswer: '-10',
+    collegeBoardId: '9aaf7786',
+  },
+  {
+    id: 'q-9f70fd47',
+    skillId: 'linear-eq-intercept-frac-hard',
+    questionText: 'What is the y-coordinate of the y-intercept of the graph of $\\frac{3x}{7} = -\\frac{5y}{9} + 21$ in the xy-plane?',
+    choices: [],
+    correctAnswer: '189/5',
+    collegeBoardId: '9f70fd47',
+  },
+
+  // Intercept Ratio
+  {
+    id: 'q-94b48cbf',
+    skillId: 'linear-eq-intercept-ratio-hard',
+    questionText: 'The graph of $7x + 2y = -31$ in the xy-plane has an x-intercept at $(a, 0)$ and a y-intercept at $(0, b)$, where $a$ and $b$ are constants. What is the value of $\\frac{b}{a}$?',
+    choices: [
+      { label: 'A', text: '$-\\frac{7}{2}$' },
+      { label: 'B', text: '$-\\frac{2}{7}$' },
+      { label: 'C', text: '$\\frac{2}{7}$' },
+      { label: 'D', text: '$\\frac{7}{2}$' },
+    ],
+    correctAnswer: 'A',
+    collegeBoardId: '94b48cbf',
+  },
+
+  // Transformation (translation)
+  {
+    id: 'q-9bbce683',
+    skillId: 'linear-eq-transform-translate-hard',
+    questionText: 'For line $h$, the table shows three values of $x$ and their corresponding values of $y$: $(18, 130)$, $(23, 160)$, $(26, 178)$. Line $k$ is the result of translating line $h$ down $5$ units in the xy-plane. What is the x-intercept of line $k$?',
+    choices: [
+      { label: 'A', text: '$\\left(-\\frac{26}{3}, 0\\right)$' },
+      { label: 'B', text: '$\\left(-\\frac{9}{2}, 0\\right)$' },
+      { label: 'C', text: '$\\left(-\\frac{11}{3}, 0\\right)$' },
+      { label: 'D', text: '$\\left(-\\frac{17}{6}, 0\\right)$' },
+    ],
+    correctAnswer: 'D',
+    collegeBoardId: '9bbce683',
+  },
+  {
+    id: 'q-cc3e9528',
+    skillId: 'linear-eq-transform-translate-hard',
+    questionText: 'The graph of $9x - 10y = 19$ is translated down $4$ units in the xy-plane. What is the x-coordinate of the x-intercept of the resulting graph?',
+    choices: [],
+    correctAnswer: '59/9',
+    collegeBoardId: 'cc3e9528',
+  },
+
+  // Transformation (function notation)
+  {
+    id: 'q-05bb1af9',
+    skillId: 'linear-eq-transform-function-hard',
+    questionText: '[Graph showing line $y = f(x) + 14$ passing through approximately $(-8, 16)$ and $(8, 12)$]\n\nThe graph of $y = f(x) + 14$ is shown. Which equation defines function $f$?',
+    choices: [
+      { label: 'A', text: '$f(x) = -\\frac{1}{4}x - 12$' },
+      { label: 'B', text: '$f(x) = -\\frac{1}{4}x + 16$' },
+      { label: 'C', text: '$f(x) = -\\frac{1}{4}x + 2$' },
+      { label: 'D', text: '$f(x) = -\\frac{1}{4}x - 14$' },
+    ],
+    correctAnswer: 'C',
+    collegeBoardId: '05bb1af9',
+  },
+
+  // Table to Equation to Intercept (chain)
+  {
+    id: 'q-d0e614a6',
+    skillId: 'linear-eq-table-chain-hard',
+    questionText: '$\\frac{3}{5}x + \\frac{3}{4}y = 7$\n\nWhich table gives three values of $x$ and their corresponding values of $y$ for the given equation?',
+    choices: [
+      { label: 'A', text: '$x$: 1, 2, 4; $y$: $\\frac{113}{20}$, $\\frac{101}{20}$, $\\frac{77}{20}$' },
+      { label: 'B', text: '$x$: 1, 2, 4; $y$: $\\frac{47}{5}$, $\\frac{44}{5}$, $\\frac{38}{5}$' },
+      { label: 'C', text: '$x$: 1, 2, 4; $y$: $\\frac{148}{15}$, $\\frac{136}{15}$, $\\frac{112}{15}$' },
+      { label: 'D', text: '$x$: 1, 2, 4; $y$: $\\frac{128}{15}$, $\\frac{116}{15}$, $\\frac{92}{15}$' },
+    ],
+    correctAnswer: 'D',
+    collegeBoardId: 'd0e614a6',
+  },
+  {
+    id: 'q-768f3b7c',
+    skillId: 'linear-eq-table-chain-hard',
+    questionText: 'The table shows three values of $x$ and their corresponding values of $y$, where $s$ is a constant: $(-2s, 24)$, $(-s, 21)$, $(s, 15)$. There is a linear relationship between $x$ and $y$. Which of the following equations represents this relationship?',
+    choices: [
+      { label: 'A', text: '$sx + 3y = 18s$' },
+      { label: 'B', text: '$3x + sy = 18s$' },
+      { label: 'C', text: '$3x + sy = 18$' },
+      { label: 'D', text: '$sx + 3y = 18$' },
+    ],
+    correctAnswer: 'A',
+    collegeBoardId: '768f3b7c',
+  },
+  {
+    id: 'q-49800634',
+    skillId: 'linear-eq-table-chain-hard',
+    questionText: 'The table shows two values of $x$ and their corresponding values of $y$: $(-18, -48)$ and $(7, 52)$. In the xy-plane, the graph of the linear equation representing this relationship passes through the point $\\left(\\frac{1}{7}, a\\right)$. What is the value of $a$?',
+    choices: [
+      { label: 'A', text: '$-\\frac{4}{11}$' },
+      { label: 'B', text: '$-\\frac{4}{77}$' },
+      { label: 'C', text: '$\\frac{4}{7}$' },
+      { label: 'D', text: '$\\frac{172}{7}$' },
+    ],
+    correctAnswer: 'C',
+    collegeBoardId: '49800634',
+  },
+
+  // Parallel Lines (with additional constraint)
+  {
+    id: 'q-0b46bad5',
+    skillId: 'linear-eq-param-constraint-hard',
+    questionText: '$ax + by = b$\n\nIn the equation above, $a$ and $b$ are constants and $0 < a < b$. Which of the following could represent the graph of the equation in the xy-plane?',
+    choices: [
+      { label: 'A', text: '[Graph showing line with negative slope passing through quadrants I and III]' },
+      { label: 'B', text: '[Graph showing line with negative slope passing through quadrants II and IV]' },
+      { label: 'C', text: '[Graph showing line with positive slope passing through quadrants II and IV]' },
+      { label: 'D', text: '[Graph showing line with positive slope passing through quadrants I and III]' },
+    ],
+    correctAnswer: 'A',
+    collegeBoardId: '0b46bad5',
+  },
+
+  // Mixture Problem
+  {
+    id: 'q-a1fd2304',
+    skillId: 'linear-eq-mixture-hard',
+    questionText: 'How many liters of a $25\\%$ saline solution must be added to $3$ liters of a $10\\%$ saline solution to obtain a $15\\%$ saline solution?',
+    choices: [],
+    correctAnswer: '1.5',
+    collegeBoardId: 'a1fd2304',
+  },
 ];
 
 /**
