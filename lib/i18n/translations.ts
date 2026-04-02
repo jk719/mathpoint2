@@ -198,7 +198,7 @@ const translations = {
 
     // ─── Auth ────────────────────────────────────────────────────────
     auth: {
-      title: 'Welcome to MathPoint',
+      title: 'Welcome to Premier',
       subtitle: 'Select your role to continue',
       selectRole: 'I am a...',
       student: 'Student',
@@ -455,7 +455,7 @@ const translations = {
 
     // ─── Auth ────────────────────────────────────────────────────────
     auth: {
-      title: '欢迎来到 MathPoint',
+      title: '欢迎来到 Premier',
       subtitle: '选择您的角色以继续',
       selectRole: '我是...',
       student: '学生',

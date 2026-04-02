@@ -7,7 +7,7 @@ import { LanguageProvider } from '@/lib/i18n/LanguageContext';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'MathPoint - Skill Mastery Diagnostic',
+  title: 'Premier - Skill Mastery Diagnostic',
   description: 'Free diagnostic to identify your weak skills, then master them with targeted practice.',
 };
 
