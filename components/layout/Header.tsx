@@ -3,9 +3,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
+import { LanguageToggle } from './LanguageToggle';
+import { useTranslation } from '@/lib/i18n/LanguageContext';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const { t } = useTranslation();
 
   return (
     <header className="bg-[#1a3a52] shadow-lg">
@@ -21,60 +24,54 @@ export function Header() {
 
             {/* Desktop Nav */}
             <nav className="hidden md:flex items-center gap-6">
-              <Link
-                href="/diagnostic"
-                className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors"
-              >
-                Diagnostic
+              <Link href="/diagnostic" className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors">
+                {t('common.diagnostic')}
               </Link>
-              <Link
-                href="/practice"
-                className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors"
-              >
-                Practice
+              <Link href="/results" className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors">
+                {t('common.results')}
               </Link>
-              <Link
-                href="/dashboard"
-                className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors"
-              >
-                Dashboard
+              <Link href="/practice" className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors">
+                {t('common.practice')}
+              </Link>
+              <Link href="/dashboard" className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors">
+                {t('common.dashboard')}
+              </Link>
+              <Link href="/session/join" className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors">
+                {t('session.title')}
               </Link>
             </nav>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-white hover:text-[#ff6b35] transition-colors"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          {/* Language Toggle + Mobile Menu Button */}
+          <div className="flex items-center gap-3">
+            <LanguageToggle />
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 text-white hover:text-[#ff6b35] transition-colors"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Nav */}
         {mobileMenuOpen && (
           <nav className="md:hidden pt-4 pb-2 border-t border-white/10 mt-4">
             <div className="flex flex-col gap-3">
-              <Link
-                href="/diagnostic"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2"
-              >
-                Diagnostic
+              <Link href="/diagnostic" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2">
+                {t('common.diagnostic')}
               </Link>
-              <Link
-                href="/practice"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2"
-              >
-                Practice
+              <Link href="/results" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2">
+                {t('common.results')}
               </Link>
-              <Link
-                href="/dashboard"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2"
-              >
-                Dashboard
+              <Link href="/practice" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2">
+                {t('common.practice')}
+              </Link>
+              <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2">
+                {t('common.dashboard')}
+              </Link>
+              <Link href="/session/join" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2">
+                {t('session.title')}
               </Link>
             </div>
           </nav>

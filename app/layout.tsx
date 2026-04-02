@@ -2,12 +2,13 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
+import { LanguageProvider } from '@/lib/i18n/LanguageContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'MathPoint - SAT Math Diagnostic',
-  description: 'Free SAT Math diagnostic to identify your weak skills, then master them with targeted practice.',
+  title: 'MathPoint - Skill Mastery Diagnostic',
+  description: 'Free diagnostic to identify your weak skills, then master them with targeted practice.',
 };
 
 export default function RootLayout({
@@ -18,10 +19,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header />
-        <main className="min-h-screen">
-          {children}
-        </main>
+        <LanguageProvider>
+          <Header />
+          <main className="min-h-screen">
+            {children}
+          </main>
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -35,15 +35,25 @@ SAT difficulty isn't about harder math — it's about cognitive approach. Hard q
 npm run dev          # Start development server on http://localhost:3000
 npm run build        # Build for production
 npm run start        # Start production server
-npm run lint         # Run ESLint
+npm run lint         # Run ESLint (no directory arg needed)
 npx tsc              # Run TypeScript type checking
 ```
 
 ### Database (when using PostgreSQL - currently using mock)
 ```bash
-npx prisma generate    # Generate Prisma client
-npx prisma migrate dev # Run database migrations
-npx prisma studio      # Open Prisma Studio GUI
+npx prisma generate         # Generate Prisma client
+npx prisma migrate dev      # Run database migrations
+npx prisma studio           # Open Prisma Studio GUI
+npm run db:seed              # Seed skills/topics/patterns
+npm run db:seed-questions    # Seed questions from data files
+npm run db:reset             # Reset database and re-migrate
+```
+
+### Testing
+E2E tests use Playwright (run from project root):
+```bash
+npx playwright test              # Run all E2E tests
+npx playwright test test-demo.js # Run a single test file
 ```
 
 ## Architecture
@@ -54,6 +64,10 @@ npx prisma studio      # Open Prisma Studio GUI
 - `BayesianKT.ts`: Bayesian Knowledge Tracing — updates skill mastery probabilities based on student responses using Bayes' rule with slip/guess/learn parameters
 - `ItemSelector.ts`: Adaptive item selection using Expected Information Gain (EIG) and 3-parameter IRT model — selects questions that maximize uncertainty reduction
 - `SessionStore.ts`: Session management for diagnostic sessions
+
+**Diagnostic Scoring** (`lib/diagnostic/`):
+- `DiagnosticScorer.ts`: Scores questions, skills, sections, and full diagnostics. Generates practice sequences ordered by difficulty and accuracy.
+- `ResponseQualityChecker.ts`: Detects gaming — rushed responses (<5s), guessing (below per-question time thresholds), spam patterns (4+ same answer), and low engagement (5+ fast wrong answers). Responses are classified as VALID, RUSHED, GUESSING, SPAM_PATTERN, or LOW_ENGAGEMENT. Only VALID responses count toward mastery.
 
 **Math Input System** (`lib/math-input/`):
 - `MathParser.ts`: Parses and validates mathematical expressions
@@ -87,8 +101,18 @@ type SATQuestion = {
 }
 ```
 
+**API Layer** (`lib/api/createHandler.ts`): Wrapper for API routes with Zod validation and optional auth. Returns standardized `{success, data}` or `{success, error}` responses.
+
+**Database Abstraction** (`lib/database/queries.ts`): All DB access goes through `db.*` methods. Currently returns mock data — swap to Prisma client for production.
+
 ### App Flow
 Landing (`/`) → Diagnostic (`/diagnostic`) → Results → Practice (`/practice`) → Dashboard (`/dashboard`)
+
+### Conventions
+- Path alias: `@/*` maps to project root (e.g., `import { cn } from '@/lib/utils/cn'`)
+- All pages are client components (`'use client'`) — no server actions yet
+- Brand colors: primary `#1a3a52` (navy), accent `#ff6b35` (orange) — defined in `lib/theme/colors.ts`
+- UI components use shadcn/ui pattern in `components/ui/`
 
 ## Adding SAT Questions
 

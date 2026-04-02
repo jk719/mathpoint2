@@ -7,6 +7,7 @@ import { MathTypeWriter } from '@/components/ui/MathTypeWriter';
 import { MathInput } from '@/components/math-input';
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
+import { useTranslation } from '@/lib/i18n/LanguageContext';
 
 interface QuestionCardProps {
   question: DiagnosticQuestion;
@@ -26,6 +27,7 @@ export function QuestionCard({
   const [showHint, setShowHint] = useState(false);
   const [typingComplete, setTypingComplete] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     // Reset states when question changes
@@ -177,7 +179,7 @@ export function QuestionCard({
           className="relative"
         >
           <div className="question-count">
-            Question {questionNumber}
+            {t('questionCard.question')} {questionNumber}
           </div>
           <motion.div
             animate={{ scale: [1, 1.2, 1] }}
@@ -237,7 +239,7 @@ export function QuestionCard({
             onClick={() => setShowHint(!showHint)}
             className="text-sm font-semibold text-[#1a3a52] hover:text-[#ff6b35] transition-colors"
           >
-            💡 {showHint ? 'Hide' : 'Show'} Hint
+            {showHint ? t('questionCard.hideHint') : t('questionCard.showHint')}
           </button>
           <AnimatePresence>
             {showHint && (
@@ -267,14 +269,14 @@ export function QuestionCard({
             className="flex justify-between items-center pt-4 border-t-2 border-gray-200"
           >
         <div className="text-sm text-gray-600 font-medium">
-          {question.type === 'multi-select' && 'Select all that apply'}
+          {question.type === 'multi-select' && t('questionCard.selectAll')}
         </div>
         <button
           onClick={handleSubmit}
           disabled={!isAnswerValid() || isLoading}
           className="btn-accent"
         >
-          {isLoading ? 'Submitting...' : 'Submit Answer →'}
+          {isLoading ? t('questionCard.submitting') : t('questionCard.submit')}
         </button>
           </motion.div>
         )}
