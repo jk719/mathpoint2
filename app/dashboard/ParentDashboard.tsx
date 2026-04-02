@@ -86,7 +86,7 @@ export function ParentDashboard({ name }: { name: string }) {
           </div>
         </div>
 
-        <div className="grid grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-3">
           <div className="text-center p-3 bg-gray-50 rounded-lg">
             <div className="text-2xl font-bold text-gray-900">{MOCK_CHILD.accuracy}%</div>
             <div className="text-xs text-gray-500">{t('common.accuracy')}</div>

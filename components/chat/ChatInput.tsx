@@ -34,7 +34,7 @@ export function ChatInput({ onSend, disabled, placeholder = 'Ask a question...' 
   };
 
   return (
-    <div className="flex items-end gap-2 p-4 bg-white border-t border-gray-200">
+    <div className="flex items-end gap-2 p-2 sm:p-4 bg-white border-t border-gray-200">
       <textarea
         ref={inputRef}
         value={value}

@@ -156,8 +156,8 @@ function LessonContent() {
         animate={{ opacity: 1, y: 0 }}
         className="bg-white border-b border-gray-200 px-4 py-3"
       >
-        <div className="container mx-auto max-w-2xl flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="container mx-auto max-w-2xl flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <button
               onClick={() => router.push('/results')}
               className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
@@ -167,7 +167,7 @@ function LessonContent() {
             <div>
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-[#ff6b35]" />
-                <h1 className="font-semibold text-gray-900">{skill.displayName}</h1>
+                <h1 className="font-semibold text-gray-900 truncate">{skill.displayName}</h1>
               </div>
               <div className="flex items-center gap-2 mt-0.5">
                 <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded">

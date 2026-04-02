@@ -77,7 +77,7 @@ export function SessionChat({ room, participantName, isOpen, onClose }: SessionC
           animate={{ x: 0 }}
           exit={{ x: '100%' }}
           transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-          className="w-80 bg-white border-l border-gray-200 flex flex-col h-full"
+          className="w-full sm:w-80 bg-white border-l border-gray-200 flex flex-col h-full"
         >
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">

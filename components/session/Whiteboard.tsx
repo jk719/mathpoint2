@@ -196,7 +196,7 @@ export function Whiteboard({ room }: WhiteboardProps) {
   return (
     <div className="flex flex-col h-full bg-gray-50 rounded-xl overflow-hidden border border-gray-200">
       {/* Toolbar */}
-      <div className="flex items-center gap-2 px-3 py-2 bg-white border-b border-gray-200">
+      <div className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 bg-white border-b border-gray-200 flex-wrap">
         <button
           onClick={() => setTool('pen')}
           className={`p-2 rounded-lg transition-colors ${tool === 'pen' ? 'bg-[#1a3a52] text-white' : 'hover:bg-gray-100 text-gray-600'}`}

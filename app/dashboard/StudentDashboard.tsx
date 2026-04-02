@@ -63,7 +63,7 @@ export function StudentDashboard({ name }: { name: string }) {
       </motion.div>
 
       {/* Stats */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="grid grid-cols-4 gap-4 mb-8">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
         <div className="bg-white rounded-xl shadow-sm p-5">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-[#1a3a52]/10 rounded-lg flex items-center justify-center"><Award className="w-5 h-5 text-[#1a3a52]" /></div>

@@ -95,7 +95,7 @@ export function AdminDashboard({ name }: { name: string }) {
       </motion.div>
 
       {/* Secondary Stats */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="grid grid-cols-4 gap-4 mb-6">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
         {[
           { icon: Target, label: 'Avg Accuracy', value: '61%', color: 'text-[#1a3a52]' },
           { icon: Clock, label: 'Avg Session Time', value: '38 min', color: 'text-blue-600' },
@@ -139,7 +139,7 @@ export function AdminDashboard({ name }: { name: string }) {
         {/* Daily Active Users Chart */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="lg:col-span-2 bg-white rounded-xl shadow-sm p-6">
           <h2 className="text-lg font-bold text-gray-900 mb-4">Daily Active Users</h2>
-          <div className="flex items-end gap-3 h-40">
+          <div className="flex items-end gap-1 sm:gap-3 h-32 sm:h-40">
             {MOCK_DAILY_ACTIVE.map((day, i) => (
               <div key={day.day} className="flex-1 flex flex-col items-center gap-1">
                 <span className="text-xs font-semibold text-gray-900">{day.users}</span>

@@ -147,7 +147,7 @@ export default function ResultsPage() {
             {t('results.title')}
           </h1>
 
-          <div className="flex justify-center gap-8 sm:gap-12">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-6 sm:gap-12">
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
@@ -207,7 +207,7 @@ export default function ResultsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="grid grid-cols-3 gap-4 mb-8"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8"
         >
           <div className="bg-green-50 border border-green-200 rounded-xl p-4 text-center">
             <div className="text-3xl font-bold text-green-700">{strengths.length}</div>

@@ -33,7 +33,7 @@ export function Header() {
           {/* Logo + Nav */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-2">
-              <span className="text-2xl font-black text-white tracking-wider" style={{ fontFamily: 'Orbitron, sans-serif' }}>
+              <span className="text-xl sm:text-2xl font-black text-white tracking-wider" style={{ fontFamily: 'Orbitron, sans-serif' }}>
                 MATH<span className="text-[#ff6b35]">POINT</span>
               </span>
             </Link>

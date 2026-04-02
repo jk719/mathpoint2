@@ -274,7 +274,7 @@ export default function Home() {
             </p>
             <button
               onClick={() => router.push(isLoggedIn ? '/dashboard' : '/diagnostic')}
-              className="group inline-flex items-center justify-center gap-2 px-10 py-5 bg-[#ff6b35] text-white rounded-xl font-semibold text-xl shadow-xl hover:bg-[#e55a2a] transform hover:-translate-y-1 transition-all duration-200"
+              className="group inline-flex items-center justify-center gap-2 px-6 sm:px-10 py-4 sm:py-5 bg-[#ff6b35] text-white rounded-xl font-semibold text-lg sm:text-xl shadow-xl hover:bg-[#e55a2a] transform hover:-translate-y-1 transition-all duration-200"
             >
               {t('home.getStarted')}
               <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />

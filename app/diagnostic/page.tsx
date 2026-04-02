@@ -81,7 +81,7 @@ export default function DiagnosticPage() {
             className="bg-white rounded-2xl shadow-lg overflow-hidden border-t-4 border-[#ff6b35]"
           >
             <div className="p-8">
-              <div className="flex justify-center gap-8 mb-10 pb-8 border-b border-gray-100">
+              <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8 mb-10 pb-8 border-b border-gray-100">
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-1.5 mb-1">
                     <Clock className="w-4 h-4 text-[#ff6b35]" />

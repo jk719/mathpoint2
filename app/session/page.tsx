@@ -153,7 +153,7 @@ function SessionLayout({ roomName, participantName }: { roomName: string; partic
 
           {/* Whiteboard */}
           {showWhiteboard && (
-            <div className="lg:w-2/3 min-h-[300px]">
+            <div className="lg:w-2/3 min-h-[200px] sm:min-h-[300px]">
               <Whiteboard room={room} />
             </div>
           )}
