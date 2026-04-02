@@ -27,14 +27,14 @@ export function Header() {
   };
 
   return (
-    <header className="bg-[#2c2c2c] shadow-lg">
+    <header className="bg-[#1a3a52] shadow-lg">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo + Nav */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-2">
               <span className="text-xl sm:text-2xl font-black text-white tracking-wider" style={{ fontFamily: 'Orbitron, sans-serif' }}>
-                PREM<span className="text-[#d4a843]">IER</span>
+                PREM<span className="text-[#ff6b35]">IER</span>
               </span>
             </Link>
 
