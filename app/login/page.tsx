@@ -52,7 +52,7 @@ export default function LoginPage() {
         >
           {/* Role Selection */}
           <h3 className="font-semibold text-gray-900 mb-4">{t('auth.selectRole')}</h3>
-          <div className="grid grid-cols-2 gap-3 mb-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
             {ROLES.map(({ role, icon: Icon, color, bg }, i) => (
               <motion.button
                 key={role}

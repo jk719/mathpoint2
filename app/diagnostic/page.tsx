@@ -85,7 +85,7 @@ export default function DiagnosticPage() {
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-1.5 mb-1">
                     <Clock className="w-4 h-4 text-[#ff6b35]" />
-                    <span className="text-2xl font-bold text-gray-900">5-10</span>
+                    <span className="text-2xl font-bold text-gray-900">10-15</span>
                   </div>
                   <span className="text-sm text-gray-500">{t('common.minutes')}</span>
                 </div>

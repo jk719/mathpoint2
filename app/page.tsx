@@ -34,7 +34,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl sm:text-5xl md:text-6xl font-black text-gray-900 mb-6 leading-tight"
+              className="text-3xl sm:text-5xl md:text-6xl font-black text-gray-900 mb-6 leading-tight"
             >
               {t('home.heroTitle')}
               <span className="block mt-2 text-[#ff6b35]">
@@ -51,26 +51,25 @@ export default function Home() {
               {t('home.heroDescription')}
             </motion.p>
 
-            {/* Dual CTAs */}
+            {/* Primary CTA */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
+              className="flex flex-col items-center gap-4 mb-8"
             >
               <button
                 onClick={() => router.push(isLoggedIn ? '/dashboard' : '/diagnostic')}
-                className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#ff6b35] text-white rounded-xl font-semibold text-lg shadow-lg hover:bg-[#e55a2a] transform hover:-translate-y-0.5 transition-all duration-200 w-full sm:w-auto"
+                className="group inline-flex items-center justify-center gap-2 px-10 py-4 bg-[#ff6b35] text-white rounded-xl font-semibold text-lg shadow-lg hover:bg-[#e55a2a] transform hover:-translate-y-0.5 transition-all duration-200"
               >
-                {t('home.parentCta')}
+                {t('home.startDiagnostic')}
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
               <button
-                onClick={() => router.push(isLoggedIn ? '/diagnostic' : '/login')}
-                className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#1a3a52] text-white rounded-xl font-semibold text-lg shadow-lg hover:bg-[#152e42] transform hover:-translate-y-0.5 transition-all duration-200 w-full sm:w-auto"
+                onClick={() => router.push('/login')}
+                className="text-sm text-gray-500 hover:text-[#ff6b35] transition-colors underline underline-offset-2"
               >
-                {t('home.studentCta')}
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                {t('home.loginLink')}
               </button>
             </motion.div>
 
@@ -125,7 +124,7 @@ export default function Home() {
             <p className="text-gray-600 max-w-xl mx-auto">{t('home.howItWorksDesc')}</p>
           </motion.div>
 
-          <div className="grid sm:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-3 gap-4 sm:gap-8">
             {[
               { num: 1, title: t('home.step1Title'), desc: t('home.step1Desc'), icon: Target, color: 'bg-blue-100 text-blue-600' },
               { num: 2, title: t('home.step2Title'), desc: t('home.step2Desc'), icon: Sparkles, color: 'bg-orange-100 text-[#ff6b35]' },
@@ -163,7 +162,7 @@ export default function Home() {
             {t('home.trustedBy')}
           </motion.h2>
 
-          <div className="grid sm:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto">
             {[
               { title: t('home.forParentsTitle'), desc: t('home.forParentsDesc'), icon: Users, color: 'border-green-500', iconBg: 'bg-green-100', iconColor: 'text-green-600', features: [t('home.parentFeat1'), t('home.parentFeat2'), t('home.parentFeat3'), t('home.parentFeat4')] },
               { title: t('home.forStudentsTitle'), desc: t('home.forStudentsDesc'), icon: GraduationCap, color: 'border-blue-500', iconBg: 'bg-blue-100', iconColor: 'text-blue-600', features: [t('home.studentFeat1'), t('home.studentFeat2'), t('home.studentFeat3'), t('home.studentFeat4')] },

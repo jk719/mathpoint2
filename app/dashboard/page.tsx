@@ -22,7 +22,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 py-12 sm:py-16">
-      <div className="container mx-auto px-4 max-w-5xl">
+      <div className="container mx-auto px-4 max-w-6xl">
         {role === 'student' && <StudentDashboard name={name} />}
         {role === 'parent' && <ParentDashboard name={name} />}
         {role === 'tutor' && <TutorDashboard name={name} />}

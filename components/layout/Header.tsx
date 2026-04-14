@@ -28,13 +28,18 @@ export function Header() {
 
   return (
     <header className="bg-[#1a3a52] shadow-lg">
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-4 py-4 max-w-7xl">
         <div className="flex items-center justify-between">
           {/* Logo + Nav */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-2">
-              <span className="text-xl sm:text-2xl font-black text-white tracking-wider" style={{ fontFamily: 'Orbitron, sans-serif' }}>
-                PREM<span className="text-[#ff6b35]">IER</span>
+              <span className="flex items-baseline gap-2" style={{ fontFamily: 'Orbitron, sans-serif' }}>
+                <span className="text-xl sm:text-2xl font-black text-white tracking-wider">
+                  PREM<span className="text-[#ff6b35]">IER</span>
+                </span>
+                <span className="text-[10px] sm:text-xs font-bold text-gray-400 tracking-[0.2em] uppercase">
+                  Education
+                </span>
               </span>
             </Link>
 
@@ -43,18 +48,22 @@ export function Header() {
               <Link href="/diagnostic" className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors">
                 {t('common.diagnostic')}
               </Link>
-              <Link href="/results" className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors">
-                {t('common.results')}
-              </Link>
-              <Link href="/practice" className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors">
-                {t('common.practice')}
-              </Link>
-              <Link href="/dashboard" className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors">
-                {t('common.dashboard')}
-              </Link>
-              <Link href="/session/join" className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors">
-                {t('session.title')}
-              </Link>
+              {isLoggedIn && (
+                <>
+                  <Link href="/results" className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors">
+                    {t('common.results')}
+                  </Link>
+                  <Link href="/practice" className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors">
+                    {t('common.practice')}
+                  </Link>
+                  <Link href="/dashboard" className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors">
+                    {t('common.dashboard')}
+                  </Link>
+                  <Link href="/session/join" className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors">
+                    {t('session.title')}
+                  </Link>
+                </>
+              )}
             </nav>
           </div>
 
@@ -78,7 +87,7 @@ export function Header() {
             ) : (
               <Link
                 href="/login"
-                className="hidden md:block text-sm text-gray-300 hover:text-[#ff6b35] font-medium transition-colors"
+                className="hidden md:inline-flex items-center px-4 py-2 bg-[#ff6b35] text-white text-sm font-semibold rounded-lg hover:bg-[#e55a2a] transition-colors"
               >
                 {t('auth.login')}
               </Link>
@@ -109,18 +118,22 @@ export function Header() {
               <Link href="/diagnostic" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2">
                 {t('common.diagnostic')}
               </Link>
-              <Link href="/results" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2">
-                {t('common.results')}
-              </Link>
-              <Link href="/practice" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2">
-                {t('common.practice')}
-              </Link>
-              <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2">
-                {t('common.dashboard')}
-              </Link>
-              <Link href="/session/join" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2">
-                {t('session.title')}
-              </Link>
+              {isLoggedIn && (
+                <>
+                  <Link href="/results" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2">
+                    {t('common.results')}
+                  </Link>
+                  <Link href="/practice" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2">
+                    {t('common.practice')}
+                  </Link>
+                  <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2">
+                    {t('common.dashboard')}
+                  </Link>
+                  <Link href="/session/join" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2">
+                    {t('session.title')}
+                  </Link>
+                </>
+              )}
               {isLoggedIn ? (
                 <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className="text-left text-red-400 hover:text-red-300 font-medium transition-colors py-2">
                   {t('auth.logout')}
