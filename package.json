@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.82.0",
+    "@excalidraw/excalidraw": "^0.18.0",
     "@hookform/resolvers": "^5.2.2",
     "@livekit/components-react": "^2.9.20",
     "@livekit/components-styles": "^1.2.0",

@@ -20,7 +20,7 @@ import {
   PenTool,
   LogOut,
 } from 'lucide-react';
-import { Whiteboard } from '@/components/session/Whiteboard';
+import { DynamicWhiteboard } from '@/components/session/DynamicWhiteboard';
 import { SessionChat } from '@/components/session/SessionChat';
 import { useTranslation } from '@/lib/i18n/LanguageContext';
 
@@ -55,7 +55,13 @@ function SessionContent() {
       serverUrl={livekitUrl}
       token={token}
       connect={true}
-      onDisconnected={() => router.push('/session/join')}
+      onDisconnected={() => {
+        console.warn('[LiveKit] Disconnected from room');
+        router.push('/session/join');
+      }}
+      onError={(err) => {
+        console.error('[LiveKit] Connection error:', err);
+      }}
       className="min-h-screen bg-gray-900"
     >
       <SessionLayout roomName={roomName} participantName={name} />
@@ -154,7 +160,7 @@ function SessionLayout({ roomName, participantName }: { roomName: string; partic
           {/* Whiteboard */}
           {showWhiteboard && (
             <div className="lg:w-2/3 min-h-[200px] sm:min-h-[300px]">
-              <Whiteboard room={room} />
+              <DynamicWhiteboard room={room} participantName={participantName} />
             </div>
           )}
         </div>
