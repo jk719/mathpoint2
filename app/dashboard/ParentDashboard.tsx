@@ -88,26 +88,26 @@ export function ParentDashboard({ name }: { name: string }) {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-3">
-          <div className="text-center p-3 bg-gray-50 rounded-lg">
-            <div className="text-2xl font-bold text-gray-900">{MOCK_CHILD.accuracy}%</div>
-            <div className="text-xs text-gray-500">{t('common.accuracy')}</div>
+        <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-3">
+          <div className="text-center p-2 sm:p-3 bg-gray-50 rounded-lg">
+            <div className="text-lg sm:text-2xl font-bold text-gray-900">{MOCK_CHILD.accuracy}%</div>
+            <div className="text-[10px] sm:text-xs text-gray-500">{t('common.accuracy')}</div>
           </div>
-          <div className="text-center p-3 bg-green-50 rounded-lg">
-            <div className="text-2xl font-bold text-green-700">{MOCK_CHILD.mastered}</div>
-            <div className="text-xs text-gray-500">{t('common.mastered')}</div>
+          <div className="text-center p-2 sm:p-3 bg-green-50 rounded-lg">
+            <div className="text-lg sm:text-2xl font-bold text-green-700">{MOCK_CHILD.mastered}</div>
+            <div className="text-[10px] sm:text-xs text-gray-500">{t('common.mastered')}</div>
           </div>
-          <div className="text-center p-3 bg-orange-50 rounded-lg">
-            <div className="text-2xl font-bold text-[#ff6b35]">{MOCK_CHILD.developing}</div>
-            <div className="text-xs text-gray-500">{t('common.developing')}</div>
+          <div className="text-center p-2 sm:p-3 bg-orange-50 rounded-lg">
+            <div className="text-lg sm:text-2xl font-bold text-[#ff6b35]">{MOCK_CHILD.developing}</div>
+            <div className="text-[10px] sm:text-xs text-gray-500">{t('common.developing')}</div>
           </div>
-          <div className="text-center p-3 bg-red-50 rounded-lg">
-            <div className="text-2xl font-bold text-red-600">{MOCK_CHILD.weak}</div>
-            <div className="text-xs text-gray-500">{t('common.weak')}</div>
+          <div className="text-center p-2 sm:p-3 bg-red-50 rounded-lg">
+            <div className="text-lg sm:text-2xl font-bold text-red-600">{MOCK_CHILD.weak}</div>
+            <div className="text-[10px] sm:text-xs text-gray-500">{t('common.weak')}</div>
           </div>
-          <div className="text-center p-3 bg-blue-50 rounded-lg">
-            <div className="text-2xl font-bold text-blue-600">{MOCK_CHILD.totalPoints}</div>
-            <div className="text-xs text-gray-500">{t('common.points')}</div>
+          <div className="text-center p-2 sm:p-3 bg-blue-50 rounded-lg">
+            <div className="text-lg sm:text-2xl font-bold text-blue-600">{MOCK_CHILD.totalPoints}</div>
+            <div className="text-[10px] sm:text-xs text-gray-500">{t('common.points')}</div>
           </div>
         </div>
       </motion.div>

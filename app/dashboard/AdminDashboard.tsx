@@ -71,42 +71,42 @@ export function AdminDashboard({ name }: { name: string }) {
       </motion.div>
 
       {/* Platform Stats — Top Row */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 mb-6">
         {[
           { icon: Users, label: t('adminDash.totalUsers'), value: '1,247', change: '+12%', up: true, color: 'bg-blue-100', iconColor: 'text-blue-600' },
           { icon: BookOpen, label: t('adminDash.diagnosticsRun'), value: '3,891', change: '+28%', up: true, color: 'bg-orange-100', iconColor: 'text-[#ff6b35]' },
           { icon: Video, label: t('adminDash.liveSessions'), value: '482', change: '+18%', up: true, color: 'bg-green-100', iconColor: 'text-green-600' },
           { icon: DollarSign, label: t('adminDash.mrr'), value: '$12.4k', change: '+23%', up: true, color: 'bg-purple-100', iconColor: 'text-purple-600' },
         ].map((stat) => (
-          <div key={stat.label} className="bg-white rounded-xl shadow-sm p-5">
-            <div className="flex items-center justify-between mb-3">
-              <div className={`w-10 h-10 ${stat.color} rounded-lg flex items-center justify-center`}>
-                <stat.icon className={`w-5 h-5 ${stat.iconColor}`} />
+          <div key={stat.label} className="bg-white rounded-xl shadow-sm p-3 sm:p-5">
+            <div className="flex items-center justify-between mb-2 sm:mb-3">
+              <div className={`w-8 h-8 sm:w-10 sm:h-10 ${stat.color} rounded-lg flex items-center justify-center flex-shrink-0`}>
+                <stat.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${stat.iconColor}`} />
               </div>
-              <span className={`text-xs font-semibold flex items-center gap-0.5 ${stat.up ? 'text-green-600' : 'text-red-500'}`}>
+              <span className={`text-[10px] sm:text-xs font-semibold flex items-center gap-0.5 ${stat.up ? 'text-green-600' : 'text-red-500'}`}>
                 {stat.up ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
                 {stat.change}
               </span>
             </div>
-            <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
-            <div className="text-xs text-gray-500 mt-0.5">{stat.label}</div>
+            <div className="text-lg sm:text-2xl font-bold text-gray-900">{stat.value}</div>
+            <div className="text-[10px] sm:text-xs text-gray-500 mt-0.5 truncate">{stat.label}</div>
           </div>
         ))}
       </motion.div>
 
       {/* Secondary Stats */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 mb-6">
         {[
           { icon: Target, label: 'Avg Accuracy', value: '61%', color: 'text-[#1a3a52]' },
-          { icon: Clock, label: 'Avg Session Time', value: '38 min', color: 'text-blue-600' },
+          { icon: Clock, label: 'Avg Session', value: '38 min', color: 'text-blue-600' },
           { icon: Sparkles, label: 'AI Lessons', value: '1,247', color: 'text-[#ff6b35]' },
           { icon: Globe, label: 'Countries', value: '14', color: 'text-green-600' },
         ].map((stat) => (
-          <div key={stat.label} className="bg-white rounded-xl shadow-sm p-4 flex items-center gap-3">
-            <stat.icon className={`w-5 h-5 ${stat.color} flex-shrink-0`} />
-            <div>
-              <div className="text-lg font-bold text-gray-900">{stat.value}</div>
-              <div className="text-xs text-gray-500">{stat.label}</div>
+          <div key={stat.label} className="bg-white rounded-xl shadow-sm p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+            <stat.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${stat.color} flex-shrink-0`} />
+            <div className="min-w-0">
+              <div className="text-base sm:text-lg font-bold text-gray-900">{stat.value}</div>
+              <div className="text-[10px] sm:text-xs text-gray-500 truncate">{stat.label}</div>
             </div>
           </div>
         ))}

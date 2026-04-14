@@ -175,10 +175,10 @@ function SessionLayout({ roomName, participantName }: { roomName: string; partic
       </div>
 
       {/* Bottom control bar */}
-      <div className="flex items-center justify-center gap-3 px-4 py-3 bg-gray-800 border-t border-gray-700">
+      <div className="flex items-center justify-center gap-2 sm:gap-3 px-2 sm:px-4 py-3 bg-gray-800 border-t border-gray-700">
         <button
           onClick={toggleMic}
-          className={`p-3 rounded-full transition-colors ${
+          className={`p-3 sm:p-3 min-w-[44px] min-h-[44px] rounded-full transition-colors flex items-center justify-center ${
             micEnabled ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-red-500 hover:bg-red-600 text-white'
           }`}
           title={micEnabled ? 'Mute' : 'Unmute'}
@@ -188,7 +188,7 @@ function SessionLayout({ roomName, participantName }: { roomName: string; partic
 
         <button
           onClick={toggleCam}
-          className={`p-3 rounded-full transition-colors ${
+          className={`p-3 sm:p-3 min-w-[44px] min-h-[44px] rounded-full transition-colors flex items-center justify-center ${
             camEnabled ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-red-500 hover:bg-red-600 text-white'
           }`}
           title={camEnabled ? 'Camera Off' : 'Camera On'}
@@ -198,7 +198,7 @@ function SessionLayout({ roomName, participantName }: { roomName: string; partic
 
         <button
           onClick={() => setShowWhiteboard(!showWhiteboard)}
-          className={`p-3 rounded-full transition-colors ${
+          className={`p-3 sm:p-3 min-w-[44px] min-h-[44px] rounded-full transition-colors flex items-center justify-center ${
             showWhiteboard ? 'bg-[#ff6b35] text-white' : 'bg-gray-700 hover:bg-gray-600 text-white'
           }`}
           title="Whiteboard"
@@ -208,7 +208,7 @@ function SessionLayout({ roomName, participantName }: { roomName: string; partic
 
         <button
           onClick={() => setShowChat(!showChat)}
-          className={`p-3 rounded-full transition-colors ${
+          className={`p-3 sm:p-3 min-w-[44px] min-h-[44px] rounded-full transition-colors flex items-center justify-center ${
             showChat ? 'bg-[#ff6b35] text-white' : 'bg-gray-700 hover:bg-gray-600 text-white'
           }`}
           title="Chat"
@@ -216,11 +216,11 @@ function SessionLayout({ roomName, participantName }: { roomName: string; partic
           <MessageSquare className="w-5 h-5" />
         </button>
 
-        <div className="w-px h-8 bg-gray-600 mx-2" />
+        <div className="w-px h-8 bg-gray-600 mx-1 sm:mx-2" />
 
         <button
           onClick={leaveSession}
-          className="p-3 rounded-full bg-red-500 hover:bg-red-600 text-white transition-colors"
+          className="p-3 sm:p-3 min-w-[44px] min-h-[44px] rounded-full bg-red-500 hover:bg-red-600 text-white transition-colors flex items-center justify-center"
           title="Leave"
         >
           <LogOut className="w-5 h-5" />

@@ -108,29 +108,29 @@ export function StudentDashboard({ name }: { name: string }) {
       </motion.div>
 
       {/* Stats */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
-        <div className="bg-white rounded-xl shadow-sm p-5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#1a3a52]/10 rounded-lg flex items-center justify-center"><Award className="w-5 h-5 text-[#1a3a52]" /></div>
-            <div><div className="text-2xl font-bold text-gray-900">{points}</div><div className="text-sm text-gray-500">{t('common.points')}</div></div>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 mb-8">
+        <div className="bg-white rounded-xl shadow-sm p-3 sm:p-5">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#1a3a52]/10 rounded-lg flex items-center justify-center flex-shrink-0"><Award className="w-4 h-4 sm:w-5 sm:h-5 text-[#1a3a52]" /></div>
+            <div className="min-w-0"><div className="text-lg sm:text-2xl font-bold text-gray-900">{points}</div><div className="text-xs sm:text-sm text-gray-500 truncate">{t('common.points')}</div></div>
           </div>
         </div>
-        <div className="bg-white rounded-xl shadow-sm p-5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center"><Flame className="w-5 h-5 text-orange-500" /></div>
-            <div><div className="text-2xl font-bold text-gray-900">{streak}</div><div className="text-sm text-gray-500">Day Streak</div></div>
+        <div className="bg-white rounded-xl shadow-sm p-3 sm:p-5">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0"><Flame className="w-4 h-4 sm:w-5 sm:h-5 text-orange-500" /></div>
+            <div className="min-w-0"><div className="text-lg sm:text-2xl font-bold text-gray-900">{streak}</div><div className="text-xs sm:text-sm text-gray-500 truncate">Day Streak</div></div>
           </div>
         </div>
-        <div className="bg-white rounded-xl shadow-sm p-5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center"><TrendingUp className="w-5 h-5 text-green-500" /></div>
-            <div><div className="text-2xl font-bold text-gray-900">{accuracy}%</div><div className="text-sm text-gray-500">{t('common.accuracy')}</div></div>
+        <div className="bg-white rounded-xl shadow-sm p-3 sm:p-5">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0"><TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" /></div>
+            <div className="min-w-0"><div className="text-lg sm:text-2xl font-bold text-gray-900">{accuracy}%</div><div className="text-xs sm:text-sm text-gray-500 truncate">{t('common.accuracy')}</div></div>
           </div>
         </div>
-        <div className="bg-white rounded-xl shadow-sm p-5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#ff6b35]/10 rounded-lg flex items-center justify-center"><Target className="w-5 h-5 text-[#ff6b35]" /></div>
-            <div><div className="text-2xl font-bold text-gray-900">{skillsAssessed}</div><div className="text-sm text-gray-500">{t('common.skillsAssessed')}</div></div>
+        <div className="bg-white rounded-xl shadow-sm p-3 sm:p-5">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#ff6b35]/10 rounded-lg flex items-center justify-center flex-shrink-0"><Target className="w-4 h-4 sm:w-5 sm:h-5 text-[#ff6b35]" /></div>
+            <div className="min-w-0"><div className="text-lg sm:text-2xl font-bold text-gray-900">{skillsAssessed}</div><div className="text-xs sm:text-sm text-gray-500 truncate">{t('common.skillsAssessed')}</div></div>
           </div>
         </div>
       </motion.div>
