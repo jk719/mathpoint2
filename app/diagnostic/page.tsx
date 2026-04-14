@@ -154,7 +154,7 @@ export default function DiagnosticPage() {
               {t('diagnostic.topicsCovered')}
             </h3>
             <div className="flex flex-wrap justify-center gap-2">
-              {['Maki Rolls', 'Uramaki (Inside-Out)', 'Temaki (Hand Rolls)'].map((topic) => (
+              {['Basic Percents', 'Percent Change', 'Applied Percents'].map((topic) => (
                 <span key={topic} className="px-3 py-1.5 bg-white rounded-full text-sm text-gray-700 border border-gray-200">
                   {topic}
                 </span>

@@ -1,184 +1,184 @@
 import { SATSkill } from '@/types/sat';
 
 /**
- * Sushi Roll Making Skills — Demo Data
+ * Percents — Demo Skills
  *
- * 18 skills across 3 topics × 3 difficulties.
+ * 18 skills across 3 patterns × 3 difficulties.
  * Mirrors the SAT skill taxonomy: topic → pattern → variant → difficulty
  */
 export const demoSkills: SATSkill[] = [
   // ============================================
-  // Maki Rolls — Easy
+  // Basic Percent Calculations — Easy
   // ============================================
   {
-    id: 'maki-rice-spread-easy',
-    topic: 'Maki Rolls',
-    pattern: 'Rice Preparation',
-    variant: 'Basic spreading technique',
+    id: 'pct-find-pct-easy',
+    topic: 'Percents',
+    pattern: 'Finding a Percent',
+    variant: 'Find percent of a whole number',
     difficulty: 'Easy',
-    displayName: 'Rice Spreading Basics',
+    displayName: 'Finding a Percent of a Number',
   },
   {
-    id: 'maki-nori-orient-easy',
-    topic: 'Maki Rolls',
-    pattern: 'Nori Handling',
-    variant: 'Sheet orientation',
+    id: 'pct-convert-frac-easy',
+    topic: 'Percents',
+    pattern: 'Conversions',
+    variant: 'Fraction to percent',
     difficulty: 'Easy',
-    displayName: 'Nori Orientation',
+    displayName: 'Fraction to Percent',
   },
   // ============================================
-  // Maki Rolls — Medium
+  // Basic Percent Calculations — Medium
   // ============================================
   {
-    id: 'maki-filling-place-medium',
-    topic: 'Maki Rolls',
-    pattern: 'Filling Placement',
-    variant: 'Ingredient positioning',
+    id: 'pct-find-whole-medium',
+    topic: 'Percents',
+    pattern: 'Finding a Percent',
+    variant: 'Find the whole given part and percent',
     difficulty: 'Medium',
-    displayName: 'Filling Placement',
+    displayName: 'Finding the Whole',
   },
   {
-    id: 'maki-rolling-tech-medium',
-    topic: 'Maki Rolls',
-    pattern: 'Rolling Technique',
-    variant: 'Bamboo mat rolling',
+    id: 'pct-convert-dec-medium',
+    topic: 'Percents',
+    pattern: 'Conversions',
+    variant: 'Decimal to percent with context',
     difficulty: 'Medium',
-    displayName: 'Rolling Technique',
+    displayName: 'Decimal-Percent Conversions',
   },
   // ============================================
-  // Maki Rolls — Hard
+  // Basic Percent Calculations — Hard
   // ============================================
   {
-    id: 'maki-cutting-hard',
-    topic: 'Maki Rolls',
-    pattern: 'Knife Skills',
-    variant: 'Clean cut technique',
+    id: 'pct-reverse-pct-hard',
+    topic: 'Percents',
+    pattern: 'Finding a Percent',
+    variant: 'Find the percent given part and whole',
     difficulty: 'Hard',
-    displayName: 'Precision Cutting',
+    displayName: 'Reverse Percent Problems',
   },
   {
-    id: 'maki-troubleshoot-hard',
-    topic: 'Maki Rolls',
-    pattern: 'Troubleshooting',
-    variant: 'Diagnosing roll failures',
+    id: 'pct-multi-convert-hard',
+    topic: 'Percents',
+    pattern: 'Conversions',
+    variant: 'Multi-step fraction-decimal-percent',
     difficulty: 'Hard',
-    displayName: 'Roll Troubleshooting',
+    displayName: 'Multi-Step Conversions',
   },
 
   // ============================================
-  // Uramaki (Inside-Out Rolls) — Easy
+  // Percent Change — Easy
   // ============================================
   {
-    id: 'ura-rice-outside-easy',
-    topic: 'Uramaki Rolls',
-    pattern: 'Rice-Outside Technique',
-    variant: 'Flipping basics',
+    id: 'pct-increase-easy',
+    topic: 'Percents',
+    pattern: 'Percent Change',
+    variant: 'Simple increase',
     difficulty: 'Easy',
-    displayName: 'Rice-Outside Basics',
+    displayName: 'Simple Percent Increase',
   },
   {
-    id: 'ura-wrap-easy',
-    topic: 'Uramaki Rolls',
-    pattern: 'Plastic Wrap Method',
-    variant: 'Mat protection',
+    id: 'pct-decrease-easy',
+    topic: 'Percents',
+    pattern: 'Percent Change',
+    variant: 'Simple decrease',
     difficulty: 'Easy',
-    displayName: 'Plastic Wrap Setup',
+    displayName: 'Simple Percent Decrease',
   },
   // ============================================
-  // Uramaki (Inside-Out Rolls) — Medium
+  // Percent Change — Medium
   // ============================================
   {
-    id: 'ura-topping-medium',
-    topic: 'Uramaki Rolls',
-    pattern: 'Topping Adhesion',
-    variant: 'Sesame and tobiko application',
+    id: 'pct-increase-word-medium',
+    topic: 'Percents',
+    pattern: 'Percent Change',
+    variant: 'Word problem with increase',
     difficulty: 'Medium',
-    displayName: 'Topping Application',
+    displayName: 'Percent Increase Word Problems',
   },
   {
-    id: 'ura-filling-balance-medium',
-    topic: 'Uramaki Rolls',
-    pattern: 'Filling Balance',
-    variant: 'Texture and flavor pairing',
+    id: 'pct-decrease-word-medium',
+    topic: 'Percents',
+    pattern: 'Percent Change',
+    variant: 'Word problem with decrease',
     difficulty: 'Medium',
-    displayName: 'Filling Balance',
+    displayName: 'Percent Decrease Word Problems',
   },
   // ============================================
-  // Uramaki (Inside-Out Rolls) — Hard
+  // Percent Change — Hard
   // ============================================
   {
-    id: 'ura-structure-hard',
-    topic: 'Uramaki Rolls',
-    pattern: 'Structural Integrity',
-    variant: 'Preventing collapse with wet fillings',
+    id: 'pct-successive-change-hard',
+    topic: 'Percents',
+    pattern: 'Percent Change',
+    variant: 'Successive percent changes',
     difficulty: 'Hard',
-    displayName: 'Structural Engineering',
+    displayName: 'Successive Percent Changes',
   },
   {
-    id: 'ura-presentation-hard',
-    topic: 'Uramaki Rolls',
-    pattern: 'Presentation',
-    variant: 'Plating and garnish design',
+    id: 'pct-original-value-hard',
+    topic: 'Percents',
+    pattern: 'Finding a Percent',
+    variant: 'Find original value given result and percent',
     difficulty: 'Hard',
-    displayName: 'Advanced Presentation',
+    displayName: 'Finding Original Value',
   },
 
   // ============================================
-  // Temaki (Hand Rolls) — Easy
+  // Applied Percents — Easy
   // ============================================
   {
-    id: 'temaki-cone-easy',
-    topic: 'Temaki Hand Rolls',
-    pattern: 'Cone Shaping',
-    variant: 'Basic cone formation',
+    id: 'pct-tip-tax-easy',
+    topic: 'Percents',
+    pattern: 'Tax & Tip',
+    variant: 'Calculate simple tax or tip',
     difficulty: 'Easy',
-    displayName: 'Cone Shaping Basics',
+    displayName: 'Tax and Tip Basics',
   },
   {
-    id: 'temaki-nori-easy',
-    topic: 'Temaki Hand Rolls',
-    pattern: 'Nori Prep',
-    variant: 'Sheet sizing and freshness',
+    id: 'pct-discount-easy',
+    topic: 'Percents',
+    pattern: 'Discounts',
+    variant: 'Single discount',
     difficulty: 'Easy',
-    displayName: 'Nori Preparation',
+    displayName: 'Simple Discounts',
   },
   // ============================================
-  // Temaki (Hand Rolls) — Medium
+  // Applied Percents — Medium
   // ============================================
   {
-    id: 'temaki-filling-medium',
-    topic: 'Temaki Hand Rolls',
-    pattern: 'Filling Proportion',
-    variant: 'Rice-to-filling ratio',
+    id: 'pct-tip-tax-total-medium',
+    topic: 'Percents',
+    pattern: 'Tax & Tip',
+    variant: 'Calculate total with tax and tip',
     difficulty: 'Medium',
-    displayName: 'Filling Proportions',
+    displayName: 'Total with Tax and Tip',
   },
   {
-    id: 'temaki-seal-medium',
-    topic: 'Temaki Hand Rolls',
-    pattern: 'Sealing Technique',
-    variant: 'Rice grain adhesion',
+    id: 'pct-stacked-discount-medium',
+    topic: 'Percents',
+    pattern: 'Discounts',
+    variant: 'Stacked discounts',
     difficulty: 'Medium',
-    displayName: 'Sealing Technique',
+    displayName: 'Stacked Discounts',
   },
   // ============================================
-  // Temaki (Hand Rolls) — Hard
+  // Applied Percents — Hard
   // ============================================
   {
-    id: 'temaki-timing-hard',
-    topic: 'Temaki Hand Rolls',
-    pattern: 'Timing & Freshness',
-    variant: 'Nori crispness window',
+    id: 'pct-markup-margin-hard',
+    topic: 'Percents',
+    pattern: 'Tax & Tip',
+    variant: 'Markup vs margin distinction',
     difficulty: 'Hard',
-    displayName: 'Timing & Freshness',
+    displayName: 'Markup vs Margin',
   },
   {
-    id: 'temaki-adapt-hard',
-    topic: 'Temaki Hand Rolls',
-    pattern: 'Adaptation',
-    variant: 'Adjusting for non-standard ingredients',
+    id: 'pct-compound-discount-hard',
+    topic: 'Percents',
+    pattern: 'Discounts',
+    variant: 'Compound discount with tax',
     difficulty: 'Hard',
-    displayName: 'Creative Adaptation',
+    displayName: 'Compound Discounts with Tax',
   },
 ];
 

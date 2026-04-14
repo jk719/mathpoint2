@@ -183,7 +183,7 @@ const translations = {
       tutor: 'Tutor',
       student: 'Student',
       roomName: 'Room Name',
-      roomPlaceholder: 'e.g., sushi-lesson-101',
+      roomPlaceholder: 'e.g., math-lesson-101',
       yourName: 'Your Name',
       namePlaceholder: 'Enter your name',
       createAndJoin: 'Create & Join',
