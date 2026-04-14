@@ -4,6 +4,8 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { BayesianKT, SkillMastery } from '@/lib/adaptive/BayesianKT';
 import { ItemSelector, ItemCandidate } from '@/lib/adaptive/ItemSelector';
+import { KnowledgeGraph } from '@/lib/adaptive/KnowledgeGraph';
+import { ResponseTimeModel } from '@/lib/adaptive/ResponseTimeModel';
 import {
   scoreDiagnostic,
   QuestionInput,
@@ -15,6 +17,7 @@ import { SATQuestion } from '@/types/sat';
 import { DiagnosticQuestion } from '@/types';
 import { demoSkills, getDemoSkillById } from '@/data/demo-skills';
 import { demoQuestions } from '@/data/demo-questions';
+import { getAllEdges } from '@/data/skill-prerequisites';
 import {
   toDisplayQuestion,
   toItemCandidate,
@@ -26,6 +29,8 @@ import { Language } from '@/lib/i18n/translations';
 
 let bkt: BayesianKT | null = null;
 let selector: ItemSelector | null = null;
+let knowledgeGraph: KnowledgeGraph | null = null;
+let timeModel: ResponseTimeModel | null = null;
 let masteriesMap: Map<string, SkillMastery> = new Map();
 let itemCandidates: ItemCandidate[] = [];
 let itemsPresented: string[] = [];
@@ -118,6 +123,30 @@ export const useDiagnosticStore = create<DiagnosticState>()(
           masteriesMap.set(skill.id, bkt.initializeSkillMastery(skill.id));
         }
 
+        // Initialize knowledge graph for belief propagation
+        const edges = getAllEdges(demoSkills);
+        knowledgeGraph = new KnowledgeGraph(
+          edges,
+          demoSkills.map((s) => ({ id: s.id, topic: s.topic, pattern: s.pattern, difficulty: s.difficulty }))
+        );
+
+        // Register propagation callback — fires after every BKT update
+        bkt.onMasteryUpdate((skillCode, _mastery, _isCorrect) => {
+          if (knowledgeGraph && masteriesMap.has(skillCode)) {
+            const currentMastery = masteriesMap.get(skillCode)!.pMastery;
+            knowledgeGraph.propagate(skillCode, masteriesMap, currentMastery);
+          }
+        });
+
+        // Initialize response time model
+        timeModel = new ResponseTimeModel();
+        timeModel.initialize(
+          demoSkills.map((s) => ({ id: s.id, difficulty: s.difficulty }))
+        );
+
+        // Connect time model to item selector for fluency-aware selection
+        selector.setTimeModel(timeModel);
+
         // Build item candidates from all demo questions
         itemCandidates = demoQuestions.map((q) => {
           const skill = getDemoSkillById(q.skillId)!;
@@ -160,10 +189,15 @@ export const useDiagnosticStore = create<DiagnosticState>()(
         const isCorrect = label === raw.correctAnswer;
         const timeSpentMs = Date.now() - (state.questionStartTime ?? Date.now());
 
-        // Update BKT mastery
+        // Update BKT mastery (triggers knowledge graph propagation via callback)
         const mastery = masteriesMap.get(raw.skillId);
         if (mastery) {
           bkt.updateMastery(mastery, isCorrect, 0.75, timeSpentMs);
+        }
+
+        // Update response time model
+        if (timeModel) {
+          timeModel.update(raw.skillId, timeSpentMs);
         }
 
         // Record response
@@ -195,6 +229,7 @@ export const useDiagnosticStore = create<DiagnosticState>()(
               topic: s.topic,
               pattern: s.pattern,
               difficulty: s.difficulty,
+              prerequisites: knowledgeGraph?.getPrerequisites(s.id),
             });
           }
 
@@ -267,6 +302,8 @@ export const useDiagnosticStore = create<DiagnosticState>()(
       reset: () => {
         bkt = null;
         selector = null;
+        knowledgeGraph = null;
+        timeModel = null;
         masteriesMap = new Map();
         itemCandidates = [];
         itemsPresented = [];

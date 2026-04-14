@@ -26,7 +26,11 @@ export interface MasteryUpdate {
   confidence: number;
 }
 
+export type MasteryUpdateCallback = (skillCode: string, mastery: SkillMastery, isCorrect: boolean) => void;
+
 export class BayesianKT {
+  private onUpdateCallbacks: MasteryUpdateCallback[] = [];
+
   private defaultParams: BKTParameters = {
     pInit: 0.3,   // Students typically start with 30% mastery
     pLearn: 0.15, // 15% chance of learning from each attempt
@@ -51,6 +55,14 @@ export class BayesianKT {
     if (customParams) {
       this.defaultParams = { ...this.defaultParams, ...customParams };
     }
+  }
+
+  /**
+   * Register a callback to be notified after every mastery update.
+   * Used by KnowledgeGraph for belief propagation.
+   */
+  onMasteryUpdate(callback: MasteryUpdateCallback): void {
+    this.onUpdateCallbacks.push(callback);
   }
 
   /**
@@ -129,6 +141,11 @@ export class BayesianKT {
       mastery.incorrectCount++;
     }
     mastery.lastUpdated = new Date();
+
+    // Notify listeners (e.g., KnowledgeGraph for belief propagation)
+    for (const cb of this.onUpdateCallbacks) {
+      cb(mastery.skillCode, mastery, isCorrect);
+    }
 
     return {
       skillCode: mastery.skillCode,

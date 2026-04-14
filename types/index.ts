@@ -1,6 +1,12 @@
 // SAT Math types
 export * from './sat';
 
+// Adaptive engine types (knowledge graph, time model, re-test)
+export * from './adaptive';
+
+// Assignments and questions types
+export * from './assignments';
+
 // User and gamification types
 export * from './user';
 export * from './gamification';

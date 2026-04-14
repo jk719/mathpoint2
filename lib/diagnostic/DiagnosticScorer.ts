@@ -12,6 +12,7 @@ import {
   shouldFlagForReview,
   ResponseForQualityCheck,
 } from './ResponseQualityChecker'
+import type { FluencyLevel } from '@/types/adaptive'
 
 // =============================================================================
 // TYPES
@@ -57,6 +58,11 @@ export interface SkillResult {
   status: SkillStatus
   validResponses: number
   expectedTimeMs: number // average expected time for this skill's questions
+  // Fluency data (populated when ResponseTimeModel is active)
+  fluencyLevel?: FluencyLevel
+  fluencyScore?: number     // 0-1, higher = more fluent
+  tutorContext?: string     // human-readable context for AI tutor
+  isInferred?: boolean      // true if mastery was propagated from knowledge graph, not directly observed
 }
 
 export interface SectionResult {
@@ -383,10 +389,35 @@ export function getPracticeSequence(
     return a.accuracy - b.accuracy
   })
 
-  // TODO: Implement prerequisite ordering when we have skill dependencies
-  // This would topologically sort based on prerequisites
+  // Reorder based on prerequisites: if skill A is a prerequisite for skill B,
+  // A should come before B in the practice sequence
+  const skillIdSet = new Set(toSort.map(s => s.skillId))
+  const sorted: SkillResult[] = []
+  const visited = new Set<string>()
 
-  return toSort
+  function visit(skill: SkillResult) {
+    if (visited.has(skill.skillId)) return
+    visited.add(skill.skillId)
+
+    // Visit prerequisites first (if they're in our weak list)
+    const info = skillInfoMap.get(skill.skillId)
+    if (info?.prerequisites) {
+      for (const prereqId of info.prerequisites) {
+        if (skillIdSet.has(prereqId)) {
+          const prereq = toSort.find(s => s.skillId === prereqId)
+          if (prereq) visit(prereq)
+        }
+      }
+    }
+
+    sorted.push(skill)
+  }
+
+  for (const skill of toSort) {
+    visit(skill)
+  }
+
+  return sorted
 }
 
 /**

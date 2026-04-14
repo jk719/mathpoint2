@@ -2,6 +2,7 @@
 // Selects optimal questions based on Expected Information Gain (EIG) and other criteria
 
 import { BayesianKT, SkillMastery } from './BayesianKT';
+import type { ResponseTimeModel } from './ResponseTimeModel';
 
 export interface ItemCandidate {
   id: string;
@@ -32,15 +33,25 @@ export interface ItemScore {
   difficultyScore: number;
   diversityScore: number;
   recencyScore: number;
+  fluencyScore: number;
 }
 
 export class ItemSelector {
   private bkt: BayesianKT;
+  private timeModel: ResponseTimeModel | null = null;
   private recentSkills: string[] = []; // Track recently tested skills
   private recentItems: string[] = [];  // Track recently presented items
 
-  constructor(bkt?: BayesianKT) {
+  constructor(bkt?: BayesianKT, timeModel?: ResponseTimeModel) {
     this.bkt = bkt || new BayesianKT();
+    this.timeModel = timeModel || null;
+  }
+
+  /**
+   * Set the response time model (can be set after construction)
+   */
+  setTimeModel(model: ResponseTimeModel): void {
+    this.timeModel = model;
   }
 
   /**
@@ -202,19 +213,26 @@ export class ItemSelector {
     // Recency Score (0-1) - avoid recently shown items
     const recencyScore = this.calculateRecencyScore(item);
 
-    // Weighted combination
+    // Fluency Score (0-1) - prefer skills where student is COMPUTED (correct but slow)
+    // These are high-value targets for the AI tutor
+    const fluencyScore = this.calculateFluencyValue(item, masteries);
+
+    // Weighted combination — fluency-aware when time model is active
+    const hasFluency = this.timeModel !== null;
     const weights = {
-      eig: 0.4,
-      difficulty: 0.3,
-      diversity: criteria.diversityWeight || 0.2,
-      recency: 0.1
+      eig: hasFluency ? 0.35 : 0.4,
+      difficulty: hasFluency ? 0.25 : 0.3,
+      diversity: criteria.diversityWeight || (hasFluency ? 0.15 : 0.2),
+      recency: 0.1,
+      fluency: hasFluency ? 0.15 : 0,
     };
 
     const totalScore =
       weights.eig * eigScore +
       weights.difficulty * difficultyScore +
       weights.diversity * diversityScore +
-      weights.recency * recencyScore;
+      weights.recency * recencyScore +
+      weights.fluency * fluencyScore;
 
     return {
       item,
@@ -222,7 +240,8 @@ export class ItemSelector {
       eigScore,
       difficultyScore,
       diversityScore,
-      recencyScore
+      recencyScore,
+      fluencyScore,
     };
   }
 
@@ -276,6 +295,35 @@ export class ItemSelector {
 
     // Score decreases for more recent items
     return index / Math.max(1, this.recentItems.length);
+  }
+
+  /**
+   * Calculate fluency value — prefer skills where student is correct but slow
+   * (COMPUTED level), as these are the best targets for teaching pattern shortcuts.
+   */
+  private calculateFluencyValue(
+    item: ItemCandidate,
+    masteries: Map<string, SkillMastery>
+  ): number {
+    if (!this.timeModel) return 0.5; // neutral when no time model
+
+    let maxValue = 0;
+    for (const skillCode of item.skillCodes) {
+      const mastery = masteries.get(skillCode);
+      if (!mastery || mastery.evidenceCount === 0) continue;
+
+      // High value if: correct (mastery developing/high) but slow (based on time model)
+      if (mastery.pMastery >= 0.5 && mastery.pMastery < 0.85) {
+        // Student knows this but might not be fluent — high value for teaching
+        maxValue = Math.max(maxValue, 0.8);
+      } else if (mastery.pMastery < 0.5) {
+        // Student is weak — moderate value for diagnosis
+        maxValue = Math.max(maxValue, 0.5);
+      }
+      // Mastered skills have low fluency value (already automated)
+    }
+
+    return maxValue || 0.3; // default for unseen skills
   }
 
   /**
