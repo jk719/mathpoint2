@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { TrendingUp, Clock, CheckCircle, BookOpen, Calendar, Video, Target, Award, Sparkles, AlertTriangle, MessageSquare } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/LanguageContext';
+import { MOCK_ASSIGNMENTS, MOCK_SUBMISSIONS } from '@/data/mock-assignments';
+import { AssignmentCard } from '@/components/assignments/AssignmentCard';
 
 const MOCK_CHILD = {
   name: 'Emma',
@@ -20,27 +22,27 @@ const MOCK_CHILD = {
 };
 
 const MOCK_SKILLS = [
-  { name: 'Rice Spreading Basics', topic: 'Maki Rolls', mastery: 92, status: 'mastered' },
-  { name: 'Nori Orientation', topic: 'Maki Rolls', mastery: 85, status: 'mastered' },
-  { name: 'Rolling Technique', topic: 'Maki Rolls', mastery: 68, status: 'developing' },
-  { name: 'Filling Placement', topic: 'Maki Rolls', mastery: 55, status: 'developing' },
-  { name: 'Rice-Outside Basics', topic: 'Uramaki Rolls', mastery: 45, status: 'weak' },
-  { name: 'Precision Cutting', topic: 'Maki Rolls', mastery: 35, status: 'weak' },
-  { name: 'Cone Shaping', topic: 'Temaki Hand Rolls', mastery: 30, status: 'weak' },
+  { name: 'Finding a Percent', topic: 'Percents', mastery: 92, status: 'mastered' },
+  { name: 'Fraction to Percent', topic: 'Percents', mastery: 85, status: 'mastered' },
+  { name: 'Percent Increase', topic: 'Percents', mastery: 68, status: 'developing' },
+  { name: 'Stacked Discounts', topic: 'Percents', mastery: 55, status: 'developing' },
+  { name: 'Successive Changes', topic: 'Percents', mastery: 45, status: 'weak' },
+  { name: 'Markup vs Margin', topic: 'Percents', mastery: 35, status: 'weak' },
+  { name: 'Compound Discounts', topic: 'Percents', mastery: 30, status: 'weak' },
 ];
 
 const MOCK_ACTIVITY = [
-  { action: 'Completed diagnostic', topic: 'Maki Rolls', time: '2 hours ago', icon: CheckCircle, color: 'text-green-500' },
-  { action: 'Practiced', topic: 'Filling Placement — scored 80%', time: '1 day ago', icon: Target, color: 'text-purple-500' },
-  { action: 'AI Lesson', topic: 'Rolling Technique', time: '2 days ago', icon: Sparkles, color: 'text-[#ff6b35]' },
+  { action: 'Completed diagnostic', topic: 'Percents', time: '2 hours ago', icon: CheckCircle, color: 'text-green-500' },
+  { action: 'Practiced', topic: 'Stacked Discounts — scored 80%', time: '1 day ago', icon: Target, color: 'text-purple-500' },
+  { action: 'AI Lesson', topic: 'Percent Increase', time: '2 days ago', icon: Sparkles, color: 'text-[#ff6b35]' },
   { action: 'Live Session', topic: 'with Tutor Sarah — 45 min', time: '3 days ago', icon: Video, color: 'text-blue-500' },
-  { action: 'Completed diagnostic', topic: 'Uramaki Rolls', time: '5 days ago', icon: CheckCircle, color: 'text-green-500' },
-  { action: 'Practiced', topic: 'Rice Spreading — scored 95%', time: '6 days ago', icon: Target, color: 'text-purple-500' },
+  { action: 'Completed diagnostic', topic: 'Percent Change', time: '5 days ago', icon: CheckCircle, color: 'text-green-500' },
+  { action: 'Practiced', topic: 'Finding a Percent — scored 95%', time: '6 days ago', icon: Target, color: 'text-purple-500' },
 ];
 
 const MOCK_SESSIONS = [
-  { tutor: 'Sarah M.', topic: 'Uramaki Technique', time: 'Today, 4:00 PM', duration: '45 min' },
-  { tutor: 'Sarah M.', topic: 'Temaki Basics', time: 'Friday, 2:00 PM', duration: '30 min' },
+  { tutor: 'Sarah M.', topic: 'Percent Change', time: 'Today, 4:00 PM', duration: '45 min' },
+  { tutor: 'Sarah M.', topic: 'Applied Percents', time: 'Friday, 2:00 PM', duration: '30 min' },
 ];
 
 export function ParentDashboard({ name }: { name: string }) {
@@ -141,7 +143,7 @@ export function ParentDashboard({ name }: { name: string }) {
             <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
             <div>
               <p className="text-sm font-medium text-red-800">3 skills need attention</p>
-              <p className="text-xs text-red-600 mt-0.5">Rice-Outside Basics, Precision Cutting, and Cone Shaping are below 50%. Consider scheduling a tutoring session.</p>
+              <p className="text-xs text-red-600 mt-0.5">Successive Changes, Markup vs Margin, and Compound Discounts are below 50%. Consider scheduling a tutoring session.</p>
             </div>
           </div>
         </motion.div>
@@ -217,6 +219,32 @@ export function ParentDashboard({ name }: { name: string }) {
           </motion.div>
         </div>
       </div>
+
+      {/* Assignments */}
+      {(() => {
+        const childAssignments = MOCK_ASSIGNMENTS.filter((a) => a.assignedStudents.includes('Emma W.'));
+        return childAssignments.length > 0 ? (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            className="mt-6 bg-white rounded-xl shadow-sm p-6">
+            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <BookOpen className="w-5 h-5 text-[#ff6b35]" />
+              {MOCK_CHILD.name}&apos;s Assignments
+            </h2>
+            <div className="space-y-3">
+              {childAssignments.map((assignment, i) => (
+                <AssignmentCard
+                  key={assignment.id}
+                  assignment={assignment}
+                  submissions={MOCK_SUBMISSIONS}
+                  role="parent"
+                  studentName="Emma W."
+                  index={i}
+                />
+              ))}
+            </div>
+          </motion.div>
+        ) : null;
+      })()}
 
       {/* Bottom row */}
       <div className="grid lg:grid-cols-2 gap-6 mt-6">

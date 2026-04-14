@@ -6,25 +6,25 @@ import { Users, BookOpen, Video, DollarSign, TrendingUp, UserPlus, Target, Clock
 import { useTranslation } from '@/lib/i18n/LanguageContext';
 
 const MOCK_SIGNUPS = [
-  { name: 'Emma W.', role: 'Student', time: '2 hours ago', plan: 'Premium', email: 'emma.w@email.com', mastery: 67, diagnostics: 3, sessions: 5, lastActive: '2h ago', joined: 'Mar 5, 2026', skills: [{ name: 'Rice Spreading', mastery: 92 }, { name: 'Rolling Technique', mastery: 68 }, { name: 'Filling Placement', mastery: 55 }, { name: 'Cone Shaping', mastery: 30 }] },
+  { name: 'Emma W.', role: 'Student', time: '2 hours ago', plan: 'Premium', email: 'emma.w@email.com', mastery: 67, diagnostics: 3, sessions: 5, lastActive: '2h ago', joined: 'Mar 5, 2026', skills: [{ name: 'Finding a Percent', mastery: 92 }, { name: 'Percent Increase', mastery: 68 }, { name: 'Stacked Discounts', mastery: 55 }, { name: 'Markup vs Margin', mastery: 30 }] },
   { name: 'David C.', role: 'Parent', time: '5 hours ago', plan: 'Free', email: 'david.c@email.com', mastery: 0, diagnostics: 0, sessions: 0, lastActive: '5h ago', joined: 'Apr 1, 2026', skills: [] },
   { name: 'Sarah M.', role: 'Tutor', time: '1 day ago', plan: 'Pro', email: 'sarah.m@email.com', mastery: 0, diagnostics: 0, sessions: 156, lastActive: '3h ago', joined: 'Jan 12, 2026', skills: [] },
-  { name: 'Lin Z.', role: 'Student', time: '1 day ago', plan: 'Premium', email: 'lin.z@email.com', mastery: 45, diagnostics: 2, sessions: 3, lastActive: '1d ago', joined: 'Mar 20, 2026', skills: [{ name: 'Nori Orientation', mastery: 80 }, { name: 'Rice-Outside', mastery: 40 }, { name: 'Topping Application', mastery: 30 }] },
-  { name: 'Marcus J.', role: 'Student', time: '2 days ago', plan: 'Free', email: 'marcus.j@email.com', mastery: 31, diagnostics: 1, sessions: 0, lastActive: '5d ago', joined: 'Mar 28, 2026', skills: [{ name: 'Nori Orientation', mastery: 60 }, { name: 'Rice Spreading', mastery: 25 }] },
+  { name: 'Lin Z.', role: 'Student', time: '1 day ago', plan: 'Premium', email: 'lin.z@email.com', mastery: 45, diagnostics: 2, sessions: 3, lastActive: '1d ago', joined: 'Mar 20, 2026', skills: [{ name: 'Fraction to Percent', mastery: 80 }, { name: 'Successive Changes', mastery: 40 }, { name: 'Compound Discounts', mastery: 30 }] },
+  { name: 'Marcus J.', role: 'Student', time: '2 days ago', plan: 'Free', email: 'marcus.j@email.com', mastery: 31, diagnostics: 1, sessions: 0, lastActive: '5d ago', joined: 'Mar 28, 2026', skills: [{ name: 'Fraction to Percent', mastery: 60 }, { name: 'Finding a Percent', mastery: 25 }] },
   { name: 'Yuki T.', role: 'Parent', time: '2 days ago', plan: 'Premium', email: 'yuki.t@email.com', mastery: 0, diagnostics: 0, sessions: 0, lastActive: '2d ago', joined: 'Mar 30, 2026', skills: [] },
 ];
 
 const MOCK_TOP_TUTORS = [
-  { name: 'Sarah M.', students: 24, rating: 4.9, sessions: 156, revenue: '$3,240', email: 'sarah.m@email.com', joined: 'Jan 12, 2026', specialties: ['Maki Rolls', 'Uramaki'], avgSessionLength: '42 min', completionRate: 94, topStudents: ['Emma W.', 'Sofia R.', 'James L.'], recentReviews: ['Excellent teacher, very patient!', 'Helped me master rolling technique', 'Best sushi tutor ever'] },
-  { name: 'Mike R.', students: 18, rating: 4.8, sessions: 112, revenue: '$2,560', email: 'mike.r@email.com', joined: 'Feb 3, 2026', specialties: ['Temaki', 'Presentation'], avgSessionLength: '38 min', completionRate: 89, topStudents: ['Alex K.', 'Lin Z.'], recentReviews: ['Great at explaining fundamentals', 'Very knowledgeable about knife skills'] },
-  { name: 'Lisa K.', students: 15, rating: 4.7, sessions: 89, revenue: '$1,980', email: 'lisa.k@email.com', joined: 'Feb 15, 2026', specialties: ['Uramaki', 'Temaki'], avgSessionLength: '35 min', completionRate: 87, topStudents: ['Yuki T.', 'David C.'], recentReviews: ['Amazing presentation tips', 'Helped with advanced techniques'] },
-  { name: 'Tom H.', students: 12, rating: 4.6, sessions: 67, revenue: '$1,420', email: 'tom.h@email.com', joined: 'Mar 1, 2026', specialties: ['Maki Rolls'], avgSessionLength: '30 min', completionRate: 82, topStudents: ['Marcus J.'], recentReviews: ['Good for beginners', 'Patient and clear explanations'] },
+  { name: 'Sarah M.', students: 24, rating: 4.9, sessions: 156, revenue: '$3,240', email: 'sarah.m@email.com', joined: 'Jan 12, 2026', specialties: ['Percents', 'Percent Change'], avgSessionLength: '42 min', completionRate: 94, topStudents: ['Emma W.', 'Sofia R.', 'James L.'], recentReviews: ['Excellent teacher, very patient!', 'Helped me master percent problems', 'Best math tutor ever'] },
+  { name: 'Mike R.', students: 18, rating: 4.8, sessions: 112, revenue: '$2,560', email: 'mike.r@email.com', joined: 'Feb 3, 2026', specialties: ['Applied Percents', 'Discounts'], avgSessionLength: '38 min', completionRate: 89, topStudents: ['Alex K.', 'Lin Z.'], recentReviews: ['Great at explaining fundamentals', 'Very knowledgeable about word problems'] },
+  { name: 'Lisa K.', students: 15, rating: 4.7, sessions: 89, revenue: '$1,980', email: 'lisa.k@email.com', joined: 'Feb 15, 2026', specialties: ['Percent Change', 'Applied Percents'], avgSessionLength: '35 min', completionRate: 87, topStudents: ['Yuki T.', 'David C.'], recentReviews: ['Amazing at breaking down complex problems', 'Helped with advanced techniques'] },
+  { name: 'Tom H.', students: 12, rating: 4.6, sessions: 67, revenue: '$1,420', email: 'tom.h@email.com', joined: 'Mar 1, 2026', specialties: ['Basic Percents'], avgSessionLength: '30 min', completionRate: 82, topStudents: ['Marcus J.'], recentReviews: ['Good for beginners', 'Patient and clear explanations'] },
 ];
 
 const MOCK_TOPICS_PERFORMANCE = [
-  { topic: 'Maki Rolls', students: 847, avgMastery: 62, completion: 78 },
-  { topic: 'Uramaki Rolls', students: 623, avgMastery: 51, completion: 64 },
-  { topic: 'Temaki Hand Rolls', students: 412, avgMastery: 44, completion: 52 },
+  { topic: 'Basic Percents', students: 847, avgMastery: 62, completion: 78 },
+  { topic: 'Percent Change', students: 623, avgMastery: 51, completion: 64 },
+  { topic: 'Applied Percents', students: 412, avgMastery: 44, completion: 52 },
 ];
 
 const MOCK_REVENUE_BREAKDOWN = [

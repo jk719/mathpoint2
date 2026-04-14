@@ -1,31 +1,39 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { TrendingUp, Target, BookOpen, Award, ArrowRight, Flame, Sparkles, CheckCircle, Clock, Video } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { TrendingUp, Target, BookOpen, Award, ArrowRight, Flame, Sparkles, CheckCircle, Clock, Video, MessageCircle, Send } from 'lucide-react';
 import { useDiagnosticStore } from '@/lib/stores/diagnosticStore';
 import { useTranslation } from '@/lib/i18n/LanguageContext';
+import { MOCK_ASSIGNMENTS, MOCK_SUBMISSIONS, MOCK_STUDENT_QUESTIONS } from '@/data/mock-assignments';
+import { AssignmentCard } from '@/components/assignments/AssignmentCard';
+import { SubmitHomeworkForm } from '@/components/assignments/SubmitHomeworkForm';
+import { QuestionThread } from '@/components/questions/QuestionThread';
+import type { Submission, StudentQuestion } from '@/types/assignments';
+
+const STUDENT_NAME = 'Emma W.';
 
 const MOCK_SKILLS = [
-  { skill: 'Rice Spreading Basics', topic: 'Maki Rolls', mastery: 92 },
-  { skill: 'Nori Orientation', topic: 'Maki Rolls', mastery: 85 },
-  { skill: 'Rolling Technique', topic: 'Maki Rolls', mastery: 68 },
-  { skill: 'Filling Placement', topic: 'Maki Rolls', mastery: 55 },
-  { skill: 'Rice-Outside Basics', topic: 'Uramaki Rolls', mastery: 45 },
-  { skill: 'Cone Shaping Basics', topic: 'Temaki Hand Rolls', mastery: 30 },
+  { skillId: 'pct-find-pct-easy', skill: 'Finding a Percent of a Number', topic: 'Percents', mastery: 92 },
+  { skillId: 'pct-convert-frac-easy', skill: 'Fraction to Percent', topic: 'Percents', mastery: 85 },
+  { skillId: 'pct-increase-word-medium', skill: 'Percent Increase Word Problems', topic: 'Percents', mastery: 68 },
+  { skillId: 'pct-stacked-discount-medium', skill: 'Stacked Discounts', topic: 'Percents', mastery: 55 },
+  { skillId: 'pct-successive-change-hard', skill: 'Successive Percent Changes', topic: 'Percents', mastery: 45 },
+  { skillId: 'pct-markup-margin-hard', skill: 'Markup vs Margin', topic: 'Percents', mastery: 30 },
 ];
 
 const MOCK_ACTIVITY = [
-  { icon: CheckCircle, action: 'Completed diagnostic', detail: 'Maki Rolls', time: '2h ago', color: 'text-green-500' },
-  { icon: Sparkles, action: 'AI Lesson', detail: 'Rolling Technique', time: '1d ago', color: 'text-[#ff6b35]' },
+  { icon: CheckCircle, action: 'Completed diagnostic', detail: 'Percents', time: '2h ago', color: 'text-green-500' },
+  { icon: Sparkles, action: 'AI Lesson', detail: 'Percent Increase', time: '1d ago', color: 'text-[#ff6b35]' },
   { icon: Video, action: 'Live Session', detail: 'with Tutor Sarah', time: '2d ago', color: 'text-blue-500' },
-  { icon: Target, action: 'Practiced', detail: 'Filling Placement — 4 questions', time: '3d ago', color: 'text-purple-500' },
-  { icon: CheckCircle, action: 'Completed diagnostic', detail: 'Uramaki Rolls', time: '5d ago', color: 'text-green-500' },
+  { icon: Target, action: 'Practiced', detail: 'Stacked Discounts — 4 questions', time: '3d ago', color: 'text-purple-500' },
+  { icon: CheckCircle, action: 'Completed diagnostic', detail: 'Percent Change', time: '5d ago', color: 'text-green-500' },
 ];
 
 const MOCK_UPCOMING = [
-  { title: 'Live Session with Tutor Sarah', time: 'Today, 4:00 PM', topic: 'Uramaki Technique' },
-  { title: 'Practice Reminder', time: 'Tomorrow', topic: 'Cone Shaping' },
+  { title: 'Live Session with Tutor Sarah', time: 'Today, 4:00 PM', topic: 'Percent Change' },
+  { title: 'Practice Reminder', time: 'Tomorrow', topic: 'Compound Discounts' },
 ];
 
 export function StudentDashboard({ name }: { name: string }) {
@@ -33,9 +41,15 @@ export function StudentDashboard({ name }: { name: string }) {
   const { t } = useTranslation();
   const { diagnosticResult } = useDiagnosticStore();
 
+  const [submissions, setSubmissions] = useState<Submission[]>(MOCK_SUBMISSIONS);
+  const [questions, setQuestions] = useState<StudentQuestion[]>(MOCK_STUDENT_QUESTIONS);
+  const [expandedAssignment, setExpandedAssignment] = useState<string | null>(null);
+  const [showAskQuestion, setShowAskQuestion] = useState(false);
+  const [newQuestion, setNewQuestion] = useState('');
+  const [newQuestionTopic, setNewQuestionTopic] = useState('');
+
   const hasResults = !!diagnosticResult;
 
-  // Use real data if available, otherwise fall back to mock
   const points = hasResults ? (diagnosticResult.correctCount ?? 0) * 50 : 450;
   const skillsAssessed = hasResults ? (diagnosticResult.skills?.length ?? 0) : 12;
   const accuracy = hasResults ? Math.round((diagnosticResult.accuracy ?? 0) * 100) : 63;
@@ -43,6 +57,7 @@ export function StudentDashboard({ name }: { name: string }) {
 
   const skillMastery = hasResults
     ? (diagnosticResult.skills ?? []).map((s) => ({
+        skillId: s.skillId,
         skill: s.displayName,
         topic: s.topic,
         mastery: Math.round(s.accuracy * 100),
@@ -53,6 +68,36 @@ export function StudentDashboard({ name }: { name: string }) {
     if (mastery >= 80) return 'bg-green-500';
     if (mastery >= 50) return 'bg-[#ff6b35]';
     return 'bg-red-400';
+  };
+
+  const myAssignments = MOCK_ASSIGNMENTS.filter((a) => a.assignedStudents.includes(STUDENT_NAME));
+  const myQuestions = questions.filter((q) => q.studentName === STUDENT_NAME);
+
+  const handleSubmitHomework = (assignmentId: string, answer: string) => {
+    const newSubmission: Submission = {
+      id: `s-${Date.now()}`,
+      assignmentId,
+      studentName: STUDENT_NAME,
+      submittedAt: 'Just now',
+      answer,
+    };
+    setSubmissions((prev) => [...prev, newSubmission]);
+    setExpandedAssignment(null);
+  };
+
+  const handleAskQuestion = () => {
+    if (!newQuestion.trim()) return;
+    const q: StudentQuestion = {
+      id: `q-${Date.now()}`,
+      studentName: STUDENT_NAME,
+      question: newQuestion.trim(),
+      topic: newQuestionTopic || 'General',
+      askedAt: 'Just now',
+    };
+    setQuestions((prev) => [q, ...prev]);
+    setNewQuestion('');
+    setNewQuestionTopic('');
+    setShowAskQuestion(false);
   };
 
   return (
@@ -90,6 +135,37 @@ export function StudentDashboard({ name }: { name: string }) {
         </div>
       </motion.div>
 
+      {/* My Assignments */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-white rounded-xl shadow-sm p-6 mb-6">
+        <h2 className="text-lg font-bold text-gray-900 mb-4">My Assignments</h2>
+        <div className="space-y-3">
+          {myAssignments.map((assignment, i) => (
+            <AssignmentCard
+              key={assignment.id}
+              assignment={assignment}
+              submissions={submissions}
+              role="student"
+              studentName={STUDENT_NAME}
+              index={i}
+              onSubmit={() => setExpandedAssignment(assignment.id)}
+              onToggle={() => setExpandedAssignment(expandedAssignment === assignment.id ? null : assignment.id)}
+            >
+              <AnimatePresence>
+                {expandedAssignment === assignment.id && !submissions.find((s) => s.assignmentId === assignment.id && s.studentName === STUDENT_NAME) && (
+                  <SubmitHomeworkForm
+                    onSubmit={(answer) => handleSubmitHomework(assignment.id, answer)}
+                    onCancel={() => setExpandedAssignment(null)}
+                  />
+                )}
+              </AnimatePresence>
+            </AssignmentCard>
+          ))}
+          {myAssignments.length === 0 && (
+            <p className="text-sm text-gray-400 text-center py-4">No assignments yet</p>
+          )}
+        </div>
+      </motion.div>
+
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Skills */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="lg:col-span-2 bg-white rounded-xl shadow-sm p-6">
@@ -108,7 +184,18 @@ export function StudentDashboard({ name }: { name: string }) {
                       <span className="font-medium text-gray-900 text-sm">{item.skill}</span>
                       <span className="text-xs text-gray-400">{item.topic}</span>
                     </div>
-                    <span className={`text-sm font-semibold ${item.mastery >= 80 ? 'text-green-600' : item.mastery >= 50 ? 'text-[#ff6b35]' : 'text-red-500'}`}>{item.mastery}%</span>
+                    <div className="flex items-center gap-2">
+                      {item.mastery < 80 && (
+                        <button
+                          onClick={() => router.push(`/lesson?skill=${item.skillId}`)}
+                          className="text-xs px-2.5 py-0.5 bg-[#ff6b35] text-white rounded-full font-medium hover:bg-[#e55a2a] transition-colors flex items-center gap-1"
+                        >
+                          <Sparkles className="w-3 h-3" />
+                          Lesson
+                        </button>
+                      )}
+                      <span className={`text-sm font-semibold ${item.mastery >= 80 ? 'text-green-600' : item.mastery >= 50 ? 'text-[#ff6b35]' : 'text-red-500'}`}>{item.mastery}%</span>
+                    </div>
                   </div>
                   <div className="w-full bg-gray-100 rounded-full h-2">
                     <motion.div
@@ -134,6 +221,16 @@ export function StudentDashboard({ name }: { name: string }) {
                 <BookOpen className="w-4 h-4" />
                 {hasResults ? t('dashboard.retakeDiagnostic') : t('dashboard.takeDiagnostic')}
               </button>
+              <button
+                onClick={() => {
+                  const weakest = skillMastery.filter((s) => s.mastery < 80).sort((a, b) => a.mastery - b.mastery)[0];
+                  router.push(weakest ? `/lesson?skill=${weakest.skillId}` : '/diagnostic');
+                }}
+                className="w-full py-3 px-4 bg-[#1a3a52] text-white rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-[#152e42] transition-colors"
+              >
+                <Sparkles className="w-4 h-4" />
+                {t('lesson.startLesson')}
+              </button>
               <button onClick={() => router.push('/practice')} className="w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors">
                 <TrendingUp className="w-4 h-4" />
                 {t('dashboard.practiceWeak')}
@@ -141,6 +238,10 @@ export function StudentDashboard({ name }: { name: string }) {
               <button onClick={() => router.push('/session/join')} className="w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors">
                 <Video className="w-4 h-4" />
                 {t('session.joinSession')}
+              </button>
+              <button onClick={() => setShowAskQuestion(true)} className="w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors">
+                <MessageCircle className="w-4 h-4" />
+                Ask a Question
               </button>
             </div>
           </motion.div>
@@ -180,6 +281,71 @@ export function StudentDashboard({ name }: { name: string }) {
               </div>
             </div>
           ))}
+        </div>
+      </motion.div>
+
+      {/* My Questions */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 }} className="mt-6 bg-white rounded-xl shadow-sm p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-bold text-gray-900">My Questions</h2>
+          <button
+            onClick={() => setShowAskQuestion(!showAskQuestion)}
+            className="text-sm text-[#ff6b35] hover:underline font-medium flex items-center gap-1"
+          >
+            <MessageCircle className="w-4 h-4" />
+            Ask New
+          </button>
+        </div>
+
+        {/* Ask Question Form */}
+        <AnimatePresence>
+          {showAskQuestion && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="overflow-hidden mb-4"
+            >
+              <div className="p-4 bg-gray-50 rounded-xl border border-gray-200 space-y-3">
+                <input
+                  type="text"
+                  value={newQuestionTopic}
+                  onChange={(e) => setNewQuestionTopic(e.target.value)}
+                  placeholder="Topic (e.g., Percent Change)"
+                  className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#ff6b35] focus:ring-1 focus:ring-[#ff6b35]/20 bg-white"
+                />
+                <textarea
+                  value={newQuestion}
+                  onChange={(e) => setNewQuestion(e.target.value)}
+                  placeholder="What's your question?"
+                  rows={2}
+                  className="w-full p-2.5 border border-gray-200 rounded-lg text-sm resize-none focus:outline-none focus:border-[#ff6b35] focus:ring-1 focus:ring-[#ff6b35]/20 bg-white"
+                />
+                <div className="flex gap-2 justify-end">
+                  <button onClick={() => { setShowAskQuestion(false); setNewQuestion(''); setNewQuestionTopic(''); }} className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleAskQuestion}
+                    disabled={!newQuestion.trim()}
+                    className="px-3 py-1.5 text-xs font-medium text-white bg-[#ff6b35] rounded-lg hover:bg-[#e55a2a] transition-colors disabled:opacity-50 flex items-center gap-1"
+                  >
+                    <Send className="w-3 h-3" />
+                    Post Question
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div className="space-y-3">
+          {myQuestions.map((q, i) => (
+            <QuestionThread key={q.id} question={q} role="student" index={i} />
+          ))}
+          {myQuestions.length === 0 && (
+            <p className="text-sm text-gray-400 text-center py-4">No questions yet. Ask your tutor anything!</p>
+          )}
         </div>
       </motion.div>
     </>
