@@ -196,11 +196,11 @@ function determineSkillStatus(
     return 'INSUFFICIENT_DATA'
   }
 
-  if (accuracy >= 0.85 && validResponses >= 2) {
+  if (accuracy >= 0.85 && validResponses >= 3) {
     return 'MASTERED'
   }
 
-  if (accuracy >= 0.5 && validResponses >= 2) {
+  if (accuracy >= 0.5 && validResponses >= 3) {
     return 'DEVELOPING'
   }
 

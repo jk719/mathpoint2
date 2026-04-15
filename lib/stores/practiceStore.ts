@@ -6,13 +6,6 @@ import { BayesianKT, SkillMastery } from '@/lib/adaptive/BayesianKT';
 import { ItemSelector, ItemCandidate } from '@/lib/adaptive/ItemSelector';
 import { KnowledgeGraph } from '@/lib/adaptive/KnowledgeGraph';
 import { ResponseTimeModel } from '@/lib/adaptive/ResponseTimeModel';
-import {
-  scoreDiagnostic,
-  QuestionInput,
-  SkillInfo,
-  SectionInfo,
-  DiagnosticResult,
-} from '@/lib/diagnostic/DiagnosticScorer';
 import { SATQuestion } from '@/types/sat';
 import { DiagnosticQuestion } from '@/types';
 import { demoSkills, getDemoSkillById } from '@/data/demo-skills';
@@ -35,9 +28,14 @@ let masteriesMap: Map<string, SkillMastery> = new Map();
 let itemCandidates: ItemCandidate[] = [];
 let itemsPresented: string[] = [];
 
-// ─── Persisted store types ───────────────────────────────────────────────────
+// ─── Constants ──────────────────────────────────────────────────────────────
 
-interface StoredResponse {
+const MAX_PRACTICE_QUESTIONS = 10;
+const MASTERY_THRESHOLD = 0.85;
+
+// ─── Types ──────────────────────────────────────────────────────────────────
+
+interface PracticeResponse {
   questionId: string;
   skillId: string;
   selectedAnswer: string;
@@ -46,34 +44,29 @@ interface StoredResponse {
   timeSpentMs: number;
 }
 
-interface DiagnosticState {
+interface PracticeState {
   phase: 'idle' | 'active' | 'complete';
+  targetSkillId: string | null;
+  targetSkillName: string | null;
   currentQuestion: DiagnosticQuestion | null;
   currentQuestionRaw: SATQuestion | null;
   questionNumber: number;
-  responses: StoredResponse[];
+  responses: PracticeResponse[];
   startTime: number | null;
   questionStartTime: number | null;
-  diagnosticResult: DiagnosticResult | null;
+  initialMastery: number;
+  currentMastery: number;
+  lastAnswerCorrect: boolean | null;
 
   // Actions
-  startDiagnostic: (language?: Language) => void;
+  startPractice: (skillId: string, language?: Language) => void;
   submitAnswer: (answer: string | string[], language?: Language) => void;
-  updateLanguage: (language: Language) => void;
   reset: () => void;
 }
 
-// ─── Time defaults by difficulty ─────────────────────────────────────────────
+// ─── Helper: pick next question for the target skill ────────────────────────
 
-const TIME_DEFAULTS: Record<string, { expected: number; min: number }> = {
-  Easy: { expected: 30000, min: 1000 },
-  Medium: { expected: 45000, min: 1000 },
-  Hard: { expected: 60000, min: 1500 },
-};
-
-// ─── Helper: pick a question and set it as current ───────────────────────────
-
-function selectAndConvert(language: Language = 'en'): {
+function selectAndConvert(targetSkillId: string, language: Language = 'en'): {
   display: DiagnosticQuestion;
   raw: SATQuestion;
 } | null {
@@ -82,7 +75,7 @@ function selectAndConvert(language: Language = 'en'): {
   const candidate = selector.selectNextItem(
     itemCandidates,
     masteriesMap,
-    {},
+    { targetSkills: [targetSkillId] },
     itemsPresented
   );
   if (!candidate) return null;
@@ -97,60 +90,46 @@ function selectAndConvert(language: Language = 'en'): {
   return { display: toDisplayQuestion(raw, skill, language), raw };
 }
 
-// ─── Demo skill subset (9 skills for focused diagnostic) ────────────────────
+// ─── Store ──────────────────────────────────────────────────────────────────
 
-const DEMO_SKILL_IDS = new Set([
-  // Easy (3)
-  'pct-find-pct-easy',
-  'pct-convert-frac-easy',
-  'pct-increase-easy',
-  // Medium (3)
-  'pct-find-whole-medium',
-  'pct-convert-dec-medium',
-  'pct-increase-word-medium',
-  // Hard (3)
-  'pct-successive-change-hard',
-  'pct-reverse-pct-hard',
-  'pct-original-value-hard',
-]);
-
-const diagnosticSkills = demoSkills.filter((s) => DEMO_SKILL_IDS.has(s.id));
-const diagnosticQuestions = demoQuestions.filter((q) => DEMO_SKILL_IDS.has(q.skillId));
-
-// ─── Store ───────────────────────────────────────────────────────────────────
-
-export const useDiagnosticStore = create<DiagnosticState>()(
+export const usePracticeStore = create<PracticeState>()(
   persist(
     (set, get) => ({
       phase: 'idle',
+      targetSkillId: null,
+      targetSkillName: null,
       currentQuestion: null,
       currentQuestionRaw: null,
       questionNumber: 0,
       responses: [],
       startTime: null,
       questionStartTime: null,
-      diagnosticResult: null,
+      initialMastery: 0,
+      currentMastery: 0,
+      lastAnswerCorrect: null,
 
-      startDiagnostic: (language: Language = 'en') => {
+      startPractice: (skillId: string, language: Language = 'en') => {
+        const targetSkill = getDemoSkillById(skillId);
+        if (!targetSkill) return;
+
         // Initialize engines
         bkt = new BayesianKT();
         selector = new ItemSelector(bkt);
         masteriesMap = new Map();
         itemsPresented = [];
 
-        // Initialize mastery for diagnostic skill subset
-        for (const skill of diagnosticSkills) {
+        // Initialize mastery for every demo skill
+        for (const skill of demoSkills) {
           masteriesMap.set(skill.id, bkt.initializeSkillMastery(skill.id));
         }
 
-        // Initialize knowledge graph for belief propagation
-        const edges = getAllEdges(diagnosticSkills);
+        // Initialize knowledge graph
+        const edges = getAllEdges(demoSkills);
         knowledgeGraph = new KnowledgeGraph(
           edges,
-          diagnosticSkills.map((s) => ({ id: s.id, topic: s.topic, pattern: s.pattern, difficulty: s.difficulty }))
+          demoSkills.map((s) => ({ id: s.id, topic: s.topic, pattern: s.pattern, difficulty: s.difficulty }))
         );
 
-        // Register propagation callback — fires after every BKT update
         bkt.onMasteryUpdate((skillCode, _mastery, _isCorrect) => {
           if (knowledgeGraph && masteriesMap.has(skillCode)) {
             const currentMastery = masteriesMap.get(skillCode)!.pMastery;
@@ -161,47 +140,48 @@ export const useDiagnosticStore = create<DiagnosticState>()(
         // Initialize response time model
         timeModel = new ResponseTimeModel();
         timeModel.initialize(
-          diagnosticSkills.map((s) => ({ id: s.id, difficulty: s.difficulty }))
+          demoSkills.map((s) => ({ id: s.id, difficulty: s.difficulty }))
         );
-
-        // Connect time model to item selector for fluency-aware selection
         selector.setTimeModel(timeModel);
 
-        // Build item candidates from diagnostic questions only
-        itemCandidates = diagnosticQuestions.map((q) => {
+        // Build item candidates — include target skill + same-topic skills for variety
+        const targetTopic = targetSkill.topic;
+        const relevantQuestions = demoQuestions.filter((q) => {
+          const sk = getDemoSkillById(q.skillId);
+          return sk && sk.topic === targetTopic;
+        });
+
+        itemCandidates = relevantQuestions.map((q) => {
           const skill = getDemoSkillById(q.skillId)!;
           return toItemCandidate(q, skill);
         });
 
+        // Record initial mastery for the target skill
+        const initMastery = masteriesMap.get(skillId)?.pMastery ?? 0.3;
+
         // Select first question
-        const first = selectAndConvert(language);
+        const first = selectAndConvert(skillId, language);
         if (!first) return;
 
         set({
           phase: 'active',
+          targetSkillId: skillId,
+          targetSkillName: targetSkill.displayName,
           currentQuestion: first.display,
           currentQuestionRaw: first.raw,
           questionNumber: 1,
           responses: [],
           startTime: Date.now(),
           questionStartTime: Date.now(),
-          diagnosticResult: null,
-        });
-      },
-
-      updateLanguage: (language: Language) => {
-        const state = get();
-        if (state.phase !== 'active' || !state.currentQuestionRaw) return;
-        const skill = getDemoSkillById(state.currentQuestionRaw.skillId);
-        if (!skill) return;
-        set({
-          currentQuestion: toDisplayQuestion(state.currentQuestionRaw, skill, language),
+          initialMastery: Math.round(initMastery * 100),
+          currentMastery: Math.round(initMastery * 100),
+          lastAnswerCorrect: null,
         });
       },
 
       submitAnswer: (answer: string | string[], language: Language = 'en') => {
         const state = get();
-        if (state.phase !== 'active' || !state.currentQuestionRaw || !bkt || !selector) return;
+        if (state.phase !== 'active' || !state.currentQuestionRaw || !bkt || !selector || !state.targetSkillId) return;
 
         const answerStr = Array.isArray(answer) ? answer[0] : answer;
         const label = extractAnswerLabel(answerStr);
@@ -209,7 +189,7 @@ export const useDiagnosticStore = create<DiagnosticState>()(
         const isCorrect = label === raw.correctAnswer;
         const timeSpentMs = Date.now() - (state.questionStartTime ?? Date.now());
 
-        // Update BKT mastery (triggers knowledge graph propagation via callback)
+        // Update BKT mastery (triggers knowledge graph propagation)
         const mastery = masteriesMap.get(raw.skillId);
         if (mastery) {
           bkt.updateMastery(mastery, isCorrect, 0.75, timeSpentMs);
@@ -221,7 +201,7 @@ export const useDiagnosticStore = create<DiagnosticState>()(
         }
 
         // Record response
-        const response: StoredResponse = {
+        const response: PracticeResponse = {
           questionId: raw.id,
           skillId: raw.skillId,
           selectedAnswer: label,
@@ -231,71 +211,21 @@ export const useDiagnosticStore = create<DiagnosticState>()(
         };
         const newResponses = [...state.responses, response];
 
-        // Check if we should stop (min 15, max 25 for thorough demo)
-        const { shouldStop } = selector.shouldStop(
-          masteriesMap,
-          newResponses.length,
-          15,
-          25
-        );
+        // Get updated mastery for target skill
+        const targetMastery = masteriesMap.get(state.targetSkillId)?.pMastery ?? 0;
+        const currentMasteryPct = Math.round(targetMastery * 100);
+
+        // Check stopping conditions
+        const shouldStop =
+          targetMastery >= MASTERY_THRESHOLD ||
+          newResponses.length >= MAX_PRACTICE_QUESTIONS;
 
         if (shouldStop) {
-          // Score the diagnostic
-          const skillInfoMap = new Map<string, SkillInfo>();
-          for (const s of diagnosticSkills) {
-            skillInfoMap.set(s.id, {
-              skillId: s.id,
-              displayName: s.displayName,
-              topic: s.topic,
-              pattern: s.pattern,
-              difficulty: s.difficulty,
-              prerequisites: knowledgeGraph?.getPrerequisites(s.id),
-            });
-          }
-
-          // Build section infos from topics
-          const topics = [...new Set(diagnosticSkills.map((s) => s.topic))];
-          const sectionInfos: SectionInfo[] = topics.map((t) => ({
-            sectionId: t.toLowerCase().replace(/\s+/g, '-'),
-            sectionName: t,
-            slug: t.toLowerCase().replace(/\s+/g, '-'),
-          }));
-
-          const skillToSectionMap = new Map<string, string>();
-          for (const s of diagnosticSkills) {
-            skillToSectionMap.set(
-              s.id,
-              s.topic.toLowerCase().replace(/\s+/g, '-')
-            );
-          }
-
-          const questionInputs: QuestionInput[] = newResponses.map((r) => {
-            const sk = getDemoSkillById(r.skillId);
-            const times = TIME_DEFAULTS[sk?.difficulty ?? 'Medium'];
-            return {
-              questionId: r.questionId,
-              skillId: r.skillId,
-              selectedAnswer: r.selectedAnswer,
-              correctAnswer: r.correctAnswer,
-              timeSpentMs: r.timeSpentMs,
-              expectedTimeMs: times.expected,
-              minReasonableTimeMs: times.min,
-            };
-          });
-
-          const result = scoreDiagnostic(
-            `demo-${Date.now()}`,
-            'demo-user',
-            questionInputs,
-            skillInfoMap,
-            sectionInfos,
-            skillToSectionMap
-          );
-
           set({
             phase: 'complete',
             responses: newResponses,
-            diagnosticResult: result,
+            currentMastery: currentMasteryPct,
+            lastAnswerCorrect: isCorrect,
             currentQuestion: null,
             currentQuestionRaw: null,
           });
@@ -303,10 +233,15 @@ export const useDiagnosticStore = create<DiagnosticState>()(
         }
 
         // Select next question
-        const next = selectAndConvert(language);
+        const next = selectAndConvert(state.targetSkillId, language);
         if (!next) {
-          // No more questions available — force completion
-          set({ phase: 'complete', responses: newResponses });
+          // No more questions — force completion
+          set({
+            phase: 'complete',
+            responses: newResponses,
+            currentMastery: currentMasteryPct,
+            lastAnswerCorrect: isCorrect,
+          });
           return;
         }
 
@@ -316,6 +251,8 @@ export const useDiagnosticStore = create<DiagnosticState>()(
           questionNumber: state.questionNumber + 1,
           questionStartTime: Date.now(),
           responses: newResponses,
+          currentMastery: currentMasteryPct,
+          lastAnswerCorrect: isCorrect,
         });
       },
 
@@ -330,18 +267,22 @@ export const useDiagnosticStore = create<DiagnosticState>()(
 
         set({
           phase: 'idle',
+          targetSkillId: null,
+          targetSkillName: null,
           currentQuestion: null,
           currentQuestionRaw: null,
           questionNumber: 0,
           responses: [],
           startTime: null,
           questionStartTime: null,
-          diagnosticResult: null,
+          initialMastery: 0,
+          currentMastery: 0,
+          lastAnswerCorrect: null,
         });
       },
     }),
     {
-      name: 'mathpoint-diagnostic',
+      name: 'mathpoint-practice',
       storage: {
         getItem: (name) => {
           const str = sessionStorage.getItem(name);
@@ -357,11 +298,14 @@ export const useDiagnosticStore = create<DiagnosticState>()(
       partialize: (state) =>
         ({
           phase: state.phase,
+          targetSkillId: state.targetSkillId,
+          targetSkillName: state.targetSkillName,
           questionNumber: state.questionNumber,
           responses: state.responses,
           startTime: state.startTime,
-          diagnosticResult: state.diagnosticResult,
-        }) as unknown as DiagnosticState,
+          initialMastery: state.initialMastery,
+          currentMastery: state.currentMastery,
+        }) as unknown as PracticeState,
     }
   )
 );

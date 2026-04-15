@@ -122,8 +122,9 @@ export default function ResultsPage() {
   const seconds = Math.floor((totalTimeMs % 60000) / 1000);
   const pct = Math.round(accuracy * 100);
 
-  // Group skills by topic for the breakdown
-  const byTopic = skills.reduce<Record<string, SkillResult[]>>((acc, s) => {
+  // Group skills by topic for the breakdown — exclude skills with no data
+  const assessedSkills = skills.filter((s) => s.status !== 'INSUFFICIENT_DATA');
+  const byTopic = assessedSkills.reduce<Record<string, SkillResult[]>>((acc, s) => {
     (acc[s.topic] ??= []).push(s);
     return acc;
   }, {});
@@ -194,7 +195,7 @@ export default function ResultsPage() {
               <div className="flex items-center gap-3">
                 <Award className="w-5 h-5 text-[#1a3a52]" />
                 <div>
-                  <span className="font-bold text-gray-900">{skills.length}</span>
+                  <span className="font-bold text-gray-900">{assessedSkills.length}</span>
                   <span className="text-sm text-gray-500 ml-1">{t('common.skillsAssessed')}</span>
                 </div>
               </div>
