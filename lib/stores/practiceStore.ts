@@ -17,6 +17,7 @@ import {
   extractAnswerLabel,
 } from '@/lib/utils/questionAdapters';
 import { Language } from '@/lib/i18n/translations';
+import { useDiagnosticStore } from './diagnosticStore';
 
 // ─── Internal (non-persisted) engine state ───────────────────────────────────
 
@@ -221,6 +222,12 @@ export const usePracticeStore = create<PracticeState>()(
           newResponses.length >= MAX_PRACTICE_QUESTIONS;
 
         if (shouldStop) {
+          // Update diagnostic results with new mastery
+          useDiagnosticStore.getState().updateSkillFromPractice(
+            state.targetSkillId,
+            targetMastery
+          );
+
           set({
             phase: 'complete',
             responses: newResponses,
@@ -236,6 +243,11 @@ export const usePracticeStore = create<PracticeState>()(
         const next = selectAndConvert(state.targetSkillId, language);
         if (!next) {
           // No more questions — force completion
+          useDiagnosticStore.getState().updateSkillFromPractice(
+            state.targetSkillId,
+            targetMastery
+          );
+
           set({
             phase: 'complete',
             responses: newResponses,

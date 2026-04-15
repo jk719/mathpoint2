@@ -10,6 +10,7 @@ import {
   scoreDiagnostic,
   QuestionInput,
   SkillInfo,
+  SkillResult,
   SectionInfo,
   DiagnosticResult,
 } from '@/lib/diagnostic/DiagnosticScorer';
@@ -60,6 +61,7 @@ interface DiagnosticState {
   startDiagnostic: (language?: Language) => void;
   submitAnswer: (answer: string | string[], language?: Language) => void;
   updateLanguage: (language: Language) => void;
+  updateSkillFromPractice: (skillId: string, newAccuracy: number) => void;
   reset: () => void;
 }
 
@@ -316,6 +318,47 @@ export const useDiagnosticStore = create<DiagnosticState>()(
           questionNumber: state.questionNumber + 1,
           questionStartTime: Date.now(),
           responses: newResponses,
+        });
+      },
+
+      updateSkillFromPractice: (skillId: string, newAccuracy: number) => {
+        const state = get();
+        if (!state.diagnosticResult) return;
+
+        const newStatus =
+          newAccuracy >= 0.85 ? 'MASTERED' as const :
+          newAccuracy >= 0.5 ? 'DEVELOPING' as const :
+          'WEAK' as const;
+
+        // Patch the skill in all arrays where it appears
+        const patchSkill = (skills: SkillResult[]) =>
+          skills.map((s) =>
+            s.skillId === skillId
+              ? { ...s, accuracy: newAccuracy, status: newStatus }
+              : s
+          );
+
+        const updatedSkills = patchSkill(state.diagnosticResult.skills);
+        const updatedStrengths = updatedSkills.filter((s) => s.status === 'MASTERED');
+        const updatedWeaknesses = updatedSkills.filter((s) => s.status === 'WEAK' || s.status === 'DEVELOPING');
+        const updatedRecommended = updatedSkills
+          .filter((s) => s.status !== 'MASTERED' && s.status !== 'INSUFFICIENT_DATA')
+          .sort((a, b) => a.accuracy - b.accuracy);
+
+        // Recalculate overall accuracy
+        const totalAttempted = updatedSkills.reduce((sum, s) => sum + s.questionsAttempted, 0);
+        const totalCorrect = updatedSkills.reduce((sum, s) => sum + Math.round(s.accuracy * s.questionsAttempted), 0);
+        const overallAccuracy = totalAttempted > 0 ? totalCorrect / totalAttempted : 0;
+
+        set({
+          diagnosticResult: {
+            ...state.diagnosticResult,
+            skills: updatedSkills,
+            strengths: updatedStrengths,
+            weaknesses: updatedWeaknesses,
+            recommended: updatedRecommended,
+            accuracy: overallAccuracy,
+          },
         });
       },
 

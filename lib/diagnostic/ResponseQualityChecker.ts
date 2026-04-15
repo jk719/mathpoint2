@@ -11,7 +11,7 @@ export type ResponseQuality =
 export type TimeFlag = 'NORMAL' | 'SLOW' | 'RUSHED'
 
 // Thresholds
-const RUSHED_THRESHOLD_MS = 5000 // Can't even read the question in < 5 seconds
+const RUSHED_THRESHOLD_MS = 2000 // Can't even read the question in < 2 seconds
 const FAST_WRONG_THRESHOLD_MS = 10000 // "Fast" for low engagement detection
 const SPAM_STREAK_LENGTH = 4 // 4+ same answers in a row = spam
 const LOW_ENGAGEMENT_STREAK = 5 // 5+ fast wrong answers = disengaged
