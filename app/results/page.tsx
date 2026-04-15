@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   CheckCircle,
   AlertTriangle,
@@ -12,8 +12,13 @@ import {
   Target,
   Clock,
   Award,
+  Lock,
+  Mail,
+  KeyRound,
+  User,
 } from 'lucide-react';
 import { useDiagnosticStore } from '@/lib/stores/diagnosticStore';
+import { useAuthStore } from '@/lib/stores/authStore';
 import { SkillResult } from '@/lib/diagnostic/DiagnosticScorer';
 import { useTranslation } from '@/lib/i18n/LanguageContext';
 
@@ -89,6 +94,94 @@ function SkillCard({ skill, index, t }: { skill: SkillResult; index: number; t: 
         questionsCorrect={skill.questionsCorrect}
         questionsAttempted={skill.questionsAttempted}
       />
+    </motion.div>
+  );
+}
+
+function SaveResultsBanner({ t }: { t: (key: string) => string }) {
+  const { isLoggedIn, login } = useAuthStore();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [saved, setSaved] = useState(false);
+
+  if (isLoggedIn || saved) {
+    if (saved) {
+      return (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-2 px-4 py-3 bg-green-50 border border-green-200 rounded-xl mb-8 text-sm font-medium text-green-700"
+        >
+          <CheckCircle className="w-4 h-4" />
+          {t('results.accountCreated')}
+        </motion.div>
+      );
+    }
+    return null;
+  }
+
+  const handleSignup = () => {
+    if (!email.trim() || !password.trim() || !name.trim()) return;
+    login('student', name.trim());
+    setSaved(true);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.15 }}
+      className="bg-gradient-to-r from-[#1a3a52] to-[#1a3a52]/90 rounded-2xl p-6 sm:p-8 mb-8 text-white"
+    >
+      <div className="flex items-start gap-3 mb-5">
+        <Lock className="w-5 h-5 text-[#ff6b35] flex-shrink-0 mt-0.5" />
+        <div>
+          <h3 className="font-bold text-lg">{t('results.saveResults')}</h3>
+          <p className="text-sm text-gray-300 mt-1">{t('results.saveResultsDesc')}</p>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <div className="relative">
+          <User className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder={t('results.namePlaceholder')}
+            className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-white text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#ff6b35]"
+          />
+        </div>
+        <div className="relative">
+          <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            placeholder={t('results.emailPlaceholder')}
+            className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-white text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#ff6b35]"
+          />
+        </div>
+        <div className="relative">
+          <KeyRound className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <input
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            placeholder={t('results.passwordPlaceholder')}
+            onKeyDown={(e) => e.key === 'Enter' && handleSignup()}
+            className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-white text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#ff6b35]"
+          />
+        </div>
+        <button
+          onClick={handleSignup}
+          disabled={!email.trim() || !password.trim() || !name.trim()}
+          className="w-full py-3 bg-[#ff6b35] text-white rounded-lg font-semibold text-sm hover:bg-[#e55a2a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        >
+          {t('results.createAccount')}
+          <ArrowRight className="w-4 h-4" />
+        </button>
+      </div>
     </motion.div>
   );
 }
@@ -202,6 +295,9 @@ export default function ResultsPage() {
             </div>
           </div>
         </motion.div>
+
+        {/* ─── Save Results Banner (anonymous users only) ────── */}
+        <SaveResultsBanner t={t} />
 
         {/* ─── Mastery Overview ────────────────────────────────── */}
         <motion.div

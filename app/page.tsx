@@ -51,20 +51,29 @@ export default function Home() {
               {t('home.heroDescription')}
             </motion.p>
 
-            {/* Primary CTA */}
+            {/* CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="flex flex-col items-center gap-4 mb-8"
+              className="flex flex-col items-center gap-3 mb-8"
             >
-              <button
-                onClick={() => router.push(isLoggedIn ? '/dashboard' : '/diagnostic')}
-                className="group inline-flex items-center justify-center gap-2 px-10 py-4 bg-[#ff6b35] text-white rounded-xl font-semibold text-lg shadow-lg hover:bg-[#e55a2a] transform hover:-translate-y-0.5 transition-all duration-200"
-              >
-                {t('home.startDiagnostic')}
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
+              <div className="flex flex-col sm:flex-row items-center gap-3">
+                <button
+                  onClick={() => router.push(isLoggedIn ? '/dashboard' : '/diagnostic')}
+                  className="group inline-flex items-center justify-center gap-2 px-10 py-4 bg-[#ff6b35] text-white rounded-xl font-semibold text-lg shadow-lg hover:bg-[#e55a2a] transform hover:-translate-y-0.5 transition-all duration-200 w-full sm:w-auto"
+                >
+                  {t('home.startDiagnostic')}
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+                <button
+                  onClick={() => router.push('/login')}
+                  className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#1a3a52] text-white rounded-xl font-semibold text-lg shadow-lg hover:bg-[#152e42] transform hover:-translate-y-0.5 transition-all duration-200 w-full sm:w-auto"
+                >
+                  {t('home.parentLogin')}
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
               <button
                 onClick={() => router.push('/login')}
                 className="text-sm text-gray-500 hover:text-[#ff6b35] transition-colors underline underline-offset-2"
