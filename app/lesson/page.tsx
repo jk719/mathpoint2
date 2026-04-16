@@ -500,6 +500,7 @@ function LessonContent() {
               onSend={sendMessage}
               disabled={isStreaming}
               placeholder={t('lesson.placeholder')}
+              language={language}
             />
           </div>
         </>
