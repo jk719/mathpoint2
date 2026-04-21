@@ -73,13 +73,27 @@ export function MathTypeWriter({
       return;
     }
 
+    // If we're sitting at the start of a math segment, skip over the whole
+    // thing in one tick so KaTeX renders it cleanly instead of the user seeing
+    // raw LaTeX (`$\fra`, `$\frac`, ...) type itself out.
+    let pos = 0;
+    let nextIndex = currentIndex + 1;
+    for (const seg of segments) {
+      if (seg.type !== 'text' && currentIndex === pos) {
+        nextIndex = pos + seg.raw.length;
+        break;
+      }
+      pos += seg.raw.length;
+      if (currentIndex < pos) break;
+    }
+
     const timer = setTimeout(() => {
-      setDisplayedContent(content.slice(0, currentIndex + 1));
-      setCurrentIndex(currentIndex + 1);
+      setDisplayedContent(content.slice(0, nextIndex));
+      setCurrentIndex(nextIndex);
     }, speed);
 
     return () => clearTimeout(timer);
-  }, [currentIndex, content, totalLength, isTyping, speed, isComplete, onComplete]);
+  }, [currentIndex, content, totalLength, isTyping, speed, isComplete, onComplete, segments]);
 
   // Render the typed content with proper math rendering
   const renderContent = () => {

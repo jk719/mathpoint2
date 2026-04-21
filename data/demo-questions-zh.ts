@@ -551,7 +551,7 @@ export const demoQuestionsZh: Record<string, { questionText: string; choices: { 
     ]
   },
   "pq-rp2": {
-    "questionText": "一所学校有1{,}200名学生，其中78人打网球。打网球的学生占百分之几？",
+    "questionText": "一所学校有1,200名学生，其中78人打网球。打网球的学生占百分之几？",
     "choices": [
       {
         "label": "A",
@@ -824,23 +824,23 @@ export const demoQuestionsZh: Record<string, { questionText: string; choices: { 
     ]
   },
   "pq-ie5": {
-    "questionText": "一个$3{,}000的薪资增加了15%。新薪资是多少?",
+    "questionText": "一个$3,000的薪资增加了15%。新薪资是多少?",
     "choices": [
       {
         "label": "A",
-        "text": "$3{,}150"
+        "text": "$3,150"
       },
       {
         "label": "B",
-        "text": "$3{,}300"
+        "text": "$3,300"
       },
       {
         "label": "C",
-        "text": "$3{,}450"
+        "text": "$3,450"
       },
       {
         "label": "D",
-        "text": "$3{,}500"
+        "text": "$3,500"
       }
     ]
   },
@@ -992,7 +992,7 @@ export const demoQuestionsZh: Record<string, { questionText: string; choices: { 
     ]
   },
   "pq-iw3": {
-    "questionText": "租金原来是 $1{,}200，增加到了 $1{,}350。增加的百分比是多少？",
+    "questionText": "租金原来是 $1,200，增加到了 $1,350。增加的百分比是多少？",
     "choices": [
       {
         "label": "A",
@@ -1013,7 +1013,7 @@ export const demoQuestionsZh: Record<string, { questionText: string; choices: { 
     ]
   },
   "pq-iw4": {
-    "questionText": "某网站1月有5{,}000名访客，2月有6{,}500名访客。访客数增长的百分比是多少？",
+    "questionText": "某网站1月有5,000名访客，2月有6,500名访客。访客数增长的百分比是多少？",
     "choices": [
       {
         "label": "A",
@@ -1055,23 +1055,23 @@ export const demoQuestionsZh: Record<string, { questionText: string; choices: { 
     ]
   },
   "pq-dw1": {
-    "questionText": "一辆价值 $20{,}000 的汽车每年贬值 12%。一年后它的价值是多少?",
+    "questionText": "一辆价值 $20,000 的汽车每年贬值 12%。一年后它的价值是多少?",
     "choices": [
       {
         "label": "A",
-        "text": "$2{,}400"
+        "text": "$2,400"
       },
       {
         "label": "B",
-        "text": "$15{,}000"
+        "text": "$15,000"
       },
       {
         "label": "C",
-        "text": "$17{,}600"
+        "text": "$17,600"
       },
       {
         "label": "D",
-        "text": "$18{,}800"
+        "text": "$18,800"
       }
     ]
   },
@@ -1139,7 +1139,7 @@ export const demoQuestionsZh: Record<string, { questionText: string; choices: { 
     ]
   },
   "pq-dw5": {
-    "questionText": "入学人数从 1{,}600 下降到 1{,}280。下降的百分比是多少？",
+    "questionText": "入学人数从 1,600 下降到 1,280。下降的百分比是多少？",
     "choices": [
       {
         "label": "A",
@@ -1286,44 +1286,44 @@ export const demoQuestionsZh: Record<string, { questionText: string; choices: { 
     ]
   },
   "pq-ov2": {
-    "questionText": "玛丽亚加薪15%后，月收入为$4{,}600。她之前的月薪是多少？",
+    "questionText": "玛丽亚加薪15%后，月收入为$4,600。她之前的月薪是多少？",
     "choices": [
       {
         "label": "A",
-        "text": "$3{,}910"
+        "text": "$3,910"
       },
       {
         "label": "B",
-        "text": "$4{,}000"
+        "text": "$4,000"
       },
       {
         "label": "C",
-        "text": "$4{,}100"
+        "text": "$4,100"
       },
       {
         "label": "D",
-        "text": "$5{,}290"
+        "text": "$5,290"
       }
     ]
   },
   "pq-ov3": {
-    "questionText": "一辆车贬值了35%，现在的价值是$19{,}500。这辆车原来的价值是多少？",
+    "questionText": "一辆车贬值了35%，现在的价值是$19,500。这辆车原来的价值是多少？",
     "choices": [
       {
         "label": "A",
-        "text": "$26{,}325"
+        "text": "$26,325"
       },
       {
         "label": "B",
-        "text": "$28{,}000"
+        "text": "$28,000"
       },
       {
         "label": "C",
-        "text": "$30{,}000"
+        "text": "$30,000"
       },
       {
         "label": "D",
-        "text": "$55{,}714"
+        "text": "$55,714"
       }
     ]
   },
