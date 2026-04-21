@@ -99,10 +99,10 @@ export function AdminDashboard({ name }: { name: string }) {
       {/* Secondary Stats */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 mb-6">
         {[
-          { icon: Target, label: 'Avg Accuracy', value: '61%', color: 'text-[#1a3a52]' },
-          { icon: Clock, label: 'Avg Session', value: '38 min', color: 'text-blue-600' },
-          { icon: Sparkles, label: 'AI Lessons', value: '1,247', color: 'text-[#ff6b35]' },
-          { icon: Globe, label: 'Countries', value: '14', color: 'text-green-600' },
+          { icon: Target, label: t('adminDash.avgAccuracy'), value: '61%', color: 'text-[#1a3a52]' },
+          { icon: Clock, label: t('adminDash.avgSessionLength'), value: '38 min', color: 'text-blue-600' },
+          { icon: Sparkles, label: t('adminDash.aiLessons'), value: '1,247', color: 'text-[#ff6b35]' },
+          { icon: Globe, label: t('adminDash.countries'), value: '14', color: 'text-green-600' },
         ].map((stat) => (
           <div key={stat.label} className="bg-white rounded-xl shadow-sm p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
             <stat.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${stat.color} flex-shrink-0`} />
@@ -140,7 +140,7 @@ export function AdminDashboard({ name }: { name: string }) {
       <div className="grid lg:grid-cols-3 gap-6 mb-6">
         {/* Daily Active Users Chart */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="lg:col-span-2 bg-white rounded-xl shadow-sm p-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Daily Active Users</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-4">{t('adminDash.dailyActiveUsers')}</h2>
           <div className="flex items-end gap-1 sm:gap-3 h-32 sm:h-40">
             {MOCK_DAILY_ACTIVE.map((day, i) => (
               <div key={day.day} className="flex-1 flex flex-col items-center gap-1">
@@ -156,16 +156,16 @@ export function AdminDashboard({ name }: { name: string }) {
             ))}
           </div>
           <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between text-sm">
-            <span className="text-gray-500">Weekly avg: <span className="font-semibold text-gray-900">364 users/day</span></span>
+            <span className="text-gray-500">{t('adminDash.weeklyAvg')}: <span className="font-semibold text-gray-900">364 users/day</span></span>
             <span className="flex items-center gap-1 text-green-600 font-semibold">
-              <ArrowUpRight className="w-4 h-4" /> +15% vs last week
+              <ArrowUpRight className="w-4 h-4" /> {t('adminDash.weeklyGrowth')}
             </span>
           </div>
         </motion.div>
 
         {/* Revenue Breakdown */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white rounded-xl shadow-sm p-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Revenue Breakdown</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-4">{t('adminDash.revenueBreakdown')}</h2>
           <div className="space-y-3">
             {MOCK_REVENUE_BREAKDOWN.map((item) => (
               <div key={item.label}>
@@ -186,11 +186,11 @@ export function AdminDashboard({ name }: { name: string }) {
           </div>
           <div className="mt-4 pt-4 border-t border-gray-100">
             <div className="flex justify-between text-sm">
-              <span className="font-semibold text-gray-900">Total MRR</span>
+              <span className="font-semibold text-gray-900">{t('adminDash.totalMrr')}</span>
               <span className="font-bold text-gray-900">$12,400</span>
             </div>
             <div className="flex justify-between text-xs text-gray-500 mt-1">
-              <span>ARR projection</span>
+              <span>{t('adminDash.arrProjection')}</span>
               <span className="font-semibold text-green-600">$148,800</span>
             </div>
           </div>
@@ -200,7 +200,7 @@ export function AdminDashboard({ name }: { name: string }) {
       <div className="grid lg:grid-cols-3 gap-6 mb-6">
         {/* Topic Performance */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-white rounded-xl shadow-sm p-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Topic Performance</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-4">{t('adminDash.topicPerformance')}</h2>
           <div className="space-y-4">
             {MOCK_TOPICS_PERFORMANCE.map((topic) => (
               <div key={topic.topic} className="p-3 bg-gray-50 rounded-lg">
@@ -208,15 +208,15 @@ export function AdminDashboard({ name }: { name: string }) {
                 <div className="grid grid-cols-3 gap-2 text-center">
                   <div>
                     <div className="text-sm font-bold text-gray-900">{topic.students}</div>
-                    <div className="text-xs text-gray-500">Students</div>
+                    <div className="text-xs text-gray-500">{t('adminDash.topicStudents')}</div>
                   </div>
                   <div>
                     <div className={`text-sm font-bold ${topic.avgMastery >= 60 ? 'text-green-600' : topic.avgMastery >= 45 ? 'text-[#ff6b35]' : 'text-red-500'}`}>{topic.avgMastery}%</div>
-                    <div className="text-xs text-gray-500">Avg Mastery</div>
+                    <div className="text-xs text-gray-500">{t('adminDash.topicAvgMastery')}</div>
                   </div>
                   <div>
                     <div className="text-sm font-bold text-gray-900">{topic.completion}%</div>
-                    <div className="text-xs text-gray-500">Completion</div>
+                    <div className="text-xs text-gray-500">{t('adminDash.topicCompletion')}</div>
                   </div>
                 </div>
               </div>
@@ -228,7 +228,7 @@ export function AdminDashboard({ name }: { name: string }) {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-white rounded-xl shadow-sm p-6">
           <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
             <Flame className="w-5 h-5 text-[#ff6b35]" />
-            Top Tutors
+            {t('adminDash.topTutors')}
           </h2>
           <div className="space-y-2">
             {MOCK_TOP_TUTORS.map((tutor, i) => (
@@ -261,27 +261,27 @@ export function AdminDashboard({ name }: { name: string }) {
                         <div className="grid grid-cols-3 gap-2 mb-3">
                           <div className="text-center p-2 bg-white rounded">
                             <div className="font-bold text-gray-900">{tutor.avgSessionLength}</div>
-                            <div className="text-xs text-gray-500">Avg Session</div>
+                            <div className="text-xs text-gray-500">{t('adminDash.avgSessionLength')}</div>
                           </div>
                           <div className="text-center p-2 bg-white rounded">
                             <div className="font-bold text-green-600">{tutor.completionRate}%</div>
-                            <div className="text-xs text-gray-500">Completion</div>
+                            <div className="text-xs text-gray-500">{t('adminDash.topicCompletion')}</div>
                           </div>
                           <div className="text-center p-2 bg-white rounded">
                             <div className="font-bold text-gray-900">{tutor.specialties.length}</div>
-                            <div className="text-xs text-gray-500">Specialties</div>
+                            <div className="text-xs text-gray-500">{t('adminDash.specialties')}</div>
                           </div>
                         </div>
                         <div className="mb-2">
-                          <span className="text-xs font-semibold text-gray-600">Specialties:</span>
+                          <span className="text-xs font-semibold text-gray-600">{t('adminDash.specialties')}:</span>
                           <div className="flex gap-1 mt-1">{tutor.specialties.map(s => <span key={s} className="text-xs px-2 py-0.5 bg-orange-50 text-[#ff6b35] rounded-full">{s}</span>)}</div>
                         </div>
                         <div className="mb-2">
-                          <span className="text-xs font-semibold text-gray-600">Top Students:</span>
+                          <span className="text-xs font-semibold text-gray-600">{t('adminDash.topStudentsLabel')}:</span>
                           <span className="text-xs text-gray-500 ml-1">{tutor.topStudents.join(', ')}</span>
                         </div>
                         <div>
-                          <span className="text-xs font-semibold text-gray-600">Recent Reviews:</span>
+                          <span className="text-xs font-semibold text-gray-600">{t('adminDash.recentReviewsLabel')}:</span>
                           {tutor.recentReviews.slice(0, 2).map((r, j) => (
                             <div key={j} className="flex items-start gap-1 mt-1">
                               <Star className="w-3 h-3 text-yellow-400 flex-shrink-0 mt-0.5" />
@@ -290,8 +290,8 @@ export function AdminDashboard({ name }: { name: string }) {
                           ))}
                         </div>
                         <div className="flex gap-2 mt-3">
-                          <button onClick={() => showComingSoon('Message')} className="flex-1 py-1.5 bg-white border border-gray-200 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1"><MessageSquare className="w-3 h-3" /> Message</button>
-                          <button onClick={() => showComingSoon('Schedule')} className="flex-1 py-1.5 bg-white border border-gray-200 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1"><Calendar className="w-3 h-3" /> Schedule</button>
+                          <button onClick={() => showComingSoon('Message')} className="flex-1 py-1.5 bg-white border border-gray-200 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1"><MessageSquare className="w-3 h-3" /> {t('common.message')}</button>
+                          <button onClick={() => showComingSoon('Schedule')} className="flex-1 py-1.5 bg-white border border-gray-200 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1"><Calendar className="w-3 h-3" /> {t('common.schedule')}</button>
                         </div>
                       </div>
                     </motion.div>
@@ -333,7 +333,7 @@ export function AdminDashboard({ name }: { name: string }) {
                           <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
                               <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${getRoleBadge(user.role)}`}>{user.role}</span>
-                              <span className="text-xs text-gray-500">{user.plan} plan</span>
+                              <span className="text-xs text-gray-500">{user.plan} {t('adminDash.planLabel')}</span>
                             </div>
                             <button onClick={() => setSelectedUser(null)} className="p-0.5 rounded hover:bg-gray-200"><X className="w-3 h-3 text-gray-400" /></button>
                           </div>
@@ -341,15 +341,15 @@ export function AdminDashboard({ name }: { name: string }) {
                           <div className="grid grid-cols-3 gap-2 mb-2">
                             <div className="text-center p-1.5 bg-white rounded">
                               <div className="font-bold text-gray-900 text-sm">{user.diagnostics}</div>
-                              <div className="text-xs text-gray-500">Diagnostics</div>
+                              <div className="text-xs text-gray-500">{t('adminDash.userDiagnostics')}</div>
                             </div>
                             <div className="text-center p-1.5 bg-white rounded">
                               <div className="font-bold text-gray-900 text-sm">{user.sessions}</div>
-                              <div className="text-xs text-gray-500">Sessions</div>
+                              <div className="text-xs text-gray-500">{t('adminDash.userSessions')}</div>
                             </div>
                             <div className="text-center p-1.5 bg-white rounded">
                               <div className={`font-bold text-sm ${user.mastery >= 60 ? 'text-green-600' : user.mastery >= 40 ? 'text-[#ff6b35]' : user.mastery > 0 ? 'text-red-500' : 'text-gray-400'}`}>{user.mastery > 0 ? `${user.mastery}%` : '—'}</div>
-                              <div className="text-xs text-gray-500">Mastery</div>
+                              <div className="text-xs text-gray-500">{t('common.mastery')}</div>
                             </div>
                           </div>
                           {user.skills.length > 0 && (
@@ -364,8 +364,8 @@ export function AdminDashboard({ name }: { name: string }) {
                             </div>
                           )}
                           <div className="flex gap-2">
-                            <button onClick={() => showComingSoon('Message')} className="flex-1 py-1.5 bg-white border border-gray-200 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1"><MessageSquare className="w-3 h-3" /> Message</button>
-                            <button onClick={() => showComingSoon('View Activity')} className="flex-1 py-1.5 bg-white border border-gray-200 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1"><Calendar className="w-3 h-3" /> View Activity</button>
+                            <button onClick={() => showComingSoon('Message')} className="flex-1 py-1.5 bg-white border border-gray-200 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1"><MessageSquare className="w-3 h-3" /> {t('common.message')}</button>
+                            <button onClick={() => showComingSoon('View Activity')} className="flex-1 py-1.5 bg-white border border-gray-200 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1"><Calendar className="w-3 h-3" /> {t('adminDash.viewActivity')}</button>
                           </div>
                         </div>
                       </motion.div>
@@ -386,11 +386,11 @@ export function AdminDashboard({ name }: { name: string }) {
             <h3 className="font-semibold text-gray-900 mb-3">{t('adminDash.systemHealth')}</h3>
             <div className="space-y-2">
               {[
-                { label: 'API', status: 'Operational', latency: '45ms' },
-                { label: 'Database', status: 'Operational', latency: '12ms' },
-                { label: 'LiveKit', status: 'Operational', latency: '28ms' },
-                { label: 'Claude API', status: 'Operational', latency: '890ms' },
-                { label: 'CDN', status: 'Operational', latency: '8ms' },
+                { label: 'API', status: t('adminDash.operational'), latency: '45ms' },
+                { label: 'Database', status: t('adminDash.operational'), latency: '12ms' },
+                { label: 'LiveKit', status: t('adminDash.operational'), latency: '28ms' },
+                { label: 'Claude API', status: t('adminDash.operational'), latency: '890ms' },
+                { label: 'CDN', status: t('adminDash.operational'), latency: '8ms' },
               ].map((item) => (
                 <div key={item.label} className="flex items-center justify-between py-1.5">
                   <div className="flex items-center gap-2">
@@ -402,7 +402,7 @@ export function AdminDashboard({ name }: { name: string }) {
               ))}
             </div>
             <div className="mt-3 pt-3 border-t border-gray-100 text-center">
-              <span className="text-xs text-green-600 font-semibold">99.97% uptime this month</span>
+              <span className="text-xs text-green-600 font-semibold">{t('adminDash.systemUptime')}</span>
             </div>
           </div>
         </motion.div>

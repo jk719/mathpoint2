@@ -85,7 +85,7 @@ export function ParentDashboard({ name }: { name: string }) {
           </div>
           <div className="flex items-center gap-2">
             <span className="flex items-center gap-1 text-sm font-medium text-orange-500">
-              <Award className="w-4 h-4" /> {MOCK_CHILD.streak} day streak
+              <Award className="w-4 h-4" /> {MOCK_CHILD.streak} {t('parentDash.dayStreak')}
             </span>
           </div>
         </div>
@@ -144,8 +144,8 @@ export function ParentDashboard({ name }: { name: string }) {
           <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
             <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="text-sm font-medium text-red-800">3 skills need attention</p>
-              <p className="text-xs text-red-600 mt-0.5">Successive Changes, Markup vs Margin, and Compound Discounts are below 50%. Consider scheduling a tutoring session.</p>
+              <p className="text-sm font-medium text-red-800">3 {t('parentDash.skillsNeedAttention')}</p>
+              <p className="text-xs text-red-600 mt-0.5">Successive Changes, Markup vs Margin, Compound Discounts {t('parentDash.weakSkillsAlert')}</p>
             </div>
           </div>
         </motion.div>
@@ -180,40 +180,40 @@ export function ParentDashboard({ name }: { name: string }) {
             <div className="mt-3 pt-3 border-t border-gray-100 flex items-center gap-1 text-sm">
               <TrendingUp className="w-4 h-4 text-green-500" />
               <span className="font-semibold text-green-600">+32%</span>
-              <span className="text-gray-500">improvement this month</span>
+              <span className="text-gray-500">{t('parentDash.improvementThisMonth')}</span>
             </div>
           </motion.div>
 
           {/* Learning Stats */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
             className="bg-white rounded-xl shadow-sm p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">Learning Stats</h2>
+            <h2 className="text-lg font-bold text-gray-900 mb-4">{t('parentDash.learningStats')}</h2>
             <div className="space-y-3">
               <div className="flex items-center justify-between py-2">
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Clock className="w-4 h-4 text-gray-400" />
-                  Time spent learning
+                  {t('parentDash.timeSpentLearning')}
                 </div>
                 <span className="font-semibold text-gray-900">5h 40m</span>
               </div>
               <div className="flex items-center justify-between py-2">
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Target className="w-4 h-4 text-gray-400" />
-                  Questions answered
+                  {t('parentDash.questionsAnswered')}
                 </div>
                 <span className="font-semibold text-gray-900">{MOCK_CHILD.totalPracticeQuestions}</span>
               </div>
               <div className="flex items-center justify-between py-2">
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Video className="w-4 h-4 text-gray-400" />
-                  Live sessions attended
+                  {t('parentDash.liveSessionsAttended')}
                 </div>
                 <span className="font-semibold text-gray-900">{MOCK_CHILD.totalSessions}</span>
               </div>
               <div className="flex items-center justify-between py-2">
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Sparkles className="w-4 h-4 text-gray-400" />
-                  AI lessons completed
+                  {t('parentDash.aiLessonsCompleted')}
                 </div>
                 <span className="font-semibold text-gray-900">6</span>
               </div>
@@ -230,7 +230,7 @@ export function ParentDashboard({ name }: { name: string }) {
             className="mt-6 bg-white rounded-xl shadow-sm p-6">
             <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
               <BookOpen className="w-5 h-5 text-[#ff6b35]" />
-              {MOCK_CHILD.name}&apos;s Assignments
+              {t('parentDash.childAssignments')}
             </h2>
             <div className="space-y-3">
               {childAssignments.map((assignment, i) => (
@@ -255,7 +255,7 @@ export function ParentDashboard({ name }: { name: string }) {
           className="bg-white rounded-xl shadow-sm p-6">
           <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
             <Calendar className="w-5 h-5 text-[#ff6b35]" />
-            Upcoming Sessions
+            {t('parentDash.upcomingSessions')}
           </h2>
           <div className="space-y-3">
             {MOCK_SESSIONS.map((session, i) => (
@@ -273,7 +273,7 @@ export function ParentDashboard({ name }: { name: string }) {
             className="w-full mt-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg font-medium text-sm hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
           >
             <Video className="w-4 h-4" />
-            Schedule New Session
+            {t('parentDash.scheduleNewSession')}
           </button>
         </motion.div>
 
@@ -302,8 +302,8 @@ export function ParentDashboard({ name }: { name: string }) {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}
         className="mt-6 bg-[#1a3a52] rounded-xl p-6 flex items-center justify-between">
         <div>
-          <h3 className="text-white font-bold text-lg">Need help with Emma&apos;s progress?</h3>
-          <p className="text-gray-300 text-sm mt-1">Message her tutor or schedule an extra session.</p>
+          <h3 className="text-white font-bold text-lg">{t('parentDash.needHelpTitle')}</h3>
+          <p className="text-gray-300 text-sm mt-1">{t('parentDash.needHelpDesc')}</p>
         </div>
         <div className="flex gap-3">
           <button
@@ -311,14 +311,14 @@ export function ParentDashboard({ name }: { name: string }) {
             className="px-4 py-2.5 bg-white/10 text-white rounded-lg font-medium text-sm hover:bg-white/20 transition-colors flex items-center gap-2"
           >
             <MessageSquare className="w-4 h-4" />
-            Message Tutor
+            {t('parentDash.messageTutor')}
           </button>
           <button
             onClick={() => router.push('/session/join')}
             className="px-4 py-2.5 bg-[#ff6b35] text-white rounded-lg font-medium text-sm hover:bg-[#e55a2a] transition-colors flex items-center gap-2"
           >
             <Video className="w-4 h-4" />
-            Book Session
+            {t('parentDash.bookSession')}
           </button>
         </div>
       </motion.div>

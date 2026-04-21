@@ -118,7 +118,7 @@ export function StudentDashboard({ name }: { name: string }) {
         <div className="bg-white rounded-xl shadow-sm p-3 sm:p-5">
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0"><Flame className="w-4 h-4 sm:w-5 sm:h-5 text-orange-500" /></div>
-            <div className="min-w-0"><div className="text-lg sm:text-2xl font-bold text-gray-900">{streak}</div><div className="text-xs sm:text-sm text-gray-500 truncate">Day Streak</div></div>
+            <div className="min-w-0"><div className="text-lg sm:text-2xl font-bold text-gray-900">{streak}</div><div className="text-xs sm:text-sm text-gray-500 truncate">{t('studentDash.dayStreak')}</div></div>
           </div>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-3 sm:p-5">
@@ -137,7 +137,7 @@ export function StudentDashboard({ name }: { name: string }) {
 
       {/* My Assignments */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-white rounded-xl shadow-sm p-6 mb-6">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">My Assignments</h2>
+        <h2 className="text-lg font-bold text-gray-900 mb-4">{t('studentDash.myAssignments')}</h2>
         <div className="space-y-3">
           {myAssignments.map((assignment, i) => (
             <AssignmentCard
@@ -161,7 +161,7 @@ export function StudentDashboard({ name }: { name: string }) {
             </AssignmentCard>
           ))}
           {myAssignments.length === 0 && (
-            <p className="text-sm text-gray-400 text-center py-4">No assignments yet</p>
+            <p className="text-sm text-gray-400 text-center py-4">{t('studentDash.noAssignments')}</p>
           )}
         </div>
       </motion.div>
@@ -191,7 +191,7 @@ export function StudentDashboard({ name }: { name: string }) {
                           className="text-xs px-2.5 py-0.5 bg-[#ff6b35] text-white rounded-full font-medium hover:bg-[#e55a2a] transition-colors flex items-center gap-1"
                         >
                           <Sparkles className="w-3 h-3" />
-                          Lesson
+                          {t('studentDash.lessonButton')}
                         </button>
                       )}
                       <span className={`text-sm font-semibold ${item.mastery >= 80 ? 'text-green-600' : item.mastery >= 50 ? 'text-[#ff6b35]' : 'text-red-500'}`}>{item.mastery}%</span>
@@ -241,14 +241,14 @@ export function StudentDashboard({ name }: { name: string }) {
               </button>
               <button onClick={() => setShowAskQuestion(true)} className="w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors">
                 <MessageCircle className="w-4 h-4" />
-                Ask a Question
+                {t('studentDash.askQuestion')}
               </button>
             </div>
           </motion.div>
 
           {/* Upcoming */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-white rounded-xl shadow-sm p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">Upcoming</h2>
+            <h2 className="text-lg font-bold text-gray-900 mb-4">{t('studentDash.upcoming')}</h2>
             <div className="space-y-3">
               {MOCK_UPCOMING.map((item, i) => (
                 <div key={i} className="p-3 bg-gray-50 rounded-lg">
@@ -264,7 +264,7 @@ export function StudentDashboard({ name }: { name: string }) {
 
       {/* Recent Activity */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">Recent Activity</h2>
+        <h2 className="text-lg font-bold text-gray-900 mb-4">{t('studentDash.recentActivity')}</h2>
         <div className="space-y-3">
           {MOCK_ACTIVITY.map((item, i) => (
             <div key={i} className="flex items-center gap-3 py-2">
@@ -287,13 +287,13 @@ export function StudentDashboard({ name }: { name: string }) {
       {/* My Questions */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 }} className="mt-6 bg-white rounded-xl shadow-sm p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-gray-900">My Questions</h2>
+          <h2 className="text-lg font-bold text-gray-900">{t('studentDash.myQuestions')}</h2>
           <button
             onClick={() => setShowAskQuestion(!showAskQuestion)}
             className="text-sm text-[#ff6b35] hover:underline font-medium flex items-center gap-1"
           >
             <MessageCircle className="w-4 h-4" />
-            Ask New
+            {t('studentDash.askNew')}
           </button>
         </div>
 
@@ -311,19 +311,19 @@ export function StudentDashboard({ name }: { name: string }) {
                   type="text"
                   value={newQuestionTopic}
                   onChange={(e) => setNewQuestionTopic(e.target.value)}
-                  placeholder="Topic (e.g., Percent Change)"
+                  placeholder={t('studentDash.topicPlaceholder')}
                   className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#ff6b35] focus:ring-1 focus:ring-[#ff6b35]/20 bg-white"
                 />
                 <textarea
                   value={newQuestion}
                   onChange={(e) => setNewQuestion(e.target.value)}
-                  placeholder="What's your question?"
+                  placeholder={t('studentDash.questionPlaceholder')}
                   rows={2}
                   className="w-full p-2.5 border border-gray-200 rounded-lg text-sm resize-none focus:outline-none focus:border-[#ff6b35] focus:ring-1 focus:ring-[#ff6b35]/20 bg-white"
                 />
                 <div className="flex gap-2 justify-end">
                   <button onClick={() => { setShowAskQuestion(false); setNewQuestion(''); setNewQuestionTopic(''); }} className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
-                    Cancel
+                    {t('common.cancel')}
                   </button>
                   <button
                     onClick={handleAskQuestion}
@@ -331,7 +331,7 @@ export function StudentDashboard({ name }: { name: string }) {
                     className="px-3 py-1.5 text-xs font-medium text-white bg-[#ff6b35] rounded-lg hover:bg-[#e55a2a] transition-colors disabled:opacity-50 flex items-center gap-1"
                   >
                     <Send className="w-3 h-3" />
-                    Post Question
+                    {t('studentDash.postQuestion')}
                   </button>
                 </div>
               </div>
@@ -344,7 +344,7 @@ export function StudentDashboard({ name }: { name: string }) {
             <QuestionThread key={q.id} question={q} role="student" index={i} />
           ))}
           {myQuestions.length === 0 && (
-            <p className="text-sm text-gray-400 text-center py-4">No questions yet. Ask your tutor anything!</p>
+            <p className="text-sm text-gray-400 text-center py-4">{t('studentDash.noQuestions')}</p>
           )}
         </div>
       </motion.div>

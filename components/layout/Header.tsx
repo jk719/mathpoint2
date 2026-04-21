@@ -82,7 +82,7 @@ export function Header() {
                 <button
                   onClick={handleLogout}
                   className="p-1.5 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
-                  title="Logout"
+                  title={t('auth.logout')}
                 >
                   <LogOut className="w-4 h-4" />
                 </button>

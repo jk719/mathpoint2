@@ -143,9 +143,9 @@ export function TutorDashboard({ name }: { name: string }) {
   const unansweredCount = questions.filter((q) => !q.tutorReply).length;
 
   const tabs: { key: TabType; label: string; icon: React.ReactNode; badge?: number }[] = [
-    { key: 'students', label: 'Students', icon: <Users className="w-4 h-4" /> },
-    { key: 'assignments', label: 'Assignments', icon: <ClipboardList className="w-4 h-4" /> },
-    { key: 'questions', label: 'Questions', icon: <MessageCircle className="w-4 h-4" />, badge: unansweredCount },
+    { key: 'students', label: t('tutorDash.studentsTab'), icon: <Users className="w-4 h-4" /> },
+    { key: 'assignments', label: t('tutorDash.assignmentsTab'), icon: <ClipboardList className="w-4 h-4" /> },
+    { key: 'questions', label: t('tutorDash.questionsTab'), icon: <MessageCircle className="w-4 h-4" />, badge: unansweredCount },
   ];
 
   return (
@@ -286,7 +286,7 @@ export function TutorDashboard({ name }: { name: string }) {
                                 </div>
                               </div>
                               <div className="text-sm text-gray-600">
-                                Overall mastery across all assessed skills
+                                {t('tutorDash.overallMasteryDesc')}
                               </div>
                             </div>
 
@@ -326,7 +326,7 @@ export function TutorDashboard({ name }: { name: string }) {
                               className="w-full py-2.5 bg-[#ff6b35] text-white rounded-lg font-medium text-sm hover:bg-[#e55a2a] transition-colors flex items-center justify-center gap-2"
                             >
                               <Video className="w-4 h-4" />
-                              Start Session with {student.name.split(' ')[0]}
+                              {t('tutorDash.startSessionWith')} {student.name.split(' ')[0]}
                             </button>
                           </div>
                         </motion.div>
@@ -342,13 +342,13 @@ export function TutorDashboard({ name }: { name: string }) {
           {activeTab === 'assignments' && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white rounded-xl shadow-sm p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-gray-900">Assignments</h2>
+                <h2 className="text-lg font-bold text-gray-900">{t('tutorDash.assignmentsTab')}</h2>
                 <button
                   onClick={() => setShowCreateForm(!showCreateForm)}
                   className="px-3 py-1.5 bg-[#ff6b35] text-white rounded-lg text-sm font-medium hover:bg-[#e55a2a] transition-colors flex items-center gap-1.5"
                 >
                   <Plus className="w-4 h-4" />
-                  Create
+                  {t('tutorDash.create')}
                 </button>
               </div>
 
@@ -384,9 +384,9 @@ export function TutorDashboard({ name }: { name: string }) {
                           className="overflow-hidden"
                         >
                           <div className="mt-3 pt-3 border-t border-gray-200 space-y-2">
-                            <h4 className="text-xs font-semibold text-gray-500 uppercase">Submissions</h4>
+                            <h4 className="text-xs font-semibold text-gray-500 uppercase">{t('tutorDash.submissions')}</h4>
                             {submissions.filter((s) => s.assignmentId === assignment.id).length === 0 ? (
-                              <p className="text-xs text-gray-400">No submissions yet</p>
+                              <p className="text-xs text-gray-400">{t('tutorDash.noSubmissionsYet')}</p>
                             ) : (
                               submissions.filter((s) => s.assignmentId === assignment.id).map((sub) => (
                                 <div key={sub.id} className="p-2.5 bg-white rounded-lg border border-gray-100 text-xs">
@@ -397,7 +397,7 @@ export function TutorDashboard({ name }: { name: string }) {
                                   <p className="text-gray-600 mt-1">{sub.answer}</p>
                                   {sub.grade !== undefined && (
                                     <div className="mt-1 flex items-center gap-2">
-                                      <span className="text-green-600 font-medium">Grade: {sub.grade}%</span>
+                                      <span className="text-green-600 font-medium">{t('tutorDash.gradeLabel')}: {sub.grade}%</span>
                                       {sub.tutorFeedback && <span className="text-gray-400">— {sub.tutorFeedback}</span>}
                                     </div>
                                   )}
@@ -409,7 +409,7 @@ export function TutorDashboard({ name }: { name: string }) {
                               .filter((name) => !submissions.find((s) => s.assignmentId === assignment.id && s.studentName === name))
                               .length > 0 && (
                               <div className="text-xs text-gray-400 pt-1">
-                                Not submitted: {assignment.assignedStudents
+                                {t('tutorDash.notSubmitted')}: {assignment.assignedStudents
                                   .filter((name) => !submissions.find((s) => s.assignmentId === assignment.id && s.studentName === name))
                                   .join(', ')}
                               </div>
@@ -428,9 +428,9 @@ export function TutorDashboard({ name }: { name: string }) {
           {activeTab === 'questions' && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white rounded-xl shadow-sm p-6">
               <h2 className="text-lg font-bold text-gray-900 mb-4">
-                Student Questions
+                {t('tutorDash.studentQuestions')}
                 {unansweredCount > 0 && (
-                  <span className="ml-2 text-sm font-normal text-gray-500">({unansweredCount} unanswered)</span>
+                  <span className="ml-2 text-sm font-normal text-gray-500">({unansweredCount} {t('tutorDash.unansweredCount')})</span>
                 )}
               </h2>
               <div className="space-y-3">
@@ -444,7 +444,7 @@ export function TutorDashboard({ name }: { name: string }) {
                   />
                 ))}
                 {questions.length === 0 && (
-                  <p className="text-sm text-gray-400 text-center py-4">No student questions yet</p>
+                  <p className="text-sm text-gray-400 text-center py-4">{t('tutorDash.noQuestionsYet')}</p>
                 )}
               </div>
             </motion.div>
