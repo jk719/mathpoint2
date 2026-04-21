@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useTranslation } from '@/lib/i18n/LanguageContext';
 
 interface VoiceButtonProps {
   isListening: boolean;
@@ -10,13 +11,17 @@ interface VoiceButtonProps {
 }
 
 export function VoiceButton({ isListening, isCompact, disabled, onClick }: VoiceButtonProps) {
+  const { t } = useTranslation();
+  const speakLabel = t('lesson.voiceSpeak');
+  const stopLabel = t('lesson.voiceStop');
+
   if (isListening) {
     return (
       <button
         onClick={onClick}
         disabled={disabled}
         className="relative w-12 h-12 rounded-full bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition-colors disabled:opacity-50 flex-shrink-0"
-        title="Stop"
+        title={stopLabel}
       >
         {/* Animated pulse rings */}
         <motion.span
@@ -59,7 +64,7 @@ export function VoiceButton({ isListening, isCompact, disabled, onClick }: Voice
         onClick={onClick}
         disabled={disabled}
         className="w-10 h-10 rounded-xl bg-gray-100 text-gray-400 flex items-center justify-center hover:bg-gray-200 hover:text-gray-600 transition-all disabled:opacity-50 flex-shrink-0"
-        title="Speak"
+        title={speakLabel}
       >
         <MicIcon className="w-4 h-4" />
       </button>
@@ -74,7 +79,7 @@ export function VoiceButton({ isListening, isCompact, disabled, onClick }: Voice
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}
       className="h-10 px-4 rounded-xl bg-[#1a3a52] text-white flex items-center justify-center gap-2 hover:bg-[#152e42] transition-colors disabled:opacity-50 flex-shrink-0"
-      title="Speak"
+      title={speakLabel}
     >
       <motion.div
         animate={{ scale: [1, 1.15, 1] }}
@@ -82,7 +87,7 @@ export function VoiceButton({ isListening, isCompact, disabled, onClick }: Voice
       >
         <MicIcon className="w-4 h-4" />
       </motion.div>
-      <span className="text-xs font-semibold">Speak</span>
+      <span className="text-xs font-semibold">{speakLabel}</span>
     </motion.button>
   );
 }

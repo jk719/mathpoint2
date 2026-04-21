@@ -209,7 +209,7 @@ function LessonContent() {
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="text-center">
           <BookOpen className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-          <p className="text-gray-500 mb-4">Skill not found</p>
+          <p className="text-gray-500 mb-4">{t('lesson.skillNotFound')}</p>
           <button onClick={() => router.push('/results')} className="text-[#ff6b35] hover:underline">
             {t('lesson.backToResults')}
           </button>
@@ -272,7 +272,7 @@ function LessonContent() {
             </div>
             {!quizMode && (
               <span className="text-[10px] text-gray-400 flex-shrink-0">
-                Step {currentStep}/{lessonSteps}
+                {t('lesson.stepProgress').replace('{current}', String(currentStep)).replace('{total}', String(lessonSteps))}
               </span>
             )}
           </div>
@@ -330,9 +330,9 @@ function LessonContent() {
                       }`}
                     >
                       {quizFeedback ? (
-                        <><CheckCircle className="w-5 h-5" /> Correct!</>
+                        <><CheckCircle className="w-5 h-5" /> {t('lesson.quizCorrect')}</>
                       ) : (
-                        <><XCircle className="w-5 h-5" /> Not quite — keep going!</>
+                        <><XCircle className="w-5 h-5" /> {t('lesson.quizTryAgain')}</>
                       )}
                     </motion.div>
                   )}
@@ -436,10 +436,10 @@ function LessonContent() {
                 const showEncouragement = msg.role === 'user' && userMsgIndex > 0 && userMsgIndex % 2 === 0;
 
                 const encouragements = [
-                  { text: 'Great progress!', icon: '🔥' },
-                  { text: 'Keep it up!', icon: '💪' },
-                  { text: 'You\'re on a roll!', icon: '⚡' },
-                  { text: 'Nice thinking!', icon: '🧠' },
+                  { text: t('lesson.encouragement1'), icon: '🔥' },
+                  { text: t('lesson.encouragement2'), icon: '💪' },
+                  { text: t('lesson.encouragement3'), icon: '⚡' },
+                  { text: t('lesson.encouragement4'), icon: '🧠' },
                 ];
                 const encouragement = encouragements[(Math.floor(userMsgIndex / 2) - 1) % encouragements.length];
 

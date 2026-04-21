@@ -196,6 +196,16 @@ const translations = {
       startPractice: 'Start Practice',
       backToLesson: 'Back to Lesson',
       score: '{correct} out of {total} correct',
+      quizCorrect: 'Correct!',
+      quizTryAgain: 'Not quite — keep going!',
+      skillNotFound: 'Skill not found',
+      stepProgress: 'Step {current}/{total}',
+      encouragement1: 'Great progress!',
+      encouragement2: 'Keep it up!',
+      encouragement3: "You're on a roll!",
+      encouragement4: 'Nice thinking!',
+      voiceSpeak: 'Speak',
+      voiceStop: 'Stop',
     },
 
     // ─── Session Page ────────────────────────────────────────────────
@@ -483,6 +493,16 @@ const translations = {
       startPractice: '开始练习',
       backToLesson: '返回课程',
       score: '{total} 题中答对 {correct} 题',
+      quizCorrect: '答对了！',
+      quizTryAgain: '再想想 — 你能行！',
+      skillNotFound: '找不到该技能',
+      stepProgress: '第 {current}/{total} 步',
+      encouragement1: '进步很快！',
+      encouragement2: '继续加油！',
+      encouragement3: '思路很清晰！',
+      encouragement4: '想得真棒！',
+      voiceSpeak: '说话',
+      voiceStop: '停止',
     },
 
     // ─── Session Page ────────────────────────────────────────────────
