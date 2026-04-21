@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Bot, User } from 'lucide-react';
+import { StreamingText } from './StreamingText';
 
 interface ChatMessageProps {
   role: 'user' | 'assistant';
@@ -41,7 +42,7 @@ export function ChatMessage({ role, content, isStreaming }: ChatMessageProps) {
         }`}
       >
         <p className="text-sm leading-relaxed whitespace-pre-wrap">
-          {content}
+          {isUser ? content : <StreamingText text={content} />}
           {isStreaming && (
             <span className="inline-block w-1.5 h-4 bg-[#1a3a52] ml-0.5 animate-pulse rounded-sm" />
           )}
