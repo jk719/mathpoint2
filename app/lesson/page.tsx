@@ -80,8 +80,8 @@ function LessonContent() {
   const getGreeting = useCallback((lang: string) => {
     if (!skill) return '';
     return lang === 'zh'
-      ? `你好！让我们一起学习"${skill.displayName}"。根据你的诊断结果，这是一个可以提高的领域。你对这个技能了解多少？`
-      : `Hi! Let's work on "${skill.displayName}". Based on your diagnostic, this is an area we can improve together. What do you already know about this skill?`;
+      ? `你好！我们来练习"${skill.displayName}"。我先出一道小题看看你的思路 — 准备好了吗？`
+      : `Hi! Let's work on "${skill.displayName}". I'll start with a quick problem to see how you think — ready?`;
   }, [skill]);
 
   useEffect(() => {
