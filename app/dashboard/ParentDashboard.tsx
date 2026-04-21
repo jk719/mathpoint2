@@ -6,6 +6,7 @@ import { TrendingUp, Clock, CheckCircle, BookOpen, Calendar, Video, Target, Awar
 import { useTranslation } from '@/lib/i18n/LanguageContext';
 import { MOCK_ASSIGNMENTS, MOCK_SUBMISSIONS } from '@/data/mock-assignments';
 import { AssignmentCard } from '@/components/assignments/AssignmentCard';
+import { useComingSoon } from '@/components/ui/ComingSoonToast';
 
 const MOCK_CHILD = {
   name: 'Emma',
@@ -48,6 +49,7 @@ const MOCK_SESSIONS = [
 export function ParentDashboard({ name }: { name: string }) {
   const { t } = useTranslation();
   const router = useRouter();
+  const { show: showComingSoon, toast: comingSoonToast } = useComingSoon();
 
   const getSkillColor = (mastery: number) => {
     if (mastery >= 80) return 'bg-green-500';
@@ -304,7 +306,10 @@ export function ParentDashboard({ name }: { name: string }) {
           <p className="text-gray-300 text-sm mt-1">Message her tutor or schedule an extra session.</p>
         </div>
         <div className="flex gap-3">
-          <button className="px-4 py-2.5 bg-white/10 text-white rounded-lg font-medium text-sm hover:bg-white/20 transition-colors flex items-center gap-2">
+          <button
+            onClick={() => showComingSoon('Message Tutor')}
+            className="px-4 py-2.5 bg-white/10 text-white rounded-lg font-medium text-sm hover:bg-white/20 transition-colors flex items-center gap-2"
+          >
             <MessageSquare className="w-4 h-4" />
             Message Tutor
           </button>
@@ -317,6 +322,7 @@ export function ParentDashboard({ name }: { name: string }) {
           </button>
         </div>
       </motion.div>
+      {comingSoonToast}
     </>
   );
 }

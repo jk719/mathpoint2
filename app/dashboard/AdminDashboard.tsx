@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, BookOpen, Video, DollarSign, TrendingUp, UserPlus, Target, Clock, Sparkles, AlertTriangle, CheckCircle, ArrowUpRight, ArrowDownRight, Globe, Flame, X, Star, Calendar, MessageSquare } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/LanguageContext';
+import { useComingSoon } from '@/components/ui/ComingSoonToast';
 
 const MOCK_SIGNUPS = [
   { name: 'Emma W.', role: 'Student', time: '2 hours ago', plan: 'Premium', email: 'emma.w@email.com', mastery: 67, diagnostics: 3, sessions: 5, lastActive: '2h ago', joined: 'Mar 5, 2026', skills: [{ name: 'Finding a Percent', mastery: 92 }, { name: 'Percent Increase', mastery: 68 }, { name: 'Stacked Discounts', mastery: 55 }, { name: 'Markup vs Margin', mastery: 30 }] },
@@ -54,6 +55,7 @@ export function AdminDashboard({ name }: { name: string }) {
   const { t } = useTranslation();
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [selectedTutor, setSelectedTutor] = useState<string | null>(null);
+  const { show: showComingSoon, toast: comingSoonToast } = useComingSoon();
 
   const maxDAU = Math.max(...MOCK_DAILY_ACTIVE.map(d => d.users));
 
@@ -288,8 +290,8 @@ export function AdminDashboard({ name }: { name: string }) {
                           ))}
                         </div>
                         <div className="flex gap-2 mt-3">
-                          <button className="flex-1 py-1.5 bg-white border border-gray-200 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1"><MessageSquare className="w-3 h-3" /> Message</button>
-                          <button className="flex-1 py-1.5 bg-white border border-gray-200 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1"><Calendar className="w-3 h-3" /> Schedule</button>
+                          <button onClick={() => showComingSoon('Message')} className="flex-1 py-1.5 bg-white border border-gray-200 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1"><MessageSquare className="w-3 h-3" /> Message</button>
+                          <button onClick={() => showComingSoon('Schedule')} className="flex-1 py-1.5 bg-white border border-gray-200 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1"><Calendar className="w-3 h-3" /> Schedule</button>
                         </div>
                       </div>
                     </motion.div>
@@ -362,8 +364,8 @@ export function AdminDashboard({ name }: { name: string }) {
                             </div>
                           )}
                           <div className="flex gap-2">
-                            <button className="flex-1 py-1.5 bg-white border border-gray-200 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1"><MessageSquare className="w-3 h-3" /> Message</button>
-                            <button className="flex-1 py-1.5 bg-white border border-gray-200 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1"><Calendar className="w-3 h-3" /> View Activity</button>
+                            <button onClick={() => showComingSoon('Message')} className="flex-1 py-1.5 bg-white border border-gray-200 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1"><MessageSquare className="w-3 h-3" /> Message</button>
+                            <button onClick={() => showComingSoon('View Activity')} className="flex-1 py-1.5 bg-white border border-gray-200 rounded text-xs font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1"><Calendar className="w-3 h-3" /> View Activity</button>
                           </div>
                         </div>
                       </motion.div>
@@ -405,6 +407,7 @@ export function AdminDashboard({ name }: { name: string }) {
           </div>
         </motion.div>
       </div>
+      {comingSoonToast}
     </>
   );
 }
