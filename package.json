@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "translate-questions": "tsx scripts/translate-questions.ts",
     "db:seed": "npx tsx prisma/seed.ts",
     "db:seed-questions": "npx tsx prisma/seed-questions.ts",
     "db:generate": "npx prisma generate",
