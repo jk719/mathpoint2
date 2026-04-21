@@ -105,7 +105,7 @@ function PracticeContent() {
               className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-4 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
-              Back to Skills
+              {t('practice.backToSkills')}
             </button>
 
             <div className="flex items-center justify-between mb-2">
@@ -114,12 +114,15 @@ function PracticeContent() {
                   {targetSkillName}
                 </h1>
                 <p className="text-sm text-gray-500">
-                  Question {questionNumber} of {maxQuestions} · {correctCount} correct
+                  {t('practice.questionProgress')
+                    .replace('{current}', String(questionNumber))
+                    .replace('{total}', String(maxQuestions))
+                    .replace('{correct}', String(correctCount))}
                 </p>
               </div>
               <div className="text-right">
                 <div className="text-2xl font-bold text-gray-900">{currentMastery}%</div>
-                <div className="text-xs text-gray-500">Mastery</div>
+                <div className="text-xs text-gray-500">{t('practice.mastery')}</div>
               </div>
             </div>
 
@@ -135,7 +138,7 @@ function PracticeContent() {
 
             {/* Mastery bar */}
             <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-400 w-16">Mastery</span>
+              <span className="text-xs text-gray-400 w-16">{t('practice.mastery')}</span>
               <div className="flex-1 bg-gray-200 rounded-full h-1.5">
                 <motion.div
                   className={`h-full rounded-full ${getMasteryColor(currentMastery)}`}
@@ -161,9 +164,9 @@ function PracticeContent() {
                 }`}
               >
                 {lastAnswerCorrect ? (
-                  <><CheckCircle className="w-4 h-4" /> Correct!</>
+                  <><CheckCircle className="w-4 h-4" /> {t('practice.correctBadge')}</>
                 ) : (
-                  <><XCircle className="w-4 h-4" /> Incorrect — keep going!</>
+                  <><XCircle className="w-4 h-4" /> {t('practice.incorrectBadge')}</>
                 )}
               </motion.div>
             )}
@@ -210,7 +213,7 @@ function PracticeContent() {
 
             {/* Title */}
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              {currentMastery >= 85 ? 'Skill Mastered!' : 'Practice Complete'}
+              {currentMastery >= 85 ? t('practice.skillMastered') : t('practice.practiceComplete')}
             </h1>
             <p className="text-gray-500 mb-8">
               {targetSkillName}
@@ -220,14 +223,14 @@ function PracticeContent() {
             <div className="flex items-center justify-center gap-4 mb-8">
               <div className="text-center">
                 <div className="text-3xl font-bold text-gray-400">{initialMastery}%</div>
-                <div className="text-xs text-gray-400 mt-1">Before</div>
+                <div className="text-xs text-gray-400 mt-1">{t('practice.before')}</div>
               </div>
               <ArrowRight className="w-6 h-6 text-gray-300" />
               <div className="text-center">
                 <div className={`text-3xl font-bold ${currentMastery >= 85 ? 'text-green-600' : 'text-[#ff6b35]'}`}>
                   {currentMastery}%
                 </div>
-                <div className="text-xs text-gray-500 mt-1">After</div>
+                <div className="text-xs text-gray-500 mt-1">{t('practice.after')}</div>
               </div>
             </div>
 
@@ -243,15 +246,15 @@ function PracticeContent() {
             <div className="grid grid-cols-3 gap-3 mb-8">
               <div className="bg-gray-50 rounded-xl p-3">
                 <div className="text-xl font-bold text-gray-900">{totalQuestions}</div>
-                <div className="text-xs text-gray-500">Questions</div>
+                <div className="text-xs text-gray-500">{t('practice.questionsLabel')}</div>
               </div>
               <div className="bg-gray-50 rounded-xl p-3">
                 <div className="text-xl font-bold text-gray-900">{correctCount}</div>
-                <div className="text-xs text-gray-500">Correct</div>
+                <div className="text-xs text-gray-500">{t('practice.correctLabel')}</div>
               </div>
               <div className="bg-gray-50 rounded-xl p-3">
                 <div className="text-xl font-bold text-gray-900">{accuracy}%</div>
-                <div className="text-xs text-gray-500">Accuracy</div>
+                <div className="text-xs text-gray-500">{t('common.accuracy')}</div>
               </div>
             </div>
 
@@ -263,7 +266,7 @@ function PracticeContent() {
                   className="w-full py-3 px-4 bg-[#ff6b35] text-white rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-[#e55a2a] transition-colors"
                 >
                   <RotateCcw className="w-4 h-4" />
-                  Continue Practicing
+                  {t('practice.continuePracticing')}
                 </button>
               )}
               <button
@@ -271,14 +274,14 @@ function PracticeContent() {
                 className="w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors"
               >
                 <Target className="w-4 h-4" />
-                Practice Another Skill
+                {t('practice.practiceAnother')}
               </button>
               <button
                 onClick={() => router.push('/results')}
                 className="w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors"
               >
                 <BookOpen className="w-4 h-4" />
-                View Full Results
+                {t('practice.viewFullResults')}
               </button>
             </div>
           </motion.div>
@@ -419,13 +422,18 @@ function PracticeContent() {
   );
 }
 
+function PracticeLoading() {
+  const { t } = useTranslation();
+  return (
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="text-gray-500">{t('practice.loading')}</div>
+    </div>
+  );
+}
+
 export default function PracticePage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-gray-500">Loading...</div>
-      </div>
-    }>
+    <Suspense fallback={<PracticeLoading />}>
       <PracticeContent />
     </Suspense>
   );

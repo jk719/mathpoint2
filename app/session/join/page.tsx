@@ -39,7 +39,7 @@ export default function JoinSessionPage() {
       const data = await res.json();
 
       if (!data.success) {
-        setError(data.error || 'Failed to create session');
+        setError(data.error || t('session.failedToCreate'));
         setIsJoining(false);
         return;
       }
@@ -48,7 +48,7 @@ export default function JoinSessionPage() {
         `/session?token=${encodeURIComponent(data.token)}&room=${encodeURIComponent(roomName.trim())}&name=${encodeURIComponent(name.trim())}`
       );
     } catch {
-      setError('Failed to connect. Check LiveKit credentials.');
+      setError(t('session.failedToConnect'));
       setIsJoining(false);
     }
   };

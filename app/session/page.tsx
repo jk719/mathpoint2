@@ -38,7 +38,7 @@ function SessionContent() {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center text-white">
         <div className="text-center">
-          <p className="text-lg mb-4">Missing session credentials</p>
+          <p className="text-lg mb-4">{t('session.missingCredentials')}</p>
           <button
             onClick={() => router.push('/session/join')}
             className="px-4 py-2 bg-[#ff6b35] rounded-lg hover:bg-[#e55a2a] transition-colors"
@@ -181,7 +181,7 @@ function SessionLayout({ roomName, participantName }: { roomName: string; partic
           className={`p-3 sm:p-3 min-w-[44px] min-h-[44px] rounded-full transition-colors flex items-center justify-center ${
             micEnabled ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-red-500 hover:bg-red-600 text-white'
           }`}
-          title={micEnabled ? 'Mute' : 'Unmute'}
+          title={micEnabled ? t('session.mute') : t('session.unmute')}
         >
           {micEnabled ? <Mic className="w-5 h-5" /> : <MicOff className="w-5 h-5" />}
         </button>
@@ -191,7 +191,7 @@ function SessionLayout({ roomName, participantName }: { roomName: string; partic
           className={`p-3 sm:p-3 min-w-[44px] min-h-[44px] rounded-full transition-colors flex items-center justify-center ${
             camEnabled ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-red-500 hover:bg-red-600 text-white'
           }`}
-          title={camEnabled ? 'Camera Off' : 'Camera On'}
+          title={camEnabled ? t('session.cameraOff') : t('session.cameraOn')}
         >
           {camEnabled ? <Video className="w-5 h-5" /> : <VideoOff className="w-5 h-5" />}
         </button>
@@ -201,7 +201,7 @@ function SessionLayout({ roomName, participantName }: { roomName: string; partic
           className={`p-3 sm:p-3 min-w-[44px] min-h-[44px] rounded-full transition-colors flex items-center justify-center ${
             showWhiteboard ? 'bg-[#ff6b35] text-white' : 'bg-gray-700 hover:bg-gray-600 text-white'
           }`}
-          title="Whiteboard"
+          title={t('session.whiteboard')}
         >
           <PenTool className="w-5 h-5" />
         </button>
@@ -211,7 +211,7 @@ function SessionLayout({ roomName, participantName }: { roomName: string; partic
           className={`p-3 sm:p-3 min-w-[44px] min-h-[44px] rounded-full transition-colors flex items-center justify-center ${
             showChat ? 'bg-[#ff6b35] text-white' : 'bg-gray-700 hover:bg-gray-600 text-white'
           }`}
-          title="Chat"
+          title={t('session.chat')}
         >
           <MessageSquare className="w-5 h-5" />
         </button>
@@ -221,7 +221,7 @@ function SessionLayout({ roomName, participantName }: { roomName: string; partic
         <button
           onClick={leaveSession}
           className="p-3 sm:p-3 min-w-[44px] min-h-[44px] rounded-full bg-red-500 hover:bg-red-600 text-white transition-colors flex items-center justify-center"
-          title="Leave"
+          title={t('session.leave')}
         >
           <LogOut className="w-5 h-5" />
         </button>
@@ -230,13 +230,18 @@ function SessionLayout({ roomName, participantName }: { roomName: string; partic
   );
 }
 
+function SessionLoading() {
+  const { t } = useTranslation();
+  return (
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="text-white">{t('session.loading')}</div>
+    </div>
+  );
+}
+
 export default function SessionPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="text-white">Loading session...</div>
-      </div>
-    }>
+    <Suspense fallback={<SessionLoading />}>
       <SessionContent />
     </Suspense>
   );
