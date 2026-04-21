@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useTranslation } from '@/lib/i18n/LanguageContext';
 import { useAuthStore } from '@/lib/stores/authStore';
+import { PricingCards } from '@/components/marketing/PricingCards';
 
 export default function Home() {
   const router = useRouter();
@@ -263,6 +264,37 @@ export default function Home() {
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto max-w-6xl px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              {t('pricing.landingTitle')}
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              {t('pricing.landingSubtitle')}
+            </p>
+          </motion.div>
+
+          <PricingCards />
+
+          <div className="text-center mt-10">
+            <button
+              onClick={() => router.push('/pricing')}
+              className="inline-flex items-center gap-2 text-[#1a3a52] font-semibold hover:text-[#ff6b35] transition-colors"
+            >
+              {t('pricing.viewAllPlans')}
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </section>
 

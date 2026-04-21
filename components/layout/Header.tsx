@@ -48,6 +48,9 @@ export function Header() {
               <Link href="/diagnostic" className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors">
                 {t('common.diagnostic')}
               </Link>
+              <Link href="/pricing" className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors">
+                {t('pricing.navLink')}
+              </Link>
               {isLoggedIn && (
                 <>
                   <Link href="/results" className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors">
@@ -117,6 +120,9 @@ export function Header() {
               )}
               <Link href="/diagnostic" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2">
                 {t('common.diagnostic')}
+              </Link>
+              <Link href="/pricing" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-[#ff6b35] font-medium transition-colors py-2">
+                {t('pricing.navLink')}
               </Link>
               {isLoggedIn && (
                 <>
