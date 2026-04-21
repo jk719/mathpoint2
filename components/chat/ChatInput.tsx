@@ -15,6 +15,7 @@ export function ChatInput({ onSend, disabled, placeholder = 'Ask a question...',
   const [value, setValue] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(false);
+  const [usedVoice, setUsedVoice] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
 
@@ -42,6 +43,7 @@ export function ChatInput({ onSend, disabled, placeholder = 'Ask a question...',
     if (!trimmed || disabled) return;
     onSend(trimmed);
     setValue('');
+    setUsedVoice(false);
     if (inputRef.current) {
       inputRef.current.style.height = 'auto';
     }
@@ -64,10 +66,13 @@ export function ChatInput({ onSend, disabled, placeholder = 'Ask a question...',
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) return;
 
+    const baseText = value.trimEnd();
+    const separator = baseText ? ' ' : '';
+
     const recognition = new SpeechRecognition();
     recognition.lang = language === 'zh' ? 'zh-CN' : 'en-US';
     recognition.interimResults = true;
-    recognition.continuous = false;
+    recognition.continuous = true;
 
     let finalTranscript = '';
 
@@ -78,17 +83,16 @@ export function ChatInput({ onSend, disabled, placeholder = 'Ask a question...',
         if (event.results[i].isFinal) {
           finalTranscript += transcript;
         } else {
-          interim = transcript;
+          interim += transcript;
         }
       }
-      setValue(finalTranscript + interim);
+      setValue(baseText + separator + finalTranscript + interim);
+      setUsedVoice(true);
     };
 
     recognition.onend = () => {
       setIsListening(false);
-      if (finalTranscript.trim()) {
-        setValue(finalTranscript.trim());
-      }
+      setValue((baseText + separator + finalTranscript).trim());
     };
 
     recognition.onerror = () => {
@@ -98,9 +102,10 @@ export function ChatInput({ onSend, disabled, placeholder = 'Ask a question...',
     recognitionRef.current = recognition;
     recognition.start();
     setIsListening(true);
-  }, [isListening, language]);
+  }, [isListening, language, value]);
 
   const hasValue = value.trim().length > 0;
+  const showCompactMic = hasValue && !usedVoice;
 
   return (
     <div className="p-2 sm:p-4 bg-white border-t border-gray-200">
@@ -121,7 +126,7 @@ export function ChatInput({ onSend, disabled, placeholder = 'Ask a question...',
         <textarea
           ref={inputRef}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => { setValue(e.target.value); setUsedVoice(false); }}
           onKeyDown={handleKeyDown}
           disabled={disabled}
           placeholder={placeholder}
@@ -141,7 +146,7 @@ export function ChatInput({ onSend, disabled, placeholder = 'Ask a question...',
           {speechSupported && (
             <VoiceButton
               isListening={isListening}
-              isCompact={hasValue}
+              isCompact={showCompactMic}
               disabled={disabled}
               onClick={toggleListening}
             />
